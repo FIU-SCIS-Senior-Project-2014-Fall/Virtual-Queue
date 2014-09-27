@@ -1,0 +1,379 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		
+		<meta name "viewport" content= "width=device-width, initial-scale=1.0">
+		<title>Virtual Queue</title>
+		
+		<link href = "css/bootstrap.min.css" rel = "stylesheet">
+		<link href = "css/bootstrap-theme.min.css" rel="stylesheet">
+		<link href = "css/styles.css" rel = "stylesheet">
+		<script src="js/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+        <script src="js/angular/angular.min.js"></script>
+		
+		
+		
+	</head>
+	<body>
+	
+		<div class = "navbar navbar-inverse navbar-static-top" > 		
+			<div class = "container" >
+			
+				<a href = "#" class =  "navbar-brand"> Welcome to the Venue! </a>
+				
+				<button class = "navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
+					<span class = "icon-bar"></span>
+					<span class = "icon-bar"></span>
+					<span class = "icon-bar"></span>
+				</button>
+				
+				<div class = "collapse navbar-collapse navHeaderCollapse" >
+				
+					<ul class = "nav navbar-nav navbar-right" >
+					
+						<li class = "active"> <a href = "#"> Home </a> </li>
+						<li> <a href = "#register" data-toggle = "modal"> Register </a></li>
+						<li> <a href = "#login" data-toggle = "modal"> Login </a></li>	
+						<li> <a href = "#rides" data-toggle = "modal"> Rides </a></li>	
+						<li> <a href = "#"> Special Offers </a>   </li>							
+						<li> <a href = "#reset" data-toggle = "modal"> Contact Us </a>   </li>
+					
+					</ul>
+				
+				</div>
+			
+			</div>
+		
+		</div>
+		
+		<div class = "container">
+		
+			<div class = "row">
+			
+				<div class = "col-lg-12">
+				
+					<div class =panel panel-default">
+					
+						<div class ="panel-body">
+					
+							<div class "page-header">
+								<h3> Venue Website <small>| Senior Project </small></h3>
+						
+							</div>
+							
+							<img class = "featuredImg" src = "img/universal.jpg" width = "100%"/>
+					
+					
+						</div>
+						
+					</div>
+			
+				</div>
+			
+				
+			
+			</div>
+		
+		
+		</div>
+
+<div class = "container">
+		
+			<div class = "row">
+			
+				<div class = "col-md-4" > 
+					
+					<h3> <a href = "#"> Guardians of the Galaxy Ride</a></h3>
+					<p> This ride will make you feel like you are living in a world where you can 
+					travel the entire universe and save it from villains. Enjoy the infinite
+					 and interactive experiences with your family and friends. Consider the
+					 fact that you need to be at least 47" to be on this amazing ride.</p>
+					<a href = "#" class = "btn btn default">Select</a>
+				
+				</div>
+				
+				<div class = "col-md-4" > 
+					
+					<h3> <a href = "#"> A Holiday Celebration Event</a></h3>
+					<p> Come to the venue to celebrate together this amazing time of the year, where
+					is all about sharing love, and having fun. Bring your family and friends to enjoy 
+					a wonderful time. Celebrate with incredible clowns, amazing marching bands, 
+					and much more.</p>
+				<a href = "#" class = "btn btn default">Select</a>
+				
+				</div>
+				
+				<div class = "col-md-4" > 
+					
+					<h3> <a href = "#"> Live Music</a></h3>
+					<p> We offer a variety of live music for everyone to enjoy. No matter in what 
+					part of the park you are, we will make you feel the music. Or you can just to 
+					the live music area and sing along with the wonderful singers and enjoy the 
+					performance. </p>
+				<a href = "#" class = "btn btn default">Read More</a>
+				
+				</div>
+				
+				
+			
+			</div>
+		
+		</div>
+				
+		<div class = "navbar navbar-default navbar-fixed-bottom">
+		
+			<div class = "container">
+				<p class = navbar-text pull-left"> Virtual Queue | Senior Project </p>
+			</div>
+		
+		</div>
+		
+		
+		
+		
+		<div class = "modal fade" id = "register" role = "dialog" >
+		
+			<div class = "modal-dialog">			
+				<div class = "modal-content">
+					<form class = "form-horizontal">
+						<div class = "modal-header">
+							<h4> Theme Park Register Form </h4>	
+						</div>			
+				
+						<div class = "modal-body">
+							<div class = "form-group">
+						
+								<label for = "register-name" class = "col-lg-2 control-label">Name:</label>
+								<div class = "col-lg-10">
+									<input type = "text" class = "form-control" id = "register-name" placeholder = "" >
+								</div>
+					
+							</div>
+							
+							<div class = "form-group">
+						
+								<label for = "register-lastName" class = "col-lg-2 control-label">Last Name:</label>
+								<div class = "col-lg-10">
+									<input type = "text" class = "form-control" id = "register-lastName" placeholder = "">
+								</div>
+					
+							</div>
+							
+							
+							<div class = "form-group">
+						
+								<label for = "register-password" class = "col-lg-2 control-label">Password:</label>
+								<div class = "col-lg-10">
+									<input type = "text" class = "form-control" id = "register-password" placeholder = "">
+								</div>
+					
+							</div>
+							
+							<div class = "form-group">
+						
+								<label for = "register-secQuestion" class = "col-lg-2 control-label">Security Question:</label>
+								<div class = "col-lg-10">
+									<select class="form-control id = "register-secQuestion" placeholder = "">
+										
+    										<option value="one">One</option>
+    										<option value="two">Two</option>
+    										<option value="three">Three</option>
+    										<option value="four">Four</option>
+    										<option value="five">Five</option>
+											</select>					
+								</div>
+					
+							</div>
+							
+							<div class = "form-group">
+						
+								<label for = "register-secAnswer" class = "col-lg-2 control-label">Security Answer:</label>
+								<div class = "col-lg-10">
+									<input type = "text" class = "form-control" id = "register-secAnswer" placeholder = "">
+								</div>
+					
+							</div>
+							
+							<div class = "form-group">
+						
+								<label for = "register-cell" class = "col-lg-2 control-label">Phone Number:</label>
+								<div class = "col-lg-10">
+									<input type = "text" class = "form-control" id = "register-cell" placeholder = "">
+								</div>
+					
+							</div>
+				
+						</div>
+						<div class = "modal-footer">
+						                   			
+                    		<div class = "col-md-2" > 
+								<button type="button" class="btn btn-info pull-left ">Submit</button>
+							</div>
+							
+							
+							<div class = "col-md-2" > 
+								<button type="button" class="btn btn-info pull-left ">Cancel</button>
+							</div>
+															
+							
+                           
+                        </div>
+						
+						</div>
+					</form>
+			</div> 
+		
+		</div>
+		
+		<div class = "modal fade" id = "reset" role = "dialog" >
+		
+			<div class = "modal-dialog">			
+				<div class = "modal-content">
+					<form class = "form-horizontal">
+						<div class = "modal-header">
+							<h4> Reset Password Form </h4>	
+						</div>			
+				
+						<div class = "modal-body">
+							
+							
+							<div class = "form-group">
+						
+								<label for = "reset-username" class = "col-lg-2 control-label">Username:</label>
+								<div class = "col-lg-10">
+									<input type = "email" class = "form-control" id = "reset-username" placeholder = "user@example.com">
+								</div>
+					
+							</div>					
+							
+							<div class = "form-group">
+						
+								<label for = "reset-secQuestion" class = "col-lg-2 control-label">Security Question:</label>
+								<div class = "col-lg-10">
+									<select class="form-control id = "reset-secQuestion" placeholder = "">
+										
+    										<option value="one">One</option>
+    										<option value="two">Two</option>
+    										<option value="three">Three</option>
+    										<option value="four">Four</option>
+    										<option value="five">Five</option>
+											</select>					
+								</div>
+					
+							</div>
+							
+							<div class = "form-group">
+						
+								<label for = "reset-secAnswer" class = "col-lg-2 control-label">Security Answer:</label>
+								<div class = "col-lg-10">
+									<input type = "text" class = "form-control" id = "reset-secAnswer" placeholder = "">
+								</div>
+					
+							</div>
+							
+							<div class = "form-group">
+						
+								<label for = "reset-password" class = "col-lg-2 control-label">New Password:</label>
+								<div class = "col-lg-10">
+									<input type = "text" class = "form-control" id = "reset-password" placeholder = "">
+								</div>
+					
+							</div>
+							
+							<div class = "form-group">
+						
+								<label for = "reset-password" class = "col-lg-2 control-label">Confirm Password:</label>
+								<div class = "col-lg-10">
+									<input type = "text" class = "form-control" id = "reset-password" placeholder = "">
+								</div>
+					
+							</div>
+				
+						</div>
+						<div class = "modal-footer">
+						                   			
+                    		<div class = "col-md-2" > 
+								<button type="button" class="btn btn-info pull-left ">Submit</button>
+							</div>
+												
+							<div class = "col-md-2" > 
+								<button type="button" class="btn btn-info pull-left ">Cancel</button>
+							</div>
+															
+							
+                           
+                        </div>
+						
+						</div>
+					</form>
+			</div> 
+		
+		</div>
+		
+		
+		<div class = "modal fade" id = "rides" role = "dialog" >
+		
+			<div class = "modal-dialog">			
+				<div class = "modal-content">
+					<form class = "form-horizontal">
+						<div class = "modal-header">
+							<h4> Venue Available Activities </h4>	
+						</div>			
+				
+						<div class = "modal-body">
+							<div class = "form-group">
+						
+								<label for = "rides-name" class = "col-lg-2 control-label">Rides:</label>
+									<div class = "row">
+									 <div class="col-md-6">
+    									<div class="input-group">
+      										<select class="form-control id = "rides-name" placeholder = "">
+										
+    										<option value="one"> Ride One</option>
+    										<option value="two">Ride Two</option>
+    										<option value="three">Ride Three</option>
+    										<option value="four">Ride Four</option>
+    										<option value="five">Ride Five</option>
+    										<option value="five">Ride Five</option>
+    										<option value="five">Ride Five</option>
+    										<option value="five">Ride Five</option>
+    										<option value="five">Ride Five</option>
+    										<option value="five">Ride Five</option>
+    										<option value="five">Ride Five</option>
+    										<option value="five">Ride Five</option>
+    										<option value="five">Ride Five</option>
+    										<option value="five">Ride Five</option>
+    										<option value="five">Ride Five</option>
+    										<option value="five">Ride Five</option>
+    										<option value="five">Ride Five</option>
+											</select>					
+									      										
+      											<div class = "input-group-btn " > 
+													<button type="button" class="btn btn-info pull-left ">Select Ride</button>
+												</div>
+												
+												<div class = "col-md-2" > 
+													<button type="button" class="btn btn-info pull-left ">Cancel</button>
+												</div>
+      											
+    									</div><!-- /input-group -->
+  									</div><!-- /.col-lg-6 -->
+  								</div><!-- /div row -->
+												
+							</div>
+				
+						</div>
+						
+						</div>
+					</form>
+			</div> 
+		
+		</div>
+		
+		
+	
+		
+	
+	</body>
+</html>
