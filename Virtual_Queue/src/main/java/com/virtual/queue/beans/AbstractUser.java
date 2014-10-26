@@ -15,4 +15,9 @@ public abstract class AbstractUser {
 	public abstract Role getUserRole();
 	
     public abstract Boolean isNill();
+
+	public void setPassword(String password) {
+		// TODO Auto-generated method stub
+		
+	}
 }

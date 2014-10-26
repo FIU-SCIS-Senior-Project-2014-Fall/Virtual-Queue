@@ -15,10 +15,12 @@ import com.virtual.queue.beans.User;
 @Repository
 public class LoginDaoImp extends BaseDao implements LoginDao {
 
-	private static String GET_USER_SESSION = "SELECT u.user_name, u.user_password, u.user_id, rs.role_type, rs.role_desc, rs.enable "
-			+ "FROM VirtualQueue.User u, VirtualQueue.Barcode b, VirtualQueue.UserRole r, VirtualQueue.Roles rs "
-			+ " WHERE  u.barcode_id = b.barcode_id AND u.user_id = r.user_id AND r.role_id = rs.role_id"
-			+ " AND u.user_name = ? AND u.user_password = ? AND  b.barcode_number= ?";
+	private static String GET_USER_SESSION = "SELECT u.user_name, u.user_password, "
+			+ "u.user_id, c.code_number, r.enabled, r.role_type, r.role_desc "
+			+ "FROM VirtualQueueDB.VenueRegisteredUser u, VirtualQueueDB.Code c, VirtualQueueDB.UserRole ur, "
+			+ "VirtualQueueDB.Role r  WHERE  u.code_id = c.code_id AND u.user_id = ur.user_id "
+			+ "AND r.role_id = ur.role_id AND u.user_name = ? AND u.user_password = ? "
+			+ "AND  c.code_number= ?";
 
 	@Override
 	public boolean signOut(String userId) {
@@ -50,9 +52,9 @@ public class LoginDaoImp extends BaseDao implements LoginDao {
 				user.setUserid(result.getLong("user_id"));
 				user.setPassword(result.getString("user_password"));
 				Role role = new Role();
-				role.setRole_type(result.getString("role_type"));
-				role.setRole_desc(result.getString("role_desc"));
-				user.set_userRole(role);
+				role.setRoleType(result.getString("role_type"));
+				role.setRoleDesc(result.getString("role_desc"));
+				user.setUserRole(role);
 			
 			}
 			

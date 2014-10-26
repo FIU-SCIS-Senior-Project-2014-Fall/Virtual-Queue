@@ -6,19 +6,19 @@ public class Role {
 	public String getRole_id() {
 		return role_id;
 	}
-	public void setRole_id(String role_id) {
+	public void setRoleId(String role_id) {
 		this.role_id = role_id;
 	}
-	public String getRole_type() {
+	public String getRoleType() {
 		return role_type;
 	}
-	public void setRole_type(String role_type) {
+	public void setRoleType(String role_type) {
 		this.role_type = role_type;
 	}
-	public String getRole_desc() {
+	public String getRoleDesc() {
 		return role_desc;
 	}
-	public void setRole_desc(String role_desc) {
+	public void setRoleDesc(String role_desc) {
 		this.role_desc = role_desc;
 	}
 	public boolean isEnable() {

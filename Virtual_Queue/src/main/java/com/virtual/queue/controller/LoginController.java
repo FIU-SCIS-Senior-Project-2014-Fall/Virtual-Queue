@@ -1,10 +1,20 @@
 package com.virtual.queue.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.codehaus.jackson.map.util.JSONPObject;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,61 +31,84 @@ public class LoginController {
 	@Autowired
 	private LoginService loginService;
 
-	@RequestMapping("/signin")
-	public @ResponseBody Boolean signIn(LoginRequest login,
-			HttpServletRequest request) {
+	@RequestMapping(value = "/signin", method = RequestMethod.POST )
+	public @ResponseBody ResponseEntity<String> signIn(LoginRequest login,
+			HttpServletRequest request, HttpServletResponse response) {
+
 		if (!login.validate())
-			return Boolean.FALSE;
-		// set user value on session
-		ModelAndView modelAndView = new ModelAndView();
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		 
 
 		User user = loginService.signIn(login.getUserName(),
 				login.getPassword(), login.getCode());
 
 		if (user.isNill())
-			return Boolean.FALSE;
-		;
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+  
 
-		modelAndView.addObject("user", user);
+		if (request != null) {
 
-		/*
-		 * if (request != null) {
-		 * 
-		 * HttpSession session = request.getSession(); if (session != null) {
-		 * User user = loginService.signIn(login.getUserName(),
-		 * login.getPassword(), login.getCode()); session.setAttribute("user",
-		 * user); } }
-		 */
+			HttpSession session = request.getSession();
+			if (session != null) {
+				session.setAttribute("user", User.getDemoUser());
+			} else {
 
-		return Boolean.TRUE;
+				return new ResponseEntity<String>(
+						HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+
+		}
+		
+		 JSONObject obj = new JSONObject();
+		  obj.append("user_name",user.getUserName());
+		  obj.append("user_id",user.getUserid().toString());
+		  obj.append("user_email",user.getEmail());
+		 //finish adding all roles returned from GET-USER SELECT
+		 return new ResponseEntity<String>(obj.toString(), HttpStatus.OK);
+	
 	}
 
-	@RequestMapping("/signout")
-	public @ResponseBody boolean signOut(@PathVariable("userid") String userId,
+	@RequestMapping(value = "/signout", method = RequestMethod.POST)
+	 
+	public @ResponseBody  ResponseEntity<String> signOut(
+			@RequestParam(value="userName")String userName,
 			HttpServletRequest request) {
 
-		/*
-		 * Boolean result=Boolean.TRUE;
-		 * 
-		 * if(userId ==""){
-		 * 
-		 * result= false;
-		 * 
-		 * } if (request != null) {
-		 * 
-		 * HttpSession session = request.getSession(); if (session != null) {
-		 * session.setAttribute("user", ""); session.invalidate(); }else{
-		 * 
-		 * result= false;
-		 * 
-		 * } }
-		 */
-		return true;// result;
+		if (userName == null || "".equals(userName)) {
+
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+
+		}
+		if (request != null) {
+
+			HttpSession session = request.getSession();
+			if (session != null) {
+
+				User newUser = (User) session.getAttribute("user");
+				if (newUser != null && newUser.getUserName().equals(userName)) {
+
+					session.setAttribute("user", "");
+					session.invalidate();
+				} else {
+
+					return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+				}
+
+			} else {
+
+				 return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+			}
+		}
+
+		return  new ResponseEntity<String>(HttpStatus.OK);
 	}
 
 	@RequestMapping("/layout")
 	public String getIndexPage() {
 		return "login/layout";
+
 	}
 
 }

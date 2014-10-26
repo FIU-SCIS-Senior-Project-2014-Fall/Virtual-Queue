@@ -13,13 +13,17 @@ public class User extends AbstractUser implements Serializable {
 	private String _phoneNumber;
 	private Role _userRole;
 	private String _securityQuestion;
+	private String _age;
+	private String _height;
+	private String _weight;
+	
 
 	public User() {
 	}
 
 	public User(String code, String password, String email,
 			String securityAnswer, String securityQuestion, String phoneNumber,
-			Role role) {
+			Role role, String age, String height, String weight) {
 
 		_code = code;
 		_password = password;
@@ -27,7 +31,10 @@ public class User extends AbstractUser implements Serializable {
 		_securityAnswer = securityAnswer;
 		_securityQuestion = securityQuestion;
 		_phoneNumber = phoneNumber;
-		set_userRole(role);
+		_age = age;
+		_height = height;
+		_weight = weight;
+		setUserRole(role);
 
 	}
 
@@ -169,6 +176,7 @@ public class User extends AbstractUser implements Serializable {
 		demoUser.setLastName("DemoLastName");
 		demoUser.setUserid(1111L);
 		demoUser.setToken("123456");
+		demoUser.setUserName("test@test.com");
 		return demoUser;
 
 	}
@@ -188,18 +196,38 @@ public class User extends AbstractUser implements Serializable {
 		this._securityQuestion = _securityQuestion;
 	}
 
-	public Role get_userRole() {
+	public Role getUserRole() {
 		return _userRole;
 	}
 
-	public void set_userRole(Role _userRole) {
+	public void setUserRole(Role _userRole) {
 		this._userRole = _userRole;
 	}
 
-	@Override
-	public Role getUserRole() {
-		// TODO Auto-generated method stub
-		return _userRole;
+	 
+
+	public String getAge() {
+		return _age;
+	}
+
+	public void setAge(String _age) {
+		this._age = _age;
+	}
+
+	public String getHeight() {
+		return _height;
+	}
+
+	public void setHeight(String _height) {
+		this._height = _height;
+	}
+
+	public String getWeight() {
+		return _weight;
+	}
+
+	public void setWeight(String _weight) {
+		this._weight = _weight;
 	}
 
 }

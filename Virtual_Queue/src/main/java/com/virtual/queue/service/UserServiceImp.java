@@ -7,17 +7,24 @@ import java.util.List;
 
 
 
+
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.virtual.queue.beans.User;
+import com.virtual.queue.dao.ResetPasswordDao;
 import com.virtual.queue.dao.UserDao;
+import com.virtual.queue.request.UserPasswordResetRequest;
 
 @Service
 public class UserServiceImp implements UserService {
 
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private ResetPasswordDao resetPassDao;
 	
 	@Override
 	public User getUser(String username, String passwd) {
@@ -71,6 +78,17 @@ public class UserServiceImp implements UserService {
 	public User getUserByUserName(String userName) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void resetPassword(UserPasswordResetRequest passwordReset) throws Exception {
+		 
+		resetPassDao.resetPassword(passwordReset.getUserName(),
+				passwordReset.getSecurityAnswer(),passwordReset.getSecurityQuestion(),passwordReset.getNewPassword());
+		
+		
+		
+		 
 	}
 
 	 
