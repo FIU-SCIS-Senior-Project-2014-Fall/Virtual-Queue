@@ -1,5 +1,10 @@
 package com.virtual.queue.dao;
 
-public interface RideDao {
+import java.util.List;
 
+import com.virtual.queue.beans.RideInfo;
+
+public interface RideDao {
+	public List<RideInfo> pullRideInfo() ;
+	
 }

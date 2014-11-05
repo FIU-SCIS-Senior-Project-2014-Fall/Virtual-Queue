@@ -8,7 +8,7 @@
     <param-value>/WEB-INF/spring/root-context.xml</param-value>
   </context-param>
   <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    <listener-class>com.virtual.queue.listener.QueueContextLoaderListener</listener-class>
   </listener>
   <servlet>
     <servlet-name>appServlet</servlet-name>

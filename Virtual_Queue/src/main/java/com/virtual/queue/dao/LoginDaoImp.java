@@ -59,6 +59,7 @@ public class LoginDaoImp extends BaseDao implements LoginDao {
 			}
 			
 			result.close();
+			
 			statement.close();
 		} catch (SQLException e) {
 			// TODO need to add log4j output

@@ -15,6 +15,7 @@
 
 <script type="text/javascript"src="<c:url value="/resources/js/jquery.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+<script type="text/javascript"src="<c:url value="/resources/js/bootstrapValidator.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/angular/angular.min.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/jquery.cookie.js" />"></script>
 
@@ -60,7 +61,7 @@
 
 			<div class="col-lg-12">
 
-				<div class=panelpanel-default">
+				<div class="panel-default">
 
 					<div class="panel-body">
 
@@ -375,43 +376,98 @@
 							</div>
 
 						</div>
-						
+
+
+
+
+
+
+
+
+
 						<div class="form-group">
-						
-							<label for="register-height" class="col-lg-2 control-label">Height:</label>
-							<div class="col-lg-10">
-								<input name= "height" type="text" class="form-control" id="register-height"
-									placeholder="">
+
+							<label for="register-height" class="col-xs-2 control-label">Height:</label>
+							<div class="col-xs-5">
+								<div class="input-group number-spinner">
+									<span class="input-group-btn">
+										<button class="btn btn-default" data-dir="dwn" id="register-minus1">
+											<span class="glyphicon glyphicon-minus" ></span>
+										</button>
+									</span> 
+									<input name="height" type="text" class="form-control" value="1" id="register-height1"> <span
+										class="input-group-btn">
+										<button class="btn btn-default" data-dir="up" id="register-plus1">
+											<span class="glyphicon glyphicon-plus" ></span>
+										</button>
+									</span>
+								</div>
+							</div>
+
+
+							<div class="col-xs-5">
+								<div class="input-group number-spinner">
+									<span class="input-group-btn">
+										<button class="btn btn-default" data-dir="dwn" id="register-minus2">
+											<span class="glyphicon glyphicon-minus" ></span>
+										</button>
+									</span> <input name="height1" type="text"
+										class="form-control text-left" value="2" id="register-height2">
+									<span class="input-group-btn">
+										<button class="btn btn-default" data-dir="up" id="register-plus2">
+											<span class="glyphicon glyphicon-plus" ></span>
+										</button>
+									</span>
+								</div>
+							</div>
+
+
 						</div>
-						</div>
-						
+
+
+
+
 						<div class="form-group">
 
-							<label for="register-weight" class="col-lg-2 control-label">Weight:</label>
-							<div class="col-lg-10">
-								<input name= "weight" type="text" class="form-control" id="register-weight"
-									placeholder="">
-							</div>							
+							<label for="register-weight" class="col-xs-2 control-label">Weight:</label>
 
-						</div>
-
-					
-					<div class="modal-footer">
-
-						<div class="col-md-2">
-							<button type="submit" value= "Send" class="btn btn-info pull-left" id = "submit">Submit</button>
-						</div>
-
-
-						<div class="col-md-2">
-							<button type="button" class="btn btn-info pull-left " data-dismiss = "modal" id = "cancel" onclick= "CleanRegisterForm()">Cancel</button>
-						</div>
-
-					<div id="personFormResponse" class="green"> </div>
-
+							<div class="col-xs-5">
+								<div class="input-group number-spinner">
+									<span class="input-group-btn">
+										<button class="btn btn-default" data-dir="dwn" id= "register-weightMinus">
+											<span class="glyphicon glyphicon-minus" id="register-weight"></span>
+										</button>
+									</span> <input name="weight" type="text"
+										class="form-control text-left" value="2" id="register-weight">
+									<span class="input-group-btn">
+										<button class="btn btn-default" data-dir="up" id= "register-weightPlus">
+											<span class="glyphicon glyphicon-plus" ></span>
+										</button>
+									</span>
+								</div>
+							</div>
 					</div>
-			</div>
-			</form>
+
+</div>
+
+							<div class="modal-footer">
+
+								<div class="col-md-2">
+									<button type="submit" value="Send"
+										class="btn btn-info pull-left" id="submit">Submit</button>
+								</div>
+
+
+								<div class="col-md-2">
+									<button type="button" class="btn btn-info pull-left "
+										data-dismiss="modal" id="cancel" >Cancel</button>
+								</div>
+
+								<div id="personFormResponse" class="green"></div>
+
+							</div>
+						
+						</form>
 		
 		</div>
 </div>
@@ -654,7 +710,7 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="input-group">
-										<select class="form-control id = " rides-name" placeholder="">
+										<select class="form-control" id = "rides-name"  placeholder =" ">
 
 											<option value="one">Ride One</option>
 											<option value="two">Ride Two</option>
@@ -681,7 +737,7 @@
 										</div>
 
 										<div class="col-md-2">
-											<button type="button" class="btn btn-info pull-left ">Cancel</button>
+											<button type="button" class="btn btn-info pull-left " data-dismiss = "modal" id = "cancel-addride">Cancel</button>
 										</div>
 
 									</div>
@@ -701,6 +757,8 @@
 	</div>
 		
 </div>
+
+
 <!--  
 TODO:Add comments here.
 javascript section
@@ -738,7 +796,7 @@ $(document).ready(function() {
 	
 	
 	
-	/*
+	  /*
 	  reset form ajax post function
 	  validations and page forwarding.
 	  */	
@@ -766,10 +824,10 @@ $(document).ready(function() {
 		}); 	
 		e.preventDefault(); // prevent actual form submit and page reload	
 		});
-  /*
+  
+		/*
   register form ajax post function
   validations and page forwarding.
-  
   */	
 	$('#registerForm').submit(function(e) {
 		// will pass the form date using the jQuery serialize function
@@ -798,7 +856,7 @@ $(document).ready(function() {
 	});  
 	
 	$('#reset-password').on('click', function () {
-		   $(this).attr('type', 'password'); 
+		   $(this).attr('type','password'); 
 		});
 	
 
@@ -889,9 +947,143 @@ function CleanResetPasswordForm() {
 	$('#reset-confirmNewPassword').val('') ;
 	}
 
-
-
+$('#register-plus1').on('click', '.number-spinner button', function () {    
+	var btn = $(this),
+		oldValue = btn.closest('.number-spinner').find('input').val().trim(),
+		newVal = 0;
+	
+	if (btn.attr('data-dir') == 'up') {
+		newVal = parseInt(oldValue) + 1;
+	} else {
+		if (oldValue > 1) {
+			newVal = parseInt(oldValue) - 1;
+		} else {
+			newVal = 1;
+		}
+	}
+	btn.closest('.number-spinner').find('input').val(newVal);
+});
  
+
+
+
+$('#registerForm').bootstrapValidator({
+	message: 'This value is not valid',
+	fields: {
+		firstName: {
+			message: 'The name is not valid',
+			validators: {
+			notEmpty: {
+			message: 'The name field is required and cannot be empty'
+			},
+			regexp: {
+			regexp: /^[a-z\s]+$/i,
+			message: 'The name can consist of alphabetical characters and spaces onlys'
+			},
+			}
+			},
+			
+		lastName: {
+			message: 'The last name is not valid',
+			validators: {
+			notEmpty: {
+			message: 'The last is required and cannot be empty'				},
+			regexp: {
+			regexp: /^[a-z\s]+$/i,
+			message: 'Last name can consist of alphabetical characters and spaces only'
+			},
+			}
+			},
+				
+		password: {
+			validators: {
+			notEmpty: {
+			message: 'The password is required and cannot be empty'
+			},			
+			}
+			},			
+	
+		email: {
+			validators: {
+			notEmpty: {
+			message: 'The email address is required and cannot be empty'
+			},
+			emailAddress: {
+			message: 'The input is not a valid email address'
+			}
+			}
+			},			
+
+		securityAnswer: {
+			validators: {
+			notEmpty: {
+			message: 'The security Answer is required and cannot be empty'
+			},
+			}
+			},
+	
+		phoneNumber: {
+			
+			message: 'The phone number is not valid',
+			validators: {
+			notEmpty: {
+			message: 'The phone number is required and cannot be empty'
+			},
+			regexp: {
+			regexp: /^[0-9]{10}$/,
+			message: 'The phone number can only consists of 10 digits: Ex:3056757845'
+				},
+			
+			}
+			},	
+			
+		age: {
+			message: 'The age is not valid',
+			validators: {
+			notEmpty: {
+			message: 'The age is required and cannot be empty'
+			},
+			regexp: {
+			regexp: /^[0-9]{1}[0-9]{1}$/,
+			message: 'The age can only consists of numbers'
+			},
+			}
+			},
+			
+		height: {
+			message: 'The height is not valid',
+			validators: {
+			notEmpty: {
+			message: 'The height is required and cannot be empty'
+			},
+			regexp: {
+			regexp: /^[0-9]/,
+			message: 'The height can only consists of numbers'
+			},
+			}
+			},
+			
+		weight: {
+			message: 'The weight is not valid',
+			validators: {
+			notEmpty: {
+			message: 'The weight is required and cannot be empty'
+			},
+			regexp: {
+			regexp: /^[0-9]$/,
+			message: 'The weight can only consists of numbers'
+			},
+			}
+			},
+				
+	}
+	});
+
+
+
+
+
+
 
 
 </script>
