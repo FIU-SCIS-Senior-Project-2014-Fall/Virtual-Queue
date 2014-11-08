@@ -1,27 +1,25 @@
 package com.virtual.queue.beans;
 
-import java.util.Date;
-
 public class VenueInfo {
 	private String venueName;
-	private Date startTime;
-	private Date endTime;
+	private long startTime;
+	private long endTime;
 	public String getVenueName() {
 		return venueName;
 	}
 	public void setVenueName(String venueName) {
 		this.venueName = venueName;
 	}
-	public Date getStartTime() {
+	public long getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(Date startTime) {
+	public void setStartTime(long startTime) {
 		this.startTime = startTime;
 	}
-	public Date getEndTime() {
+	public long getEndTime() {
 		return endTime;
 	}
-	public void setEndTime(Date endTime) {
+	public void setEndTime(long endTime) {
 		this.endTime = endTime;
 	}
 

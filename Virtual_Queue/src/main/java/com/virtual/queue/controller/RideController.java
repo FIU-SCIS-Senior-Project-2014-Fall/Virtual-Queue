@@ -52,9 +52,13 @@ public class RideController {
 	@RequestMapping(value = "/addRide/{rideid}/{userid}", method = RequestMethod.POST)
 	public @ResponseBody boolean addrideByUser(@PathVariable("rideid") Long rideId,
 			@PathVariable("userid") Long userid) {
-		return rideService.addRideById(rideId, userid);
-	    
-	
+		try {
+			return rideService.addUserRideById(rideId, userid);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} 
 	}
 
 	@RequestMapping(value = "/removeRide/{id}", method = RequestMethod.DELETE)

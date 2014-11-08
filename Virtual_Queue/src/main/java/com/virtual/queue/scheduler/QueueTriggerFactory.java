@@ -1,7 +1,5 @@
 package com.virtual.queue.scheduler;
 
-
-
 import java.util.Date;
 
 import org.quartz.SimpleScheduleBuilder;
@@ -10,37 +8,36 @@ import org.quartz.TriggerBuilder;
 
 public class QueueTriggerFactory {
 
-private QueueTriggerFactory(){};
+	private QueueTriggerFactory() {
+	};
 
-public static Trigger getTrigger(int interval){
-	
-	
-	return TriggerBuilder.newTrigger()
+	public static Trigger getTrigger(int interval) {
 
-			.withSchedule(SimpleScheduleBuilder.simpleSchedule()
+		return TriggerBuilder.newTrigger()
 
-			.withIntervalInSeconds(interval)
+		.withSchedule(SimpleScheduleBuilder.simpleSchedule()
 
-			.repeatForever())
+		.withIntervalInSeconds(interval)
 
-			.build();
-	
-	
-}
-public static Trigger getTrigger(int interval,Date startTime,Date endTime){
-	
-	
-	return TriggerBuilder.newTrigger()
+		.repeatForever())
 
-			.withSchedule(SimpleScheduleBuilder.simpleSchedule()
+		.build();
 
-			.withIntervalInSeconds(interval)
+	}
 
-			.repeatForever())
+	public static Trigger getTrigger(int interval, Date startTime, Date endTime) {
 
-			.build();
-	
-	
-}
+		// TODO need to pass start time ,end time to jobs when scheduling.
+		return TriggerBuilder.newTrigger()
+
+		.withSchedule(SimpleScheduleBuilder.simpleSchedule()
+
+		.withIntervalInSeconds(interval)
+
+		.repeatForever())
+
+		.build();
+
+	}
 
 }

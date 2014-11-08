@@ -8,5 +8,5 @@ import com.virtual.queue.beans.VenueInfo;
 
 public interface VenueDao {
 	
-public List<VenueInfo> getVenueInfo();
+public List<VenueInfo> getVenueInfo(long venueId);
 }

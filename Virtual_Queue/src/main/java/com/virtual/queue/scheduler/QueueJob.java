@@ -20,15 +20,17 @@ public class QueueJob implements Job {
 
 		log.debug("TestJob run successfully...");
 		System.out.println("Job ran....");
-		ExecuteService();
+		
+		//need to get ride id from job context.
+		ExecuteService(1);
 	}
 
 	
-	private void ExecuteService() {
+	private void ExecuteService(int rideId) {
 
 		try {
 			 
-			new NotificationServiceImp().notifyUser(); 
+			new NotificationServiceImp().notifyUser(rideId); 
 		
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

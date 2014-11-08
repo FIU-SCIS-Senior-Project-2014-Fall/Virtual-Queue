@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.virtual.queue.beans.NotificationInfo;
-import com.virtual.queue.beans.QueueInfo;
+import com.virtual.queue.beans.UserQueueInfo;
 import com.virtual.queue.dao.QueueDao;
 import com.virtual.queue.dao.QueueDaoImp;
 import com.virtual.queue.handler.EmailNotificationHandlerImp;
@@ -31,15 +31,15 @@ public class NotificationServiceImp implements NotificationService {
 	}
 
 	@Override
-	public List<QueueInfo> pullNotInfo(Integer rideId) {
-
-		return queueDao.pullInfo(rideId);
+	public List<UserQueueInfo> pullNotInfo(Integer rideId) {
+		QueueDao dao= new QueueDaoImp();
+		return dao.pullInfo(rideId);
 	}
 
 	@Override
 	public void notifyUser(Integer rideId) throws Exception {
 
-		List<QueueInfo> list = this.pullNotInfo(1);
+		List<UserQueueInfo> list = this.pullNotInfo(1);
 		
 		
 		NotificationHandler handler = new EmailNotificationHandlerImp();
@@ -49,7 +49,7 @@ public class NotificationServiceImp implements NotificationService {
 
 		NotificationInfo Notinfo=null;
 		
-		for (QueueInfo info : list) {
+		for (UserQueueInfo info : list) {
 
 			Notinfo = new NotificationInfo();
 			Notinfo.setEmail(info.getEmail());
@@ -69,7 +69,7 @@ public class NotificationServiceImp implements NotificationService {
 	@Override
 	public void notifyAllUsers() throws Exception {
 
-		List<QueueInfo> list = this.pullAllNotInfo();
+		List<UserQueueInfo> list = this.pullAllNotInfo();
 		
 		
 		NotificationHandler handler = new EmailNotificationHandlerImp();
@@ -79,7 +79,7 @@ public class NotificationServiceImp implements NotificationService {
 
 		NotificationInfo Notinfo=null;
 		
-		for (QueueInfo info : list) {
+		for (UserQueueInfo info : list) {
 
 			Notinfo = new NotificationInfo();
 			Notinfo.setEmail(info.getEmail());
@@ -97,9 +97,10 @@ public class NotificationServiceImp implements NotificationService {
 	}
 
 	@Override
-	public List<QueueInfo> pullAllNotInfo() {
-		// TODO Auto-generated method stub
-		return queueDao.pullAllInfo();
+	public List<UserQueueInfo> pullAllNotInfo() {
+		//DI is not working.
+		QueueDao dao= new QueueDaoImp();
+		return dao.pullAllInfo();
 	}
 
 }

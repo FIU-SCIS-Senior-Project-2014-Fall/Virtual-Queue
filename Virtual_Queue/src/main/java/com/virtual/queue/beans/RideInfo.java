@@ -1,43 +1,77 @@
 package com.virtual.queue.beans;
 
-import java.util.Date;
-
 public class RideInfo {
-public String getrName() {
+	private String description;
+	private long startTime;
+	private long endTime;
+	private int interval;
+	private int capacity;
+	private long rideId;
+	private String rName;
+	private Coordinate coordinate;
+
+	public String getrName() {
 		return rName;
 	}
+
 	public void setrName(String rName) {
 		this.rName = rName;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Date getStartTime() {
+
+	public long getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(Date startTime) {
+
+	public void setStartTime(long startTime) {
 		this.startTime = startTime;
 	}
-	public Date getEndTime() {
+
+	public long getEndTime() {
 		return endTime;
 	}
-	public void setEndTime(Date endTime) {
+
+	public void setEndTime(long endTime) {
 		this.endTime = endTime;
 	}
-private String rName;
-public int getInterval() {
-	return interval;
-}
-public void setInterval(int interval) {
-	this.interval = interval;
-}
-private String description;
-private Date startTime;
-private Date endTime;
-private int interval;
-	
-	
+
+	public int getInterval() {
+		return interval;
+	}
+
+	public void setInterval(int interval) {
+		this.interval = interval;
+	}
+
+	public int getCapacity() {
+		return capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+
+	public long getRideId() {
+		return rideId;
+	}
+
+	public void setRideId(long rideId) {
+		this.rideId = rideId;
+	}
+
+	public Coordinate getCoordinate() {
+		return coordinate;
+	}
+
+	public void setCoordinate(Coordinate coordinate) {
+		this.coordinate = coordinate;
+	}
+
 }

@@ -7,15 +7,18 @@ import org.springframework.stereotype.Service;
 import com.virtual.queue.beans.Ride;
 import com.virtual.queue.beans.RideInfo;
 import com.virtual.queue.beans.User;
+import com.virtual.queue.exception.NotificationException;
 
 public interface RideService {
 
-	List<Ride> getAll();
-	void addRide(Ride ride);
-	void updateRide(Ride ride); 
-	void deleteRideById(Long id, Long userid);
-	boolean removeRidebyId(String id);
-	boolean addRideById(Long rideId, Long userid);
-	List<RideInfo> pullRideInfo();
+	public List<Ride> getAll();
+	public void addRide(Ride ride);
+	public void updateRide(Ride ride); 
+	public void deleteRideById(Long id, Long userid);
+	public boolean removeRidebyId(String id);
+	public boolean addUserRideById(Long rideId, Long userid) throws Exception;
+	public List<RideInfo> pullRideInfo();
+	public RideInfo getRidebyId(long rideId) throws NotificationException;
+	
 
 }

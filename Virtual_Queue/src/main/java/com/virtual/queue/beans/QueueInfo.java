@@ -1,42 +1,41 @@
 package com.virtual.queue.beans;
 
 public class QueueInfo {
+	private long queueId;
+	private long userId;
+	private int capacity;
+	private int waitingTime;
 
-	private String name;
-	private Integer maxValue;
-	private String phoneNumber;
-	private String email;
-	public String getName() {
-		return name;
+	public long getQueueId() {
+		return queueId;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setQueueId(long queueId) {
+		this.queueId = queueId;
 	}
-	public Integer getMaxValue() {
-		return maxValue;
+
+	public long getUserId() {
+		return userId;
 	}
-	public void setMaxValue(Integer maxValue) {
-		this.maxValue = maxValue;
+
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
-	public String getPhoneNumber() {
-		return phoneNumber;
+
+	public int getCapacity() {
+		return capacity;
 	}
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
 	}
-	public String getEmail() {
-		return email;
+
+	public int getWaitingTime() {
+		return waitingTime;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+
+	public void setWaitingTime(int waitingTime) {
+		this.waitingTime = waitingTime;
 	}
-	public boolean isValid(){
-		if(name!=null || "".equalsIgnoreCase(""))return false;
-		//TODO:add all validations for this class.s
-	return true;
-		
-		
-	}
-	
-	
+
 }

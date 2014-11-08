@@ -13,23 +13,28 @@ import java.sql.Statement;
 
 import com.mysql.jdbc.Connection;
 import com.virtual.queue.beans.User;
+import com.virtual.queue.beans.UserQueueInfo;
 import com.virtual.queue.exception.ResetPasswordException;
 
 @Repository
 @Transactional
 public class UserDaoImp extends BaseDao implements UserDao {
 
+	
 	private static String ADD_USERS = "INSERT INTO VirtualQueueDB.VenueRegisteredUser (first_name,last_name,email,user_password, "
 			+ "user_name,security_question, security_answer, phone_number, age, height, weight) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 	private static String ALL_USERS = "select * from user limit 30";
 
 	private static String GET_USER = "Select u.user_id , u.security_question , u.security_answer , u.user_password from VirtualQueueDB.VenueRegisteredUser u WHERE u.user_name = ? AND u.security_question = ? AND u.security_answer = ? ";
 	private static String RESET_PASSWORD = "UPDATE VirtualQueueDB.VenueRegisteredUser SET user_password = ? WHERE user_id = ? ";
-
+	private static String GET_USER_BY_ID = "Select * from User where user_id=?";
+	private static final String DELETE_USER_FROM_QUEUE = "DELETE FROM VirtualQueueDB.UserQueue WHERE user_id= ? and queue_id=(Select myqueue_id From Ride where ride_id= ? )";
+	
+	
 	@Override
 	public User getUser(String username, String passwd) {
-		
-		//TODO:validate user input.
+
+		// TODO:validate user input.
 		return User.getDemoUser();
 	}
 
@@ -169,9 +174,10 @@ public class UserDaoImp extends BaseDao implements UserDao {
 				oldPassword = rs.getString("user_password");
 
 			}
-			//Close result set.
-			if(rs!=null && !rs.isClosed())rs.close();
-			
+			// Close result set.
+			if (rs != null && !rs.isClosed())
+				rs.close();
+
 			// validate for null and empty values
 			if (secQuestion == null || "".equals(secQuestion)
 					|| secAnswer == null || "".equals(secAnswer)
@@ -205,7 +211,7 @@ public class UserDaoImp extends BaseDao implements UserDao {
 			if (updateemp != null)
 				updateemp.close();
 
-		 closeConnection();
+			closeConnection();
 		}
 
 		return true;
@@ -219,6 +225,76 @@ public class UserDaoImp extends BaseDao implements UserDao {
 		return null;
 	}
 
- 
+	@Override
+	public User getUserById(long userId) {
+
+		User user = new User();
+		try {
+			PreparedStatement statement = getConnection().prepareStatement(
+					GET_USER_BY_ID);
+
+			statement.setLong(1, userId);
+
+			ResultSet result = statement.executeQuery();
+
+			if (result.next()) {
+
+				// TODO:fill out user object
+				user.setFirstName(result.getString("first_name"));
+
+			}
+
+			result.close();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO need to add log4j output
+			e.printStackTrace();
+
+		} catch (Exception ex) {
+
+			// TODO need to add log4j output
+			ex.printStackTrace();
+
+		}
+
+		return user;
+	}
+
+	@Override
+	public boolean removeUserFromQueue(long userId,long rideId) {
+		PreparedStatement updateemp = null;
+
+		try {
+
+			getConnection();
+
+			updateemp = connection.prepareStatement(DELETE_USER_FROM_QUEUE);
+			updateemp.setLong(1, userId);
+			updateemp.setLong(2, rideId);
+			updateemp.executeUpdate();
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			// throw new ResetPasswordException(e.getMessage());
+          //TODO:needs to handle errors and return to caller with a message.
+			return false;
+		
+		} finally {
+
+			if (updateemp != null)
+				try {
+					updateemp.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			closeConnection();
+		}
+
+		return true;
+
+	}
 
 }

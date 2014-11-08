@@ -22,9 +22,12 @@ import com.virtual.queue.service.RideServiceImp;
 public class QueueContextLoaderListener extends org.springframework.web.context.ContextLoaderListener
 {
 	final static Logger logger = Logger.getLogger(QueueContextLoaderListener.class);
-@Autowired
-RideService rideService;
+//@Autowired
+//RideService rideService;
+
 	public QueueContextLoaderListener() {
+		 
+	/*	
 		logger.info("Starting application...");
 		System.out.println("Application started.........s");
 		// schedule the job
@@ -61,6 +64,6 @@ RideService rideService;
 			logger.error(e.getMessage());
 
 		}
-
+ */
 	}
 }

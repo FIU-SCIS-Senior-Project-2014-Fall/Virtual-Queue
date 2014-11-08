@@ -4,35 +4,52 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-import com.virtual.queue.beans.QueueInfo;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.virtual.queue.beans.QueueInfo;
+import com.virtual.queue.beans.RideInfo;
+import com.virtual.queue.beans.User;
+import com.virtual.queue.beans.UserQueueInfo;
+
+@Repository
+@Transactional
 public class QueueDaoImp extends BaseDao implements QueueDao {
-	private static final String GET_QUEUE_INFO = "Select * from test";
+	private static final String GET_QUEUE_INFO = "SELECT u.user_id,u.user_name, u.first_name, u.last_name, u.phone_number, u.email "
+			+ "FROM VirtualQueueDB.VenueRegisteredUser u, VirtualQueueDB.Ride r,  VirtualQueueDB.UserQueue uq "
+			+ "WHERE r.ride_id = ? AND r.myqueue_id = uq.queue_id AND uq.user_id = u.user_id ";
+	private static final String GET_QUEUE_INFO_ALL = "SELECT u.user_name, u.first_name, u.last_name, u.phone_number, u.email "
+			+ "FROM VirtualQueueDB.VenueRegisteredUser u, VirtualQueueDB.Ride r,  VirtualQueueDB.UserQueue uq "
+			+ "WHERE  r.myqueue_id = uq.queue_id AND uq.user_id = u.user_id ";
+	private static final String GET_QUEUE_BY_RIDEID = null;
+	private static final String GET_QUEUE = "SELECT myqueue_id,waiting_time,queue_capacity FROM VirtualQueueDB.MyQueue where myqueue_id=(SELECT r.myqueue_id FROM VirtualQueueDB.Ride r where r.ride_id =?) ";
+	private static final String DELETE_ALL_FROM_QUEUE = "DELETE FROM VirtualQueueDB.UserQueue WHERE queue_id=(Select myqueue_id From Ride where ride_id= ? )";
 
 	public QueueDaoImp() {
 
 	}
 
-	public List<QueueInfo> getNotificationInfo() {
+	public List<UserQueueInfo> getNotificationInfo() {
 
 		// pull data from DB DAO
-		List<QueueInfo> info = new ArrayList<QueueInfo>(3);
-		final QueueInfo info1 = new QueueInfo();
+		List<UserQueueInfo> info = new ArrayList<UserQueueInfo>(3);
+		final UserQueueInfo info1 = new UserQueueInfo();
 		info1.setName("Name1");
 		info1.setMaxValue(300);
 		info1.setPhoneNumber("7867602409");
 		info1.setEmail("ysosasupport@gmail.com");
 		info.add(info1);
-		final QueueInfo info2 = new QueueInfo();
+		final UserQueueInfo info2 = new UserQueueInfo();
 		info2.setName("Name2");
 		info2.setMaxValue(400);
 		info2.setPhoneNumber("7867602419");
 		info2.setEmail("roninjord@yahoo.com");
 
 		info.add(info2);
-		final QueueInfo info3 = new QueueInfo();
+		final UserQueueInfo info3 = new UserQueueInfo();
 		info2.setName("Name3");
 		info2.setMaxValue(600);
 		info3.setPhoneNumber("7867602409");
@@ -43,9 +60,9 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 	}
 
 	@Override
-	public List<QueueInfo> pullInfo(Integer rideId) {
+	public List<UserQueueInfo> pullInfo(Integer rideId) {
 
-		List<QueueInfo> infoList = new ArrayList<QueueInfo>();
+		List<UserQueueInfo> infoList = new ArrayList<UserQueueInfo>();
 		try {
 
 			PreparedStatement statement = getConnection().prepareStatement(
@@ -57,10 +74,10 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 			// statement.setString(3, code);
 
 			ResultSet result = statement.executeQuery();
-			QueueInfo info = null;
+			UserQueueInfo info = null;
 			while (result.next()) {
 
-				info = new QueueInfo();
+				info = new UserQueueInfo();
 
 				info.setEmail(result.getString("user_name"));
 				info.setName(result.getString("first_name") + ", "
@@ -72,6 +89,7 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 
 			result.close();
 			statement.close();
+
 		} catch (SQLException e) {
 			// TODO need to add log4j output
 			e.printStackTrace();
@@ -88,11 +106,11 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 	}
 
 	@Override
-	public List<QueueInfo> pullAllInfo() {
-		List<QueueInfo> infoList = new ArrayList<QueueInfo>();
+	public List<UserQueueInfo> pullAllInfo() {
+		List<UserQueueInfo> infoList = new ArrayList<UserQueueInfo>();
 		try {
 			PreparedStatement statement = getConnection().prepareStatement(
-					GET_QUEUE_INFO);
+					GET_QUEUE_INFO_ALL);
 
 			// TODO:set ride id from job scheduler.
 			// statement.setInt(1, rideId);
@@ -100,10 +118,10 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 			// statement.setString(3, code);
 
 			ResultSet result = statement.executeQuery();
-			QueueInfo info = null;
+			UserQueueInfo info = null;
 			while (result.next()) {
 
-				info = new QueueInfo();
+				info = new UserQueueInfo();
 
 				info.setEmail(result.getString("user_name"));
 				info.setName(result.getString("first_name") + ", "
@@ -129,4 +147,135 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 		return infoList;
 	}
 
+	@Override
+	public LinkedList<User> getAllUserQueueForRide(long rideId) {
+
+		LinkedList<User> infoList = new LinkedList<User>();
+		try {
+
+			PreparedStatement statement = getConnection().prepareStatement(
+					GET_QUEUE_INFO);
+
+			// TODO:set ride id from job scheduler.
+			statement.setLong(1, rideId);
+			// statement.setString(2, password);
+			// statement.setString(3, code);
+
+			ResultSet result = statement.executeQuery();
+			User user = null;
+
+			while (result.next()) {
+
+				user = new User();
+				user.setUserid(result.getLong("user_id"));
+				user.setEmail(result.getString("user_name"));
+				user.setFirstName(result.getString("first_name"));
+				user.setLastName(result.getString("last_name"));
+				user.setPhoneNumber(result.getString("phone_number"));
+				user.setEmail(result.getString("email"));
+				infoList.add(user);
+			}
+
+			result.close();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO need to add log4j output
+			e.printStackTrace();
+
+		} catch (Exception ex) {
+
+			// TODO need to add log4j output
+			ex.printStackTrace();
+
+		}
+
+		return infoList;
+	}
+
+	@Override
+	public QueueInfo getQueueInfoByRideId(long rideId) {
+
+		QueueInfo info = new QueueInfo();
+
+		try {
+			PreparedStatement statement = getConnection().prepareStatement(
+					GET_QUEUE);
+
+			statement.setLong(1, rideId);
+
+			ResultSet result = statement.executeQuery();
+
+			if (result.next()) {
+
+				info.setCapacity(result.getInt("queue_capacity"));
+				info.setQueueId(result.getInt("myqueue_id"));
+				info.setWaitingTime(result.getInt("waiting_time"));
+
+			}
+
+			result.close();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO need to add log4j output
+			e.printStackTrace();
+
+		} catch (Exception ex) {
+
+			// TODO need to add log4j output
+			ex.printStackTrace();
+
+		}
+
+		return info;
+
+	}
+
+	@Override
+	public boolean removeUserFromQueue(long rideId, long userId) {
+		//TODO:check this,better to be implemented here
+		return new UserDaoImp().removeUserFromQueue(userId, rideId);
+	}
+
+	@Override
+	public boolean removeAllUsersFromQueue(long rideId) {
+		PreparedStatement updateemp = null;
+
+		try {
+
+			getConnection();
+
+			updateemp = connection.prepareStatement(DELETE_ALL_FROM_QUEUE);
+
+			updateemp.setLong(1, rideId);
+			updateemp.executeUpdate();
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			// throw new ResetPasswordException(e.getMessage());
+			// TODO:needs to handle errors and return to caller with a message.
+			return false;
+
+		} finally {
+
+			if (updateemp != null)
+				try {
+					updateemp.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			closeConnection();
+		}
+
+		return true;
+	}
+
+	@Override
+	public LinkedList<RideInfo> getRideListByUser(long userId) {
+
+		return null;
+
+	}
 }

@@ -18,5 +18,7 @@ public interface UserDao {
 	public Boolean resetPassword(String userName, String securityAnswer,
 			String securityQuestion, String newPassword) throws Exception;
 	public User authenticateUser(String userName,String securityQuestion,String securityAnwser);
+	public User getUserById(long userId);
+	public boolean removeUserFromQueue(long userId,long rideId);
 
 }
