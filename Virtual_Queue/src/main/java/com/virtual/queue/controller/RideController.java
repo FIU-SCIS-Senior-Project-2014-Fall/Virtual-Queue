@@ -10,24 +10,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.virtual.queue.beans.Ride;
+import com.virtual.queue.beans.RideInfo;
 import com.virtual.queue.beans.User;
-import com.virtual.queue.beans.UserRolesEnum;
 import com.virtual.queue.service.RideService;
 
 @Controller
 @RequestMapping("/ride")
-@SessionAttributes({ "user" })
 public class RideController {
 	@Autowired
 	private RideService rideService;
 
-	@RequestMapping("/rides.json")
-	public @ResponseBody List<Ride> getAllRides() {
+	@RequestMapping(value ="/rides",  method = RequestMethod.GET)
+	public @ResponseBody List<RideInfo> getAllRides() {
+		
 		return rideService.getAll();
+	
 	}
 
 	@RequestMapping(value = "/addRide", method = RequestMethod.POST)
@@ -49,18 +51,34 @@ public class RideController {
 		rideService.deleteRideById(rideId, userid);
 	}
 
-	@RequestMapping(value = "/addRide/{rideid}/{userid}", method = RequestMethod.POST)
-	public @ResponseBody boolean addrideByUser(@PathVariable("rideid") Long rideId,
-			@PathVariable("userid") Long userid) {
+	
+	
+	@RequestMapping(value = "/addRide/{rideid}/{userid}", method = RequestMethod.GET)
+	public @ResponseBody boolean addrideByUserGet(@PathVariable("rideid") Long rideId,
+			@PathVariable("userid") Long userid) { 
+	
 		try {
+			
 			return rideService.addUserRideById(rideId, userid);
+		
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
 		} 
 	}
-
+	
+	@RequestMapping(value = "/addUser", method = RequestMethod.POST)
+	public @ResponseBody boolean addrideByUser(@RequestParam(value="rideid") Long rideId,
+			@RequestParam(value="userid") Long userId) { 
+		
+		try {  
+		    	return rideService.addUserRideById(rideId, userId);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} 
+	}
 	@RequestMapping(value = "/removeRide/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody Boolean removeRideById(@PathVariable("id") String id) {
 		 return rideService.removeRidebyId(id);

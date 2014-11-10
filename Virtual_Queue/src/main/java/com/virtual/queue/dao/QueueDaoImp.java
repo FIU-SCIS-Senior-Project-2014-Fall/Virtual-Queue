@@ -10,29 +10,38 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.virtual.queue.beans.Coordinate;
 import com.virtual.queue.beans.QueueInfo;
 import com.virtual.queue.beans.RideInfo;
 import com.virtual.queue.beans.User;
 import com.virtual.queue.beans.UserQueueInfo;
+import com.virtual.queue.beans.VenueInfo;
+import com.virtual.queue.exception.NotificationException;
 
 @Repository
 @Transactional
 public class QueueDaoImp extends BaseDao implements QueueDao {
+
 	private static final String GET_QUEUE_INFO = "SELECT u.user_id,u.user_name, u.first_name, u.last_name, u.phone_number, u.email "
 			+ "FROM VirtualQueueDB.VenueRegisteredUser u, VirtualQueueDB.Ride r,  VirtualQueueDB.UserQueue uq "
 			+ "WHERE r.ride_id = ? AND r.myqueue_id = uq.queue_id AND uq.user_id = u.user_id ";
 	private static final String GET_QUEUE_INFO_ALL = "SELECT u.user_name, u.first_name, u.last_name, u.phone_number, u.email "
 			+ "FROM VirtualQueueDB.VenueRegisteredUser u, VirtualQueueDB.Ride r,  VirtualQueueDB.UserQueue uq "
 			+ "WHERE  r.myqueue_id = uq.queue_id AND uq.user_id = u.user_id ";
-	private static final String GET_QUEUE_BY_RIDEID = null;
+	// private static final String GET_QUEUE_BY_RIDEID = null;
 	private static final String GET_QUEUE = "SELECT myqueue_id,waiting_time,queue_capacity FROM VirtualQueueDB.MyQueue where myqueue_id=(SELECT r.myqueue_id FROM VirtualQueueDB.Ride r where r.ride_id =?) ";
+
 	private static final String DELETE_ALL_FROM_QUEUE = "DELETE FROM VirtualQueueDB.UserQueue WHERE queue_id=(Select myqueue_id From Ride where ride_id= ? )";
+
+	private final static long VENUE_ID = 1;
+
+	private static final String GET_RIDE_INFO_BY_USERID = "SELECT r.ride_name, r.ride_duraction , r.ride_capacity, r.ride_id,   r.longitude, r.latitude   FROM  VirtualQueueDB.UserQueue q, Ride r where q.user_id =? and r.myqueue_id=queue_id order by q.registered_time asc ";
 
 	public QueueDaoImp() {
 
 	}
 
-	public List<UserQueueInfo> getNotificationInfo() {
+	public List<UserQueueInfo> getNotificationInfoTest() {
 
 		// pull data from DB DAO
 		List<UserQueueInfo> info = new ArrayList<UserQueueInfo>(3);
@@ -232,7 +241,7 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 
 	@Override
 	public boolean removeUserFromQueue(long rideId, long userId) {
-		//TODO:check this,better to be implemented here
+		// TODO:check this,better to be implemented here
 		return new UserDaoImp().removeUserFromQueue(userId, rideId);
 	}
 
@@ -273,9 +282,60 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 	}
 
 	@Override
-	public LinkedList<RideInfo> getRideListByUser(long userId) {
+	public LinkedList<RideInfo> getRideListByUser(long userId) throws Exception {
 
-		return null;
+		LinkedList<RideInfo> infoLst = new LinkedList<RideInfo>();
+		// TODO:replace by logger.
+		System.out.println("pull ride info");
+
+		VenueDao vDao = new VenueDaoImp();
+		List<VenueInfo> venueList = vDao.getVenueInfo(VENUE_ID);
+
+		if (venueList.isEmpty())
+			throw new Exception("Empty venue information");
+
+		VenueInfo vInfo = venueList.get(0);
+
+		long startTime = vInfo.getStartTime();
+		long endTime = vInfo.getStartTime();
+		RideInfo info2 = null;
+		try {
+
+			PreparedStatement statement = getConnection().prepareStatement(
+					GET_RIDE_INFO_BY_USERID);
+			statement.setLong(1, userId);
+
+			ResultSet result = statement.executeQuery();
+			//Coordinate coord = null;
+
+			while (result.next()) {
+
+				info2 = new RideInfo();
+				info2.setrName(result.getString("ride_name"));
+				info2.setStartTime(startTime);
+				info2.setInterval(result.getInt("ride_duraction"));
+				info2.setEndTime(endTime);
+				info2.setCapacity(result.getInt("ride_capacity"));
+				info2.setRideId(result.getLong("ride_id")); 
+				info2.setCoordinate(new Coordinate(result.getBigDecimal("latitude"),result.getBigDecimal("longitude")));
+				infoLst.add(info2);
+			}
+
+			result.close();
+			statement.close();
+
+		} catch (SQLException e) {
+			// TODO need to add log4j output
+			e.printStackTrace();
+
+		} catch (Exception ex) {
+
+			// TODO need to add log4j output
+			ex.printStackTrace();
+
+		}
+
+		return infoLst;
 
 	}
 }

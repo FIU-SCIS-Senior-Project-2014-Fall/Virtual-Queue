@@ -6,7 +6,6 @@ import com.virtual.queue.rule.Rule;
 
 public interface Validator {
 	public void setRules(final List<Rule> rules) throws Exception;
-
-	public boolean validate();
-
+ 
+	public boolean validate(long userId,long rideId);
 }

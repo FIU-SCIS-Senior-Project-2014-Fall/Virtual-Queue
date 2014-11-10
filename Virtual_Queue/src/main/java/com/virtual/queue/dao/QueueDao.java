@@ -21,5 +21,5 @@ public interface QueueDao {
 
 	public boolean removeAllUsersFromQueue(long rideId);
 
-	public LinkedList<RideInfo> getRideListByUser(long userId);
+	public LinkedList<RideInfo> getRideListByUser(long userId) throws Exception;
 }

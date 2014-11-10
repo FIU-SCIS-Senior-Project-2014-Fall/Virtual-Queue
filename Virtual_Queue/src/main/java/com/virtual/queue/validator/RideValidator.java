@@ -9,13 +9,20 @@ public class RideValidator implements Validator {
 	private List<Rule> ruleList = null;
 
 	@Override
-	public boolean validate() {
+	public boolean validate(long userId,long rideId) {
 
 		// TODO:Add any other validation logic not related to specify business
 		// validation logic.
 		for (Rule rule : ruleList) {
 
-			rule.loadData();
+			try {
+				rule.loadData(userId,rideId);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			   return false;
+			}
+			
 			if(!rule.apply())return false;
 
 		}

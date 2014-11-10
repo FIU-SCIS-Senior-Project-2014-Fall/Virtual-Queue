@@ -1,6 +1,7 @@
 package com.virtual.queue.beans;
 
 public class RideInfo {
+	
 	private String description;
 	private long startTime;
 	private long endTime;

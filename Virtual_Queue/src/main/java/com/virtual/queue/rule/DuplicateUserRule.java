@@ -3,29 +3,32 @@ package com.virtual.queue.rule;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.virtual.queue.beans.RideInfo;
 import com.virtual.queue.beans.User;
 import com.virtual.queue.dao.RideDao;
+import com.virtual.queue.dao.RideDaoImp;
 import com.virtual.queue.dao.RuleDao;
 import com.virtual.queue.dao.UserDao;
+import com.virtual.queue.dao.UserDaoImp;
 import com.virtual.queue.exception.NotificationException;
-
+//@Component
 public class DuplicateUserRule implements Rule {
 
 	public static final int MAX_RIDE_PER_USER = 3;
 
-	@Autowired
-	RuleDao ruleDao;
+	//@Autowired
+	//RuleDao ruleDao;
 
 	private User user = null;
 	private int rideCount = 0;
 
-	@Autowired
-	UserDao userDao;
+	//@Autowired
+	//UserDao userDao;
 
-	@Autowired
-	RideDao rideDao;
+	//@Autowired
+	//RideDao rideDao;
 
 	@Override
 	public boolean apply() {
@@ -41,13 +44,17 @@ public class DuplicateUserRule implements Rule {
 
 	@Override
 	public void loadData(long userId, long rideId) {
-
-		user = userDao.getUserById(userId);
-		List<RideInfo> list;
+		UserDao userDao=new UserDaoImp();
+		RideDao rideDao=new RideDaoImp();
+		
+		
+		user = userDao.getUserById(userId); 
+		 
+		
 		try {
-			list = rideDao.getRideByUser(userId);
-
-			rideCount = list.size();
+			
+			rideCount = rideDao.getRideByUser(userId).size();
+ 
 
 		} catch (NotificationException e) {
 			// TODO Auto-generated catch block

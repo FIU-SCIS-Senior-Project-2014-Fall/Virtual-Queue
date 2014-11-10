@@ -23,11 +23,14 @@ public class UserDaoImp extends BaseDao implements UserDao {
 	
 	private static String ADD_USERS = "INSERT INTO VirtualQueueDB.VenueRegisteredUser (first_name,last_name,email,user_password, "
 			+ "user_name,security_question, security_answer, phone_number, age, height, weight) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-	private static String ALL_USERS = "select * from user limit 30";
+	private static String ALL_USERS = "select * from user limit 100";
 
 	private static String GET_USER = "Select u.user_id , u.security_question , u.security_answer , u.user_password from VirtualQueueDB.VenueRegisteredUser u WHERE u.user_name = ? AND u.security_question = ? AND u.security_answer = ? ";
+	
 	private static String RESET_PASSWORD = "UPDATE VirtualQueueDB.VenueRegisteredUser SET user_password = ? WHERE user_id = ? ";
-	private static String GET_USER_BY_ID = "Select * from User where user_id=?";
+	
+	private static String GET_USER_BY_ID = "Select * from VirtualQueueDB.VenueRegisteredUser where user_id=?";
+	
 	private static final String DELETE_USER_FROM_QUEUE = "DELETE FROM VirtualQueueDB.UserQueue WHERE user_id= ? and queue_id=(Select myqueue_id From Ride where ride_id= ? )";
 	
 	

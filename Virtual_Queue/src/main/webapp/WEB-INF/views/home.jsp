@@ -710,29 +710,12 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="input-group">
-										<select class="form-control" id = "rides-name"  placeholder =" ">
+										<select class="form-control" id = "rides-name"  placeholder =" " name ="ride-list"> </select>
 
-											<option value="one">Ride One</option>
-											<option value="two">Ride Two</option>
-											<option value="three">Ride Three</option>
-											<option value="four">Ride Four</option>
-											<option value="five">Ride Five</option>
-											<option value="five">Ride Five</option>
-											<option value="five">Ride Five</option>
-											<option value="five">Ride Five</option>
-											<option value="five">Ride Five</option>
-											<option value="five">Ride Five</option>
-											<option value="five">Ride Five</option>
-											<option value="five">Ride Five</option>
-											<option value="five">Ride Five</option>
-											<option value="five">Ride Five</option>
-											<option value="five">Ride Five</option>
-											<option value="five">Ride Five</option>
-											<option value="five">Ride Five</option>
-										</select>
-
+										
+										
 										<div class="input-group-btn ">
-											<button type="button" class="btn btn-info pull-left ">Select
+											<button type="button" class="btn btn-info pull-left " id="Select-Ride">Select
 												Ride</button>
 										</div>
 
@@ -767,19 +750,39 @@ javascript section
 
 $(document).ready(function() {
 	
-	$('#loginForm').submit(function(e) {
+	$.getJSON('${pageContext.request.contextPath}/ride/rides', function(result) {
+		var optionsValues = '<select class="form-control" id = "rides-name"  placeholder =" " name ="ride-list">';
+	
+		$.each($.parseJSON(JSON.stringify(result)), function(idx, item) {
+	        	optionsValues += '<option value="' + item.rideId + '">' + item.rName + '</option>';
+		});	
+		 
+	    	optionsValues += '</select>';
+	    	var options = $('#rides-name');
+	    	options.replaceWith(optionsValues);
+	    
+	}); 
+	
+	 $('#loginForm').submit(function(e) {
 		// will pass the form date using the jQuery serialize function
 		$.post('${pageContext.request.contextPath}/login/signin', 
 		    $(this).serialize()).done(
 			function(response,textStatus,jqXHR) { 
-				alert('valid credentials'); 
-				 
+		    
+				alert('valid credentials');  
+				
 		    $('#login').modal('hide');
+		    
 			CleanLoginForm();
+			
 			$('#account').modal('show'); 
+		
 			CleanLoginForm();
+			
 			if(response != 'undefined'){
+				
 			    $.cookie("user_info", response);  
+			
 			} 
 			
 			}).fail(function(jqXHR, textStatus, errorThrown) 
@@ -788,13 +791,8 @@ $(document).ready(function() {
 			  $('#login').modal('show');
 			  CleanLoginForm();	
   }); 
-		e.preventDefault(); // prevent actual form submit and page reload
-	
-		
-	});
-	
-	
-	
+		e.preventDefault(); // prevent actual form submit and page reload 
+	}); 
 	
 	  /*
 	  reset form ajax post function
@@ -832,7 +830,7 @@ $(document).ready(function() {
 	$('#registerForm').submit(function(e) {
 		// will pass the form date using the jQuery serialize function
 		$.post('${pageContext.request.contextPath}/user/add', $(this).serialize(), function(response) {
-			$('#personFormResponse').text(response);
+			$('#personFormResponse').text(response); 
 			
 			if(response ==true){
 				 alert('You have been successfully register');
@@ -847,19 +845,13 @@ $(document).ready(function() {
 			  CleanRegisterForm();
 			}
 			CleanRegisterForm();
-		}); 	
-			
+		}); 
 		e.preventDefault(); // prevent actual form submit and page reload
-		});
-		
-		
+		}); 
 	});  
-	
 	$('#reset-password').on('click', function () {
 		   $(this).attr('type','password'); 
-		});
-	
-
+		}); 
 $('#forgotPasswordForward').on('click', function () {
 	CleanLoginForm();
 	$('#login').modal('hide'); 
@@ -908,12 +900,53 @@ $('#logout').on('click', function () {
 			}).fail(function(jqXHR, textStatus, errorThrown) 
 				    {
 			  alert('unable to logout !!!!');	
-			 	
-  }); 
-		
-	
+  });  
 	
 	});
+	
+	
+$('#Select-Ride').on('click', function () {
+	var user=$.cookie("user_info");
+	//alert(user);
+	 
+	if(typeof user ==='undefined'){
+		alert("!!!you need to login first.....")
+		$('#rides').modal('hide');
+		//CleanRegisterForm();
+		$('#login').modal('show');
+		return;
+	}
+	
+	var uName=$.parseJSON(user); 
+	var userN= String(uName.user_id);
+	//alert(userN);
+	var userId=String(uName.user_id);
+	
+	var rid=$("#rides-name").val(); 
+	 
+	var rideId=$("#rides-name").val();
+	 
+	$.post('${pageContext.request.contextPath}/ride/addUser', 
+			{ "userid": userId, "rideid" : rid }).done(
+			function(response,textStatus,jqXHR) { 
+				if(response == false){
+					
+					alert('unable to add ride !!!!');	
+					return;
+					
+				}
+				alert('You  successfuly Added this ride'); 
+			
+				$('#rides').modal('hide'); 
+				$('#account').modal('show');  
+			    
+			}).fail(function(jqXHR, textStatus, errorThrown) 
+				    {
+			  alert('unable to add ride !!!!');	
+      });  
+}); 
+	
+
 
 $('#register-password').on('click', function () {
    $(this).attr('type', 'password'); 

@@ -1,5 +1,6 @@
 package com.virtual.queue.rule;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +11,9 @@ import com.virtual.queue.beans.QueueInfo;
 import com.virtual.queue.beans.RideInfo;
 import com.virtual.queue.beans.User;
 import com.virtual.queue.dao.QueueDao;
+import com.virtual.queue.dao.QueueDaoImp;
 import com.virtual.queue.dao.RideDao;
+import com.virtual.queue.dao.RideDaoImp;
 import com.virtual.queue.exception.NotificationException;
 import com.virtual.queue.utility.QueueUtil;
 
@@ -23,33 +26,37 @@ public class AddUserRule implements Rule {
 	private LinkedList<RideInfo> rideList = null;
 	private List<User> userList = null;
 
-	@Autowired
-	RideDao rideDao;
+	// @Autowired
+	// RideDao rideDao;
 
-	@Autowired
-	QueueDao queueDao;
+	// @Autowired
+	// QueueDao queueDao;
 
 	@Override
-	public void loadData(long userId, long rideId) {
+	public void loadData(long userId, long rideId) throws Exception {
 		// take all rides for that user. using rideDao.
 		// select the last ride registered for that user.
+		QueueDao qDao = new QueueDaoImp();
+		RideDao rDao = new RideDaoImp();
 		try {
 
-			ride = rideDao.getRideById(rideId);
+			ride = rDao.getRideById(rideId);
 
 		} catch (NotificationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		queueInfo = queueDao.getQueueInfoByRideId(rideId);
+		queueInfo = qDao.getQueueInfoByRideId(rideId);
 		// if not ride added..Add the new ride and get the waiting time for that
 		// user
-
+		// rDao.getRideByUser(userId)
 		// get all rides that user is registered for.
-		rideList = queueDao.getRideListByUser(userId);
+
+		rideList = qDao.getRideListByUser(userId);
+
 		// get all user for that queue.
-		userList = queueDao.getAllUserQueueForRide(rideId);
+		userList = qDao.getAllUserQueueForRide(rideId);
 		// calculate waiting time (when no other ride exists) by taking all
 		// people queued for that ride and divide it by ride_capacity
 		// (flooring ex: 50 people queued already/20 can ride simultaneosly=
@@ -82,17 +89,22 @@ public class AddUserRule implements Rule {
 		rideCap = ride.getCapacity();
 		// get ride duration
 		duration = ride.getInterval();
+		QueueDao qDao = new QueueDaoImp();
+
+		if (userList == null)
+			return false;// TODO:this needs to return custom message so the
+							// caller knows the problem.
 
 		// queue already full return false;
 		if (userList.size() == queueInfo.getCapacity()) {
 			return false;
 		}
 		// user already has been registered for other rides.
-		if (!rideList.isEmpty()) {
+		if (rideList != null && !rideList.isEmpty()) {
 
 			for (RideInfo rinfo : rideList) {
 
-				int size = queueDao.getAllUserQueueForRide(rinfo.getRideId())
+				int size = qDao.getAllUserQueueForRide(rinfo.getRideId())
 						.size();
 
 				int wtime = getWaitingTime(size, rinfo.getCapacity(),
@@ -106,19 +118,28 @@ public class AddUserRule implements Rule {
 			QueueUtil util = new QueueUtil();
 			Coordinate rideCoor = ride.getCoordinate();
 			Coordinate lastRideCoor = lastRide.getCoordinate();
+			Double wDistance = new Double("0.0");
 
-			double wDistance = util.calculateDistance(rideCoor.getLatitude(),
-					rideCoor.getLongitude(), lastRideCoor.getLatitude(),
-					lastRideCoor.getLongitude());
-			double wtime = Math.ceil(wDistance / WALKING_SPEED_MIN);
-			double finaltime = totalWtime + wtime;
+			if (rideCoor != null && lastRideCoor != null) {
+				wDistance = util.calculateDistance(rideCoor.getLatitude()
+						.doubleValue(), rideCoor.getLongitude().doubleValue(),
+						lastRideCoor.getLatitude().doubleValue(), lastRideCoor
+								.getLongitude().doubleValue());
+			}
+			Double temp = wDistance / WALKING_SPEED_MIN;
+
+			Double wtime = Math.ceil(temp);
+
+			Double finaltime = totalWtime + wtime;
 
 			int count = userList.size();
 			// get previous ride.
 			waitingTime = getWaitingTime(count, rideCap, duration, true);
-			// check wating time.
-			if (waitingTime < finaltime)
+
+			// check waiting time.
+			if (waitingTime < finaltime) {
 				return false;
+			}
 
 		}
 
@@ -140,7 +161,8 @@ public class AddUserRule implements Rule {
 	private int getWaitingTime(int count, int rideCap, int duration,
 			boolean topbot) {
 		int wait = 0;
-
+		if (rideCap == 0)
+			return -1;
 		if (topbot) {
 			wait = (int) Math.floor((count / rideCap)) * duration;
 		} else {

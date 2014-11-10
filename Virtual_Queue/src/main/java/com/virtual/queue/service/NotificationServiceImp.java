@@ -13,7 +13,7 @@ import com.virtual.queue.handler.EmailNotificationHandlerImp;
 import com.virtual.queue.handler.NotificationHandler;
 @Service
 public class NotificationServiceImp implements NotificationService {
-	public static String NOTIFICATION_MSG = "Your ride is due in :";
+	public static String NOTIFICATION_MSG = "Your ride is due in : ";
 
 	
 	@Autowired
@@ -58,11 +58,11 @@ public class NotificationServiceImp implements NotificationService {
 
 			handler.notifiyUser(Notinfo);
 			
-			System.out.println("Send sms message to user phone number :"
-					+ info.getPhoneNumber());
+			System.out.println("Send notification message to user  :"
+					+ info.getEmail());
 		}
 
-		System.out.println("finished sending  sms message to user list");
+		System.out.println("finished sending  email message to user list");
 
 	}
 
@@ -84,15 +84,15 @@ public class NotificationServiceImp implements NotificationService {
 			Notinfo = new NotificationInfo();
 			Notinfo.setEmail(info.getEmail());
 			Notinfo.setName(info.getName());
-			Notinfo.setMessage(NOTIFICATION_MSG);
+			Notinfo.setMessage(NOTIFICATION_MSG + "one minute, Please, try to be on time and Enjoy your Ride :) ");
 
 			handler.notifiyUser(Notinfo);
 			
-			System.out.println("Send sms message to user phone number :"
-					+ info.getPhoneNumber());
+			System.out.println("Send notification message to user  :"
+					+ info.getEmail());
 		}
 
-		System.out.println("finished sending  sms message to user list");
+		System.out.println("finished sending  email message to user list");
 		
 	}
 

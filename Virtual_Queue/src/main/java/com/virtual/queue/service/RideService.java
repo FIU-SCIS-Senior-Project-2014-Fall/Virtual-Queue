@@ -11,7 +11,7 @@ import com.virtual.queue.exception.NotificationException;
 
 public interface RideService {
 
-	public List<Ride> getAll();
+	public List<RideInfo> getAll();
 	public void addRide(Ride ride);
 	public void updateRide(Ride ride); 
 	public void deleteRideById(Long id, Long userid);

@@ -1,11 +1,9 @@
 package com.virtual.queue.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.virtual.queue.beans.Ride;
 import com.virtual.queue.beans.RideInfo;
-import com.virtual.queue.builder.RuleBuilder;
 import com.virtual.queue.builder.RuleBuilderImp;
 import com.virtual.queue.dao.RideDao;
 import com.virtual.queue.dao.RideDaoImp;
@@ -23,9 +21,8 @@ public class RideServiceImp implements RideService {
 	RideDao rideDao;
 
 	@Override
-	public List<Ride> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RideInfo> getAll() {
+		return rideDao.getAll();
 	}
 
 	@Override
@@ -51,13 +48,16 @@ public class RideServiceImp implements RideService {
 
 		Validator validator = new ValidatorFactory().getRideValidator();
 
-		RuleBuilder builder = new RuleBuilderImp();
-		List<Rule> rules = builder.buildRules();
+		// RuleBuilder builder = new RuleBuilderImp();
+		List<Rule> rules = new RuleBuilderImp().buildRules();
 
 		validator.setRules(rules);
-		validator.validate();
+		if (validator.validate(userid, rideId)) {
 
-		return true;
+			return rideDao.addUserRideById(rideId, userid);
+
+		}
+		return false;
 
 	}
 
@@ -89,4 +89,5 @@ public class RideServiceImp implements RideService {
 	public RideInfo getRidebyId(long rideId) throws NotificationException {
 		return rideDao.getRideById(rideId);
 	}
+
 }
