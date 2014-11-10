@@ -54,7 +54,7 @@ public class NotificationServiceImp implements NotificationService {
 			Notinfo = new NotificationInfo();
 			Notinfo.setEmail(info.getEmail());
 			Notinfo.setName(info.getName());
-			Notinfo.setMessage(NOTIFICATION_MSG);
+			Notinfo.setMessage(NOTIFICATION_MSG + "1 minute, Please, try to be on time and Enjoy your Ride :) ");
 
 			handler.notifiyUser(Notinfo);
 			
@@ -84,7 +84,7 @@ public class NotificationServiceImp implements NotificationService {
 			Notinfo = new NotificationInfo();
 			Notinfo.setEmail(info.getEmail());
 			Notinfo.setName(info.getName());
-			Notinfo.setMessage(NOTIFICATION_MSG + "one minute, Please, try to be on time and Enjoy your Ride :) ");
+			Notinfo.setMessage(NOTIFICATION_MSG + "1 minute, Please, try to be on time and Enjoy your Ride :) ");
 
 			handler.notifiyUser(Notinfo);
 			

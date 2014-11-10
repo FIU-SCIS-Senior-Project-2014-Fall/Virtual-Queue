@@ -616,58 +616,17 @@
 					<div class="modal-body">
 
 						<div class="table-responsive">          
-       <table class="table table-striped table-bordered">
+       <table class="table table-striped table-bordered" id="table-rides">
          <thead>
            <tr>
              <th>#</th>
-             <th>Ride</th>
-             <th>Time of Ride</th>
+             <th>Ride Name</th>
+             <th>Waiting Time</th>
              <th>Operate</th>
            </tr>
          </thead>
-         <tbody>
-           <tr>
-             <td>1</td>
-             <td></td>
-             <td></td>
-             <td><i class="glyphicon glyphicon-remove"></i> </td>
-           </tr>
-           <tr>
-             <td>2</td>
-             <td></td>
-             <td></td>
-             <td><i class="glyphicon glyphicon-remove"></i> </td>
-           </tr>
-           <tr>
-             <td>3</td>
-             <td></td>
-             <td></td>
-             <td><i class="glyphicon glyphicon-remove"></i> </td>
-           </tr>
-           <tr>
-             <td>4</td>
-             <td></td>
-             <td></td>
-             <td><i class="glyphicon glyphicon-remove"></i> </td>
-           </tr>
-           <tr>
-             <td>5</td>
-             <td></td>
-             <td></td>
-             <td><i class="glyphicon glyphicon-remove"></i> </td>
-           </tr>
-           <tr>
-             <td>6</td>
-             <td></td>
-             <td></td>
-             <td><i class="glyphicon glyphicon-remove"></i>  </td>
-           </tr>
-           <tr>
-             <td>7</td>
-             <td></td>
-             <td></td>
-             <td><i class="glyphicon glyphicon-remove"></i></td>
-           </tr>
+         <tbody id = "tbodyRidesTable">
+           
            
          </tbody>
        </table>
@@ -751,6 +710,7 @@ javascript section
 $(document).ready(function() {
 	
 	$.getJSON('${pageContext.request.contextPath}/ride/rides', function(result) {
+		
 		var optionsValues = '<select class="form-control" id = "rides-name"  placeholder =" " name ="ride-list">';
 	
 		$.each($.parseJSON(JSON.stringify(result)), function(idx, item) {
@@ -938,6 +898,7 @@ $('#Select-Ride').on('click', function () {
 				alert('You  successfuly Added this ride'); 
 			
 				$('#rides').modal('hide'); 
+				populateAccountTable();
 				$('#account').modal('show');  
 			    
 			}).fail(function(jqXHR, textStatus, errorThrown) 
@@ -1114,8 +1075,34 @@ $('#registerForm').bootstrapValidator({
 
 
 
-
-
+function populateAccountTable(){
+	
+	var user=$.cookie("user_info");
+	//alert(user);
+	 
+	if(typeof user ==='undefined'){
+		alert("!!!you need to login first.....")
+		//$('#rides').modal('hide');
+		//CleanRegisterForm();
+		$('#login').modal('show');
+		return;
+	}
+	
+	var uName=$.parseJSON(user); 
+	var userID= String(uName.user_id);
+	//alert(userN);
+	var userId=String(uName.user_id);
+	$.post('${pageContext.request.contextPath}/ride/user/rides', {
+		userid:userID
+	  }, function(result) {
+		  
+		
+		$.each($.parseJSON(JSON.stringify(result)), function(idx, elem){
+			$('table#table-rides TBODY').append('<tr><td>'+ idx +'</td><td>'+elem.rName+'</td><td>'+elem.interval +'</td><td><i class="glyphicon glyphicon-remove"></i></td></tr>');
+			});
+	}); 
+	
+}
 
 
 

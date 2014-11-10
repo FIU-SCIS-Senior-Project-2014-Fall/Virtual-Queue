@@ -616,58 +616,17 @@
 					<div class="modal-body">
 
 						<div class="table-responsive">          
-       <table class="table table-striped table-bordered">
+       <table class="table table-striped table-bordered" id="table-rides">
          <thead>
            <tr>
              <th>#</th>
-             <th>Ride</th>
-             <th>Time of Ride</th>
+             <th>Ride Name</th>
+             <th>Waiting Time</th>
              <th>Operate</th>
            </tr>
          </thead>
-         <tbody>
-           <tr>
-             <td>1</td>
-             <td></td>
-             <td></td>
-             <td><i class="glyphicon glyphicon-remove"></i> </td>
-           </tr>
-           <tr>
-             <td>2</td>
-             <td></td>
-             <td></td>
-             <td><i class="glyphicon glyphicon-remove"></i> </td>
-           </tr>
-           <tr>
-             <td>3</td>
-             <td></td>
-             <td></td>
-             <td><i class="glyphicon glyphicon-remove"></i> </td>
-           </tr>
-           <tr>
-             <td>4</td>
-             <td></td>
-             <td></td>
-             <td><i class="glyphicon glyphicon-remove"></i> </td>
-           </tr>
-           <tr>
-             <td>5</td>
-             <td></td>
-             <td></td>
-             <td><i class="glyphicon glyphicon-remove"></i> </td>
-           </tr>
-           <tr>
-             <td>6</td>
-             <td></td>
-             <td></td>
-             <td><i class="glyphicon glyphicon-remove"></i>  </td>
-           </tr>
-           <tr>
-             <td>7</td>
-             <td></td>
-             <td></td>
-             <td><i class="glyphicon glyphicon-remove"></i></td>
-           </tr>
+         <tbody id = "tbodyRidesTable">
+           
            
          </tbody>
        </table>
@@ -710,9 +669,10 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="input-group">
-										<select class="form-control" id = "rides-name"  placeholder =" "> 
-										</select>
+										<select class="form-control" id = "rides-name"  placeholder =" " name ="ride-list"> </select>
 
+										
+										
 										<div class="input-group-btn ">
 											<button type="button" class="btn btn-info pull-left " id="Select-Ride">Select
 												Ride</button>
@@ -750,7 +710,8 @@ javascript section
 $(document).ready(function() {
 	
 	$.getJSON('${pageContext.request.contextPath}/ride/rides', function(result) {
-		var optionsValues = '<select>';
+		
+		var optionsValues = '<select class="form-control" id = "rides-name"  placeholder =" " name ="ride-list">';
 	
 		$.each($.parseJSON(JSON.stringify(result)), function(idx, item) {
 	        	optionsValues += '<option value="' + item.rideId + '">' + item.rName + '</option>';
@@ -759,20 +720,29 @@ $(document).ready(function() {
 	    	optionsValues += '</select>';
 	    	var options = $('#rides-name');
 	    	options.replaceWith(optionsValues);
-	    }); 
+	    
+	}); 
 	
 	 $('#loginForm').submit(function(e) {
 		// will pass the form date using the jQuery serialize function
 		$.post('${pageContext.request.contextPath}/login/signin', 
 		    $(this).serialize()).done(
 			function(response,textStatus,jqXHR) { 
+		    
 				alert('valid credentials');  
+				
 		    $('#login').modal('hide');
+		    
 			CleanLoginForm();
+			
 			$('#account').modal('show'); 
+		
 			CleanLoginForm();
+			
 			if(response != 'undefined'){
+				
 			    $.cookie("user_info", response);  
+			
 			} 
 			
 			}).fail(function(jqXHR, textStatus, errorThrown) 
@@ -890,55 +860,54 @@ $('#logout').on('click', function () {
 			}).fail(function(jqXHR, textStatus, errorThrown) 
 				    {
 			  alert('unable to logout !!!!');	
-			 	
   });  
 	
 	});
 	
 	
 $('#Select-Ride').on('click', function () {
-	 //var user=$.cookie("user_info");
-	
-	//var uName=$.parseJSON(user);
-//	var userN= String(uName.user_id);
-	var userId=5;
-	var rideId=1;
-	var data =JSON.stringify({ "userid": userId, "rideid" : rideId });
+	var user=$.cookie("user_info");
+	//alert(user);
 	 
-	alert(data);
+	if(typeof user ==='undefined'){
+		alert("!!!you need to login first.....")
+		$('#rides').modal('hide');
+		//CleanRegisterForm();
+		$('#login').modal('show');
+		return;
+	}
+	
+	var uName=$.parseJSON(user); 
+	var userN= String(uName.user_id);
+	//alert(userN);
+	var userId=String(uName.user_id);
+	
+	var rid=$("#rides-name").val(); 
+	 
+	var rideId=$("#rides-name").val();
+	 
 	$.post('${pageContext.request.contextPath}/ride/addUser', 
-			{ "userid": 1, "rideid" : 3 }).done(
+			{ "userid": userId, "rideid" : rid }).done(
 			function(response,textStatus,jqXHR) { 
+				if(response == false){
+					
+					alert('unable to add ride !!!!');	
+					return;
+					
+				}
 				alert('You  successfuly Added this ride'); 
-			//$('#account').modal('hide');  
-			   // location.reload();  
+			
+				$('#rides').modal('hide'); 
+				populateAccountTable();
+				$('#account').modal('show');  
+			    
 			}).fail(function(jqXHR, textStatus, errorThrown) 
 				    {
 			  alert('unable to add ride !!!!');	
       });  
 }); 
 	
-$('#logout').on('change', function () {
-	
-	var user=$.cookie("user_info"); 
-	var uName=$.parseJSON(user);
-	var userN= String(uName.user_name);
-	
-	 $.post('${pageContext.request.contextPath}/ride/rides', 
-		    {userName:userN}).done(
-		    		
-			function(response,textStatus,jqXHR) { 
-			
-				alert('loading rides!!!!');
-			
-				$('#account').modal('hide'); 
-			    $.removeCookie("user_info");
-			    location.reload(); 
-			}).fail(function(jqXHR, textStatus, errorThrown) 
-				    {
-			  alert('unable to load rides'); 
- });  
-});
+
 
 $('#register-password').on('click', function () {
    $(this).attr('type', 'password'); 
@@ -1106,8 +1075,34 @@ $('#registerForm').bootstrapValidator({
 
 
 
-
-
+function populateAccountTable(){
+	
+	var user=$.cookie("user_info");
+	//alert(user);
+	 
+	if(typeof user ==='undefined'){
+		alert("!!!you need to login first.....")
+		//$('#rides').modal('hide');
+		//CleanRegisterForm();
+		$('#login').modal('show');
+		return;
+	}
+	
+	var uName=$.parseJSON(user); 
+	var userID= String(uName.user_id);
+	//alert(userN);
+	var userId=String(uName.user_id);
+	$.post('${pageContext.request.contextPath}/ride/user/rides', {
+		userid:userID
+	  }, function(result) {
+		  
+		
+		$.each($.parseJSON(JSON.stringify(result)), function(idx, elem){
+			$('table#table-rides TBODY').append('<tr><td>'+ idx +'</td><td>'+elem.rName+'</td><td>'+elem.interval +'</td><td><i class="glyphicon glyphicon-remove"></i></td></tr>');
+			});
+	}); 
+	
+}
 
 
 

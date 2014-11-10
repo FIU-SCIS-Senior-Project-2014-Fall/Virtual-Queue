@@ -19,6 +19,7 @@ public interface RideService {
 	public boolean addUserRideById(Long rideId, Long userid) throws Exception;
 	public List<RideInfo> pullRideInfo();
 	public RideInfo getRidebyId(long rideId) throws NotificationException;
+	public List<RideInfo> getRidesByUser(long userId) throws NotificationException;
 	
 
 }

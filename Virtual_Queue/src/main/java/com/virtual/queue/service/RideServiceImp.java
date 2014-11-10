@@ -90,4 +90,9 @@ public class RideServiceImp implements RideService {
 		return rideDao.getRideById(rideId);
 	}
 
+	@Override
+	public List<RideInfo> getRidesByUser(long userId) throws NotificationException {
+		return rideDao.getRideByUser(userId);
+	}
+
 }

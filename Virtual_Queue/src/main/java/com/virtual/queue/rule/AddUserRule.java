@@ -121,10 +121,8 @@ public class AddUserRule implements Rule {
 			Double wDistance = new Double("0.0");
 
 			if (rideCoor != null && lastRideCoor != null) {
-				wDistance = util.calculateDistance(rideCoor.getLatitude()
-						.doubleValue(), rideCoor.getLongitude().doubleValue(),
-						lastRideCoor.getLatitude().doubleValue(), lastRideCoor
-								.getLongitude().doubleValue());
+				wDistance = util.calculateDistance(rideCoor.getLatitude().doubleValue(), rideCoor.getLongitude().doubleValue(),
+				lastRideCoor.getLatitude().doubleValue(), lastRideCoor.getLongitude().doubleValue());
 			}
 			Double temp = wDistance / WALKING_SPEED_MIN;
 

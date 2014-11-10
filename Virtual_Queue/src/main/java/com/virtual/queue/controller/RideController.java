@@ -1,5 +1,6 @@
 package com.virtual.queue.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.virtual.queue.beans.Ride;
 import com.virtual.queue.beans.RideInfo;
 import com.virtual.queue.beans.User;
+import com.virtual.queue.exception.NotificationException;
 import com.virtual.queue.service.RideService;
 
 @Controller
@@ -32,6 +34,27 @@ public class RideController {
 	
 	}
 
+	@RequestMapping(value ="/user/rides",  method = RequestMethod.POST)
+	public @ResponseBody List<RideInfo> getRideByUser(@RequestParam(value="userid") Long userId) {
+		
+		List<RideInfo> list=new ArrayList<RideInfo>();
+		try {
+			
+			
+			list= rideService.getRidesByUser(userId);
+		
+		
+		} catch (NotificationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		
+		return list;
+	
+	
+	
+	}
 	@RequestMapping(value = "/addRide", method = RequestMethod.POST)
 	public @ResponseBody void addRide(@RequestBody Ride ride,
 			@ModelAttribute User user) { 
@@ -50,9 +73,10 @@ public class RideController {
 			@PathVariable("userid") Long userid) {
 		rideService.deleteRideById(rideId, userid);
 	}
+	
+	
+	
 
-	
-	
 	@RequestMapping(value = "/addRide/{rideid}/{userid}", method = RequestMethod.GET)
 	public @ResponseBody boolean addrideByUserGet(@PathVariable("rideid") Long rideId,
 			@PathVariable("userid") Long userid) { 
