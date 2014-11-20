@@ -13,7 +13,7 @@ public class RuleBuilderImp implements RuleBuilder{
 	public List<Rule> buildRules() {
 		
 		List<Rule> list=new ArrayList<Rule>();
-		//TODO:this can be defined on a xml config file.using class type
+		//TODO:this can be defined on a xml configuration file.using class type
 		list.add(new DuplicateUserRule());
 		list.add(new AddUserRule() ); 
 		 

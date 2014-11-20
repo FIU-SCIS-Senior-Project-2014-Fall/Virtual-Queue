@@ -2,6 +2,7 @@
 
 import java.util.List; 
 
+import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
@@ -29,18 +30,20 @@ public class Driver {
 			//RideService service = new RideServiceImp();
 			List<RideInfo> list = new RideServiceImp().pullRideInfo();
 
-			// JobDetail job = null;
+			 JobDetail job = null;
 			// Trigger trigger = null;
 
 			for (RideInfo info : list) {
 
-				// job = QueueJobFactory.getJob(QueueJob.class,
-				// info.getrName());
-				// trigger = QueueTriggerFactory.getTrigger(info.getInterval());
-
-				sch.scheduleJob(QueueJobFactory.getJob(QueueJob.class, info.getrName()),
-						QueueTriggerFactory.getTrigger(info.getInterval()));
-
+				job = QueueJobFactory.getJob(QueueJob.class,
+				 info.getrName());
+				//trigger = QueueTriggerFactory.getTrigger(info.getInterval());
+				job.getJobDataMap().put(QueueJob.RIDE_ID,info.getRideId());
+				
+				
+				sch.scheduleJob( job,
+						QueueTriggerFactory.getTrigger(info.getInterval(),info.getrName()));
+				job.getJobDataMap().put(QueueJob.RIDE_ID,info.getRideId());
 			}
 
 		} catch (SchedulerException e) {

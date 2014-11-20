@@ -24,7 +24,7 @@ public class QueueController {
 
 	@Autowired
 	VirtualQueueService queueService;
-	
+
 	@Autowired
 	QueueService qService;
 
@@ -49,14 +49,13 @@ public class QueueController {
 	public @ResponseBody Boolean getUserFromQueue(
 			@PathVariable("rideId") long rideId,
 			@PathVariable("userId") long userId) {
- 
-		return  qService.removeUserFromQueue(rideId, userId);
-		 
+
+		return qService.removeUserFromQueue(rideId, userId);
 
 	}
 
 	@RequestMapping(value = "/removeAllFromQueue/{rideId}/{command}", method = RequestMethod.GET)
-	public @ResponseBody Boolean getAllUsersFromQueue(
+	public @ResponseBody Boolean getAllUsersFromQueueByRide(
 			@PathVariable("rideId") long rideId,
 			@PathVariable("command") String command) {
 
@@ -78,4 +77,16 @@ public class QueueController {
 		return false;
 	}
 
+	@RequestMapping(value = "/removeAll/{command}", method = RequestMethod.GET)
+	public @ResponseBody Boolean getAllUsersFromAllQueue(
+
+	@PathVariable("command") String command) {
+
+		QueueScheduler qScheduler = new QueueScheduler();
+
+		List<RideInfo> rideList = new ArrayList<RideInfo>();
+		rideList = rideService.getAll();
+		return qScheduler.removeUserFromQueue(rideList, command, 15);
+
+	}
 }

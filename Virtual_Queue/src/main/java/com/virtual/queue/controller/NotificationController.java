@@ -2,14 +2,22 @@ package com.virtual.queue.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.virtual.queue.beans.RideInfo;
+import com.virtual.queue.beans.User;
 import com.virtual.queue.listener.QueueContextLoaderListener;
 import com.virtual.queue.scheduler.QueueScheduler;
 import com.virtual.queue.service.RideService;
@@ -26,9 +34,6 @@ public class NotificationController {
 	@ResponseBody
 	public Boolean notificationEngine(@PathVariable("command") String command) {
 
-		// TODO need to check for credentials before sending this command,user
-		// id needs to be added to the request
-
 		logger.info("Starting application...");
 		System.out.println("Application started.........");
 
@@ -39,5 +44,46 @@ public class NotificationController {
 
 	}
 
+	@RequestMapping(value = "/notify", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> StartNotificationEngine(
+			@RequestParam("command") String command,
+			@RequestParam(value = "userid") long userId,
+			HttpServletRequest request) {
+
+		if (userId == 0 || command == null || "".equalsIgnoreCase(command)) {
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+
+		}
+		if (request != null) {
+
+			HttpSession session = request.getSession();
+			if (session == null) {
+				return new ResponseEntity<String>(
+						HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+
+			User newUser = (User) session.getAttribute("user");
+
+			if (newUser != null && newUser.getUserid() == userId) {
+
+				logger.info("Starting application...");
+				System.out.println("Application started.........");
+                //need to use injection
+				new QueueScheduler().scheduleRideJobs(command,
+						rideService.pullRideInfo());
+
+			} else {
+				// TODO:check return status code for find grain values.
+				return new ResponseEntity<String>(
+						HttpStatus.INTERNAL_SERVER_ERROR);
+
+			}
+
+		}
+
+		return new ResponseEntity<String>(HttpStatus.OK);
+
+	}
 
 }

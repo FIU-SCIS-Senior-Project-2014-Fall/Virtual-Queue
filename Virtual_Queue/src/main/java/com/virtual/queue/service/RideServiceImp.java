@@ -5,6 +5,7 @@ import java.util.List;
 import com.virtual.queue.beans.Ride;
 import com.virtual.queue.beans.RideInfo;
 import com.virtual.queue.builder.RuleBuilderImp;
+import com.virtual.queue.dao.QueueDao;
 import com.virtual.queue.dao.RideDao;
 import com.virtual.queue.dao.RideDaoImp;
 import com.virtual.queue.exception.NotificationException;
@@ -19,6 +20,9 @@ import org.springframework.stereotype.Service;
 public class RideServiceImp implements RideService {
 	@Autowired
 	RideDao rideDao;
+	
+	@Autowired
+	QueueDao queueDao;
 
 	@Override
 	public List<RideInfo> getAll() {
@@ -39,7 +43,8 @@ public class RideServiceImp implements RideService {
 
 	@Override
 	public void deleteRideById(Long id, Long userid) {
-		// TODO Auto-generated method stub
+		
+		queueDao.removeUserFromQueue(id, userid);
 
 	}
 

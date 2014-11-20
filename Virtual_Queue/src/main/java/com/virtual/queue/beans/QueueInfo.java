@@ -1,10 +1,13 @@
 package com.virtual.queue.beans;
 
+import java.util.Date;
+
 public class QueueInfo {
 	private long queueId;
 	private long userId;
 	private int capacity;
 	private int waitingTime;
+	private Date registeredDt;
 
 	public long getQueueId() {
 		return queueId;
@@ -36,6 +39,14 @@ public class QueueInfo {
 
 	public void setWaitingTime(int waitingTime) {
 		this.waitingTime = waitingTime;
+	}
+
+	public Date getRegisteredDt() {
+		return registeredDt;
+	}
+
+	public void setRegisteredDt(Date registeredDt) {
+		this.registeredDt = registeredDt;
 	}
 
 }

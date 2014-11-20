@@ -5,6 +5,7 @@ public class RideInfo {
 	private String description;
 	private long startTime;
 	private long endTime;
+	//TODO:this may be a Double 
 	private int interval;
 	private int capacity;
 	private long rideId;

@@ -16,11 +16,11 @@ import com.virtual.queue.exception.NotificationException;
  
 
 public class EmailNotificationHandlerImp implements NotificationHandler {
-
+    //TODO: this list needs to be set on a property file.
 	private static final String EMAIL_PORT="465";
-	private static final String SENT_FROM="roninjord@yahoo.com";
-	private static final String EMAIL_ACCT_NAME="roninjord@yahoo.com";
-	private static final String EMAIL_ACCT_PASSWORD="Kely1985";
+	private static final String SENT_FROM="virtualqueue2014@yahoo.com";
+	private static final String EMAIL_ACCT_NAME="virtualqueue2014@yahoo.com";
+	private static final String EMAIL_ACCT_PASSWORD="seniorproject";
 	private static final String EMAIL_SUBJECT="User notification for your ride";
 	
 	@Override
@@ -30,7 +30,7 @@ public class EmailNotificationHandlerImp implements NotificationHandler {
 			if(info ==null || !info.isValid())throw new NotificationException("invalid info object");
 			
 			try{
-
+ 
 		        Properties props = new Properties();
 		        props.put("mail.smtp.host", "smtp.mail.yahoo.com"); 
 		        props.put("mail.smtp.auth", "true");

@@ -1,19 +1,21 @@
 package com.virtual.queue.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.virtual.queue.dao.QueueDao;
 import com.virtual.queue.dao.QueueDaoImp;
 
-
 @Service
 public class QueueServiceImp implements QueueService {
-   @Autowired
-   QueueDao queuDao;
+	@Autowired
+	QueueDao queuDao;
+
 	@Override
 	public boolean removeUserFromQueue(long rideId, long userid) {
-		return new QueueDaoImp().removeUserFromQueue( rideId,  userid);
+		return new QueueDaoImp().removeUserFromQueue(rideId, userid);
 	}
 
 	@Override
@@ -22,7 +24,11 @@ public class QueueServiceImp implements QueueService {
 		return false;
 	}
 
-	
-	
-	
+	@Override
+	public List<Long> getUsersFromQueue(long rideId, int lenght) {
+
+		return new QueueDaoImp().getAllUserQueueForRide(rideId, lenght);
+
+	}
+
 }

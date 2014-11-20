@@ -66,6 +66,7 @@ public class RideDaoImp extends BaseDao implements RideDao {
 				info2.setStartTime(startTime);
 				info2.setInterval(result.getInt("ride_duraction"));
 				info2.setEndTime(endTime);
+				info2.setRideId(result.getLong("ride_id"));
 				info.add(info2);
 			}
 

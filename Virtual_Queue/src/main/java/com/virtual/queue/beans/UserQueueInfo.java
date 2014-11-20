@@ -6,6 +6,8 @@ public class UserQueueInfo {
 	private Integer maxValue;
 	private String phoneNumber;
 	private String email;
+	private int interval;
+	
 	public String getName() {
 		return name;
 	}
@@ -36,6 +38,12 @@ public class UserQueueInfo {
 	return true;
 		
 		
+	}
+	public int getInterval() {
+		return interval;
+	}
+	public void setInterval(int interval) {
+		this.interval = interval;
 	}
 	
 	

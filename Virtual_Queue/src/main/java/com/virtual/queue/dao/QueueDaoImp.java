@@ -22,20 +22,24 @@ import com.virtual.queue.exception.NotificationException;
 @Transactional
 public class QueueDaoImp extends BaseDao implements QueueDao {
 
-	private static final String GET_QUEUE_INFO = "SELECT u.user_id,u.user_name, u.first_name, u.last_name, u.phone_number, u.email "
+	private static final String GET_QUEUE_INFO = "SELECT u.user_id,u.user_name, u.first_name, u.last_name, u.phone_number, u.email , r.ride_duraction "
 			+ "FROM VirtualQueueDB.VenueRegisteredUser u, VirtualQueueDB.Ride r,  VirtualQueueDB.UserQueue uq "
 			+ "WHERE r.ride_id = ? AND r.myqueue_id = uq.queue_id AND uq.user_id = u.user_id ";
 	private static final String GET_QUEUE_INFO_ALL = "SELECT u.user_name, u.first_name, u.last_name, u.phone_number, u.email "
 			+ "FROM VirtualQueueDB.VenueRegisteredUser u, VirtualQueueDB.Ride r,  VirtualQueueDB.UserQueue uq "
 			+ "WHERE  r.myqueue_id = uq.queue_id AND uq.user_id = u.user_id ";
+	
 	// private static final String GET_QUEUE_BY_RIDEID = null;
-	private static final String GET_QUEUE = "SELECT myqueue_id,waiting_time,queue_capacity FROM VirtualQueueDB.MyQueue where myqueue_id=(SELECT r.myqueue_id FROM VirtualQueueDB.Ride r where r.ride_id =?) ";
+	
+	private static final String GET_QUEUE = "SELECT q.myqueue_id,q.waiting_time,q.queue_capacity,r.ride_duraction FROM VirtualQueueDB.MyQueue q ,VirtualQueueDB.Ride r where q.myqueue_id= r.myqueue_id   AND  r.ride_id =? ";
 
 	private static final String DELETE_ALL_FROM_QUEUE = "DELETE FROM VirtualQueueDB.UserQueue WHERE queue_id=(Select myqueue_id From Ride where ride_id= ? )";
 
 	private final static long VENUE_ID = 1;
 
 	private static final String GET_RIDE_INFO_BY_USERID = "SELECT r.ride_name, r.ride_duraction , r.ride_capacity, r.ride_id,   r.longitude, r.latitude   FROM  VirtualQueueDB.UserQueue q, Ride r where q.user_id =? and r.myqueue_id=queue_id order by q.registered_time asc ";
+	private static final String GET_QUEUE_INFO_INTERVAL = "SELECT u.user_id  FROM VirtualQueueDB.VenueRegisteredUser u, VirtualQueueDB.Ride r,  VirtualQueueDB.UserQueue uq WHERE r.ride_id = ? AND r.myqueue_id = uq.queue_id AND uq.user_id = u.user_id order by uq.registered_time";
+	private static final String DELETE_USER_FROM_QUEUE = "DELETE FROM VirtualQueueDB.UserQueue WHERE queue_id=(Select myqueue_id From Ride where ride_id= ?) AND user_id = ? ";
 
 	public QueueDaoImp() {
 
@@ -69,7 +73,7 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 	}
 
 	@Override
-	public List<UserQueueInfo> pullInfo(Integer rideId) {
+	public List<UserQueueInfo> pullInfo(long rideId) {
 
 		List<UserQueueInfo> infoList = new ArrayList<UserQueueInfo>();
 		try {
@@ -78,7 +82,7 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 					GET_QUEUE_INFO);
 
 			// TODO:set ride id from job scheduler.
-			statement.setInt(1, rideId);
+			statement.setLong(1, rideId);
 			// statement.setString(2, password);
 			// statement.setString(3, code);
 
@@ -93,6 +97,8 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 						+ result.getString("last_name"));
 				info.setPhoneNumber(result.getString("phone_number"));
 				info.setEmail(result.getString("email"));
+				info.setInterval(result.getInt("ride_duraction"));
+			  
 				infoList.add(info);
 			}
 
@@ -200,6 +206,42 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 
 		return infoList;
 	}
+	
+	@Override
+	public LinkedList<Long> getAllUserQueueForRide(long rideId, int interval) {
+
+		LinkedList<Long> infoList = new LinkedList<Long>();
+		try {
+
+			PreparedStatement statement = getConnection().prepareStatement(
+					GET_QUEUE_INFO_INTERVAL+ " limit "+ interval);
+ 
+			statement.setLong(1, rideId);
+			 
+
+			ResultSet result = statement.executeQuery();
+			 
+
+			while (result.next()) { 
+				 
+				infoList.add(result.getLong("user_id"));
+			}
+
+			result.close();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO need to add log4j output
+			e.printStackTrace();
+
+		} catch (Exception ex) {
+
+			// TODO need to add log4j output
+			ex.printStackTrace();
+
+		}
+
+		return infoList;
+	}
 
 	@Override
 	public QueueInfo getQueueInfoByRideId(long rideId) {
@@ -241,9 +283,43 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 
 	@Override
 	public boolean removeUserFromQueue(long rideId, long userId) {
-		// TODO:check this,better to be implemented here
-		return new UserDaoImp().removeUserFromQueue(userId, rideId);
+		
+		PreparedStatement updateemp = null;
+
+		try {
+
+			getConnection();
+
+			updateemp = connection.prepareStatement(DELETE_USER_FROM_QUEUE);
+
+			updateemp.setLong(1, rideId);
+			updateemp.setLong(2, userId);
+			updateemp.executeUpdate();
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			// throw new ResetPasswordException(e.getMessage());
+			// TODO:needs to handle errors and return to caller with a message.
+			return false;
+
+		} finally {
+
+			if (updateemp != null)
+				try {
+					updateemp.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			closeConnection();
+		}
+
+		return true;
 	}
+		
+		
 
 	@Override
 	public boolean removeAllUsersFromQueue(long rideId) {
@@ -306,7 +382,7 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 			statement.setLong(1, userId);
 
 			ResultSet result = statement.executeQuery();
-			//Coordinate coord = null;
+			// Coordinate coord = null;
 
 			while (result.next()) {
 
@@ -316,8 +392,10 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 				info2.setInterval(result.getInt("ride_duraction"));
 				info2.setEndTime(endTime);
 				info2.setCapacity(result.getInt("ride_capacity"));
-				info2.setRideId(result.getLong("ride_id")); 
-				info2.setCoordinate(new Coordinate(result.getBigDecimal("latitude"),result.getBigDecimal("longitude")));
+				info2.setRideId(result.getLong("ride_id"));
+				info2.setCoordinate(new Coordinate(result
+						.getBigDecimal("latitude"), result
+						.getBigDecimal("longitude")));
 				infoLst.add(info2);
 			}
 
@@ -337,5 +415,11 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 
 		return infoLst;
 
+	}
+
+	@Override
+	public List<Long> getUserToRemoveFromQueue(Long rideId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

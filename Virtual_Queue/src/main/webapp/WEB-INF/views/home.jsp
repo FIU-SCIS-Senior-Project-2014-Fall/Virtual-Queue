@@ -10,11 +10,13 @@
 
 <link href="<c:url value="/resources/css/bootstrap.min.css" /> "rel="stylesheet" type="text/css" />
 <link href="<c:url value="/resources/css/bootstrap-theme.min.css" /> "rel="stylesheet" type="text/css" />
+<link href="<c:url value="/resources/css/bootstrap-table.css" /> "rel="stylesheet" type="text/css" />
 <link href="<c:url value="/resources/css/styles.css" />"rel="stylesheet" type="text/css" />
 
 
 <script type="text/javascript"src="<c:url value="/resources/js/jquery.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+<script type="text/javascript"src="<c:url value="/resources/js/bootstrap-table.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/bootstrapValidator.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/angular/angular.min.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/jquery.cookie.js" />"></script>
@@ -42,10 +44,14 @@
 					<li><a href="#register" data-toggle="modal"> Register </a></li>
 					<li><a href="#login" data-toggle="modal"> Login </a></li>
 					<li><a href="#rides" data-toggle="modal"> Rides </a></li>
-					<li><a href="#offers" data-toggle="modal"> Special Offers
-					</a></li>
-					<li><a href="#reset" data-toggle="modal"> Contact Us </a></li>
 					<li><a href="#account" data-toggle="modal"> MyAccount </a></li>
+					<li class = "dropdown"><a href="#" class= "dropdown-toggle" data-toggle="dropdown" > Admin <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+            			<li><a href="#admin" data-toggle="modal">Login</a></li>
+            			<li><a href="#search" data-toggle="modal">Search</a></li>
+					</ul>
+					
+					</li>
 
 				</ul>
 
@@ -95,7 +101,7 @@
 				<h3>
 					<a href="#"> Guardians of the Galaxy Ride</a>
 				</h3>
-				<p>This ride will make you feel like you are living in a world
+				<p>This ride is "Coming Soon", and it will make you feel like you are living in a world
 					where you can travel the entire universe and save it from villains.
 					Enjoy the infinite and interactive experiences with your family and
 					friends. Consider the fact that you need to be at least 47" to be
@@ -173,7 +179,7 @@
 						<div class="form-group">
 							<label for="login-password" class="col-lg-2 control-label">Password:</label>
 							<div class="col-lg-10">
-								<input name = "password" type="text" class="form-control" id="login-password"
+								<input name = "password" type="password" class="form-control" id="login-password"
 									placeholder="" >
 							</div>
 						</div>
@@ -213,68 +219,7 @@
 		</div>
 
 	</div> 
-	<div class="modal fade" id="offers" role="dialog" data-backdrop="static" data-keyboard="false"> 
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<form class="form-horizontal">
-					<div class="modal-header">
-						<h4>Venue Add Activities</h4>
-					</div>
-
-					<div class="modal-body">
-						<div class="form-group">
-
-							<label for="register-secQuestion" class="col-lg-2 control-label">Choose
-								Time of Activity: </label>
-							<div class="col-lg-10">
-								<select class="form-control id = "
-									register-secQuestion" placeholder="">
-
-									<option value="one">2:30</option>
-									<option value="two">3:00</option>
-									<option value="three">3:30</option>
-									<option value="four">4:00</option>
-									<option value="five">4:30</option>
-								</select>
-							</div>
-
-						</div>
-						<!-- /form-group -->
-
-						<div class="form-group">
-
-							<label for="reset-secQuestion" class="col-lg-2 control-label">Choose
-								Time of Notification:</label>
-							<div class="col-lg-10">
-								<select class="form-control id = "
-									reset-secQuestion" placeholder="">
-
-									<option value="one">10</option>
-									<option value="two">20</option>
-									<option value="three">30</option>
-									<option value="four">40</option>
-									<option value="five">50</option>
-								</select>
-							</div>
-
-						</div>
-						<!-- /form-group -->
-
-					</div>
-					<!-- /modal-content -->
-
-					<div class="modal-footer">
-						<div class="col-md-2">
-							<button type="button" class="btn btn-md btn-info pull-right ">Add</button>
-						</div>
-						<div class="col-md-2">
-							<button type="button" class="btn btn-md btn-info pull-left " >Cancel</button>
-						</div> 
-					</div>
-			</div>
-			</form>
-		</div> 
-	</div> 
+	
 
 	<div class="modal fade" id="register" role="dialog" data-backdrop="static" data-keyboard="false">
 
@@ -313,7 +258,7 @@
 
 							<label for="register-password" class="col-lg-2 control-label">Password:</label>
 							<div class="col-lg-10">
-								<input name= "password" type="text" class="form-control" id="register-password"
+								<input name= "password" type="password" class="form-control" id="register-password"
 									placeholder="">
 							</div>
 
@@ -377,78 +322,7 @@
 
 						</div>
 
-
-
-
-
-
-
-
-
-						<div class="form-group">
-
-							<label for="register-height" class="col-xs-2 control-label">Height:</label>
-							<div class="col-xs-5">
-								<div class="input-group number-spinner">
-									<span class="input-group-btn">
-										<button class="btn btn-default" data-dir="dwn" id="register-minus1">
-											<span class="glyphicon glyphicon-minus" ></span>
-										</button>
-									</span> 
-									<input name="height" type="text" class="form-control" value="1" id="register-height1"> <span
-										class="input-group-btn">
-										<button class="btn btn-default" data-dir="up" id="register-plus1">
-											<span class="glyphicon glyphicon-plus" ></span>
-										</button>
-									</span>
-								</div>
-							</div>
-
-
-							<div class="col-xs-5">
-								<div class="input-group number-spinner">
-									<span class="input-group-btn">
-										<button class="btn btn-default" data-dir="dwn" id="register-minus2">
-											<span class="glyphicon glyphicon-minus" ></span>
-										</button>
-									</span> <input name="height1" type="text"
-										class="form-control text-left" value="2" id="register-height2">
-									<span class="input-group-btn">
-										<button class="btn btn-default" data-dir="up" id="register-plus2">
-											<span class="glyphicon glyphicon-plus" ></span>
-										</button>
-									</span>
-								</div>
-							</div>
-
-
-						</div>
-
-
-
-
-						<div class="form-group">
-
-							<label for="register-weight" class="col-xs-2 control-label">Weight:</label>
-
-							<div class="col-xs-5">
-								<div class="input-group number-spinner">
-									<span class="input-group-btn">
-										<button class="btn btn-default" data-dir="dwn" id= "register-weightMinus">
-											<span class="glyphicon glyphicon-minus" id="register-weight"></span>
-										</button>
-									</span> <input name="weight" type="text"
-										class="form-control text-left" value="2" id="register-weight">
-									<span class="input-group-btn">
-										<button class="btn btn-default" data-dir="up" id= "register-weightPlus">
-											<span class="glyphicon glyphicon-plus" ></span>
-										</button>
-									</span>
-								</div>
-							</div>
 					</div>
-
-</div>
 
 							<div class="modal-footer">
 
@@ -460,7 +334,7 @@
 
 								<div class="col-md-2">
 									<button type="button" class="btn btn-info pull-left "
-										data-dismiss="modal" id="cancel" >Cancel</button>
+										data-dismiss="modal" id="register_cancel" >Cancel</button>
 								</div>
 
 								<div id="personFormResponse" class="green"></div>
@@ -528,7 +402,7 @@
 							<label for="reset-password" class="col-lg-2 control-label">New
 								Password:</label>
 							<div class="col-lg-10">
-								<input name = "newPassword" type="text" class="form-control" id="reset-newPasswordReset"
+								<input name = "newPassword" type="password" class="form-control" id="reset-newPasswordReset"
 									placeholder="">
 							</div>
 
@@ -539,7 +413,7 @@
 							<label for="reset-password" class="col-lg-2 control-label">Confirm
 								Password:</label>
 							<div class="col-lg-10">
-								<input name= "confirmNewPassword" type="text" class="form-control" id="reset-confirmNewPassword"
+								<input name= "confirmNewPassword" type="password" class="form-control" id="reset-confirmNewPassword"
 									placeholder="">
 							</div>
 
@@ -573,13 +447,7 @@
 
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form class="form-horizontal">
-					
-					<!--  
-					<div class="modal-header">
-						<h4>My Account Page</h4>
-					</div>
-					-->
+				<form class="form-horizontal" id="accountForm">
 					
 		
 		<div class="navbar navbar-inverse navbar-static-top">
@@ -607,22 +475,14 @@
 
 		</div>
 
-	</div>
-					
-					
-					
-					
-					
-					<div class="modal-body">
-
-						<div class="table-responsive">          
-       <table class="table table-striped table-bordered" id="table-rides">
+	</div> 
+ 
+<div class="modal-body">
+<div class="table-responsive">   
+       <table data-toggle="table" id="table-rides"  >
          <thead>
            <tr>
-             <th>#</th>
-             <th>Ride Name</th>
-             <th>Waiting Time</th>
-             <th>Operate</th>
+             
            </tr>
          </thead>
          <tbody id = "tbodyRidesTable">
@@ -637,11 +497,11 @@
 						<div class="modal-footer">
 
 						<div class="col-md-2">
-							<button type="button" class="btn btn-info pull-left " data-dismiss = "modal" id = "cancel-Login" >Cancel</button>
+							<button type="button" class="btn btn-info pull-left " data-dismiss = "modal" id = "cancel-myAccount" >Cancel</button>
 						</div>
 						
 						<div class="col-md-2">						
-							<button type="submit" value= "Send" class="btn btn-info pull-left " id = "submit">Forgot Password</button>
+							<button type="submit" value= "Send" class="btn btn-info pull-left " id = "submit">Change Password</button>
 						</div>
 
 
@@ -698,11 +558,138 @@
 
 	</div>
 		
+<div class="modal fade" id="admin" role="dialog" data-backdrop="static" data-keyboard="false">
+
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form class="form-horizontal" id = "adminForm">
+							 
+					<div class="modal-header">
+						<h4>Venue Park Admin Login Form</h4>
+					</div>							
+					
+					<div class="error hide" id="idError">Invalid Credentials. Please, Try Again</div>
+					
+
+
+					<div class="modal-body">
+
+						<div class="form-group">
+							<label for="admin-username" class="col-lg-2 control-label">Username:</label>
+							<div class="col-lg-10">
+								<input name = "userName" type="email" class="form-control" id="admin-name"
+									placeholder="user@example.com">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="admin-password" class="col-lg-2 control-label">Password:</label>
+							<div class="col-lg-10">
+								<input name = "password" type="password" class="form-control" id="admin-password"
+									placeholder="" >
+							</div>
+						</div>
+
+					</div>
+
+					<div class="modal-footer">
+
+						<div class="col-md-2">						
+							<button type="submit" value= "Send" class="btn btn-info pull-left " id = "submit">Login</button>
+						</div>
+
+						<div class="col-md-2">
+							<button type="button" class="btn btn-info pull-left " data-dismiss = "modal" id = "cancel-loginAdmin" >Cancel</button>
+						</div>
+
+
+
+					</div>
+			</div>
+			</form>
+		</div>
+
+	</div>
+
+
+
+<div class="modal fade" id="search" role="dialog" data-backdrop="static" data-keyboard="false">
+
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form class="form-horizontal" id="adminForm">
+				
+							
+				<div class="navbar navbar-inverse navbar-static-top">
+		<div class="container-fluid">
+
+			<a href="#" class="navbar-brand"> Admin Search Form </a>
+
+			<button class="navbar-toggle" data-toggle="collapse"
+				data-target=".navHeaderCollapse">
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+
+			<div class="collapse navbar-collapse navHeaderCollapse">
+
+				<ul class="nav navbar-nav navbar-right">
+
+					<li class="active"><a href="#"> Home </a></li>					
+					<li><a href="#logout" data-toggle="modal" id="logout"><span class="glyphicon glyphicon-off"></span> Logout </a></li>
+
+				</ul>
+
+			</div>
+
+		</div>
+
+	</div>	
+					
+					<div class="modal-body">
+
+						<div class="table-responsive">  
+											
+						        
+       <table data-toggle="table" id="table-admin" data-show-refresh="true" data-search="true" data-height="299">
+         <thead>
+           <tr>
+             <th>#</th>
+             <th>Name</th>
+             <th>User Name</th>             
+             <th>Operate</th>
+           </tr>
+         </thead>
+         <tbody id = "tbodyAdminTable">
+           
+           
+         </tbody>
+       </table>
+      </div>
+
 </div>
+
+						<div class="modal-footer">
+
+						<div class="col-md-2">
+							<button type="button" class="btn btn-info pull-left " data-dismiss = "modal" id = "cancel-search" >Cancel</button>
+						</div>
+						
+
+
+
+					</div>
+			</div>
+			</form>
+		</div>
+
+	</div>
+
+
+
 
 
 <!--  
-TODO:Add comments here.
 javascript section
 -->
 <script type="text/javascript">
@@ -809,9 +796,7 @@ $(document).ready(function() {
 		e.preventDefault(); // prevent actual form submit and page reload
 		}); 
 	});  
-	$('#reset-password').on('click', function () {
-		   $(this).attr('type','password'); 
-		}); 
+
 $('#forgotPasswordForward').on('click', function () {
 	CleanLoginForm();
 	$('#login').modal('hide'); 
@@ -821,24 +806,31 @@ $('#reset_cancel').on('click', function () {
 	CleanResetPasswordForm();
 		});
 
+$('#register_cancel').on('click', function(){
+	CleanRegisterForm();
+});
+
+$('#cancel-Login').on('click', function(){
+	CleanLoginForm();
+});
+
+$('#cancel-loginAdmin').on('click', function(){
+	CleanLoginAdminForm();
+});
 
 $('#createAccountForward').on('click', function () {
 	CleanLoginForm();
 	$('#login').modal('hide'); 
 		});
 	
-$('#login-password').on('click', function () {
-   $(this).attr('type', 'password'); 
+// $('#login-password').on('click', function () {
+  // $(this).attr('type', 'password'); 
+// });
+
+$(document).ready(function(){
+  $(":password");
 });
 
-
-$('#reset-newPasswordReset').on('click', function () {
-	   $(this).attr('type', 'password'); 
-	});
-
-$('#reset-confirmNewPassword').on('click', function () {
-	   $(this).attr('type', 'password'); 
-	});
 
 $('#logout').on('click', function () {
 	 var user=$.cookie("user_info");
@@ -867,10 +859,10 @@ $('#logout').on('click', function () {
 	
 $('#Select-Ride').on('click', function () {
 	var user=$.cookie("user_info");
-	//alert(user);
+	
 	 
 	if(typeof user ==='undefined'){
-		alert("!!!you need to login first.....")
+		alert("!!!Please, login first.")
 		$('#rides').modal('hide');
 		//CleanRegisterForm();
 		$('#login').modal('show');
@@ -891,14 +883,14 @@ $('#Select-Ride').on('click', function () {
 			function(response,textStatus,jqXHR) { 
 				if(response == false){
 					
-					alert('unable to add ride !!!!');	
+					alert('Sorry, you are unable to add ride !!!!');	
 					return;
 					
 				}
 				alert('You  successfuly Added this ride'); 
 			
 				$('#rides').modal('hide'); 
-				populateAccountTable();
+				//populateAccountTable();
 				$('#account').modal('show');  
 			    
 			}).fail(function(jqXHR, textStatus, errorThrown) 
@@ -908,16 +900,16 @@ $('#Select-Ride').on('click', function () {
 }); 
 	
 
-
-$('#register-password').on('click', function () {
-   $(this).attr('type', 'password'); 
-});
-
 function CleanLoginForm() {
 $('#login-name').val('') ; 
 $('#login-password').val('') ; 
 $('#login-code').val('') ; 
-}
+};
+
+function CleanLoginAdminForm(){
+	$('#admin-name').val('') ; 
+	$('#admin-password').val('') ;
+};
 
 function CleanRegisterForm() {
 $('#register-name').val('') ;
@@ -927,10 +919,8 @@ $('#register-email').val('') ;
 $('#register-secQuestion').val('') ; 
 $('#register-secAnswer').val('') ; 
 $('#register-cell').val('') ; 
-$('#register-age').val('') ;
-$('#register-height').val('') ;
-$('#register-weight').val('') ; 
-}
+$('#register-age').val('') ; 
+};
 
 function CleanResetPasswordForm() {
 	
@@ -939,28 +929,9 @@ function CleanResetPasswordForm() {
 	$('#reset-secAnswerReset').val('') ; 
 	$('#reset-newPasswordReset').val('') ; 
 	$('#reset-confirmNewPassword').val('') ;
-	}
+	};
 
-$('#register-plus1').on('click', '.number-spinner button', function () {    
-	var btn = $(this),
-		oldValue = btn.closest('.number-spinner').find('input').val().trim(),
-		newVal = 0;
 	
-	if (btn.attr('data-dir') == 'up') {
-		newVal = parseInt(oldValue) + 1;
-	} else {
-		if (oldValue > 1) {
-			newVal = parseInt(oldValue) - 1;
-		} else {
-			newVal = 1;
-		}
-	}
-	btn.closest('.number-spinner').find('input').val(newVal);
-});
- 
-
-
-
 $('#registerForm').bootstrapValidator({
 	message: 'This value is not valid',
 	fields: {
@@ -1043,38 +1014,77 @@ $('#registerForm').bootstrapValidator({
 			},
 			}
 			},
-			
-		height: {
-			message: 'The height is not valid',
-			validators: {
-			notEmpty: {
-			message: 'The height is required and cannot be empty'
-			},
-			regexp: {
-			regexp: /^[0-9]/,
-			message: 'The height can only consists of numbers'
-			},
-			}
-			},
-			
-		weight: {
-			message: 'The weight is not valid',
-			validators: {
-			notEmpty: {
-			message: 'The weight is required and cannot be empty'
-			},
-			regexp: {
-			regexp: /^[0-9]$/,
-			message: 'The weight can only consists of numbers'
-			},
-			}
-			},
 				
 	}
 	});
 
+	
+	$('#loginForm').bootstrapValidator({
+		message: 'This value is not valid',
+		fields: {
+			
+			userName: {
+				validators: {
+				notEmpty: {
+				message: 'The email address is required and cannot be empty'
+				},
+				emailAddress: {
+				message: 'The input is not a valid email address'
+				}
+				}
+				},
+				
+			password: {
+				validators: {
+				notEmpty: {
+				message: 'The password is required and cannot be empty'
+				},			
+				}
+				},									
+		
+			code: {
+				
+				message: 'The code is not valid',
+				validators: {
+				regexp: {
+				regexp:  /^[a-zA-Z0-9]+$/,
+				message: 'The code consists of numbers and/or letters only: Ex:1AB2'
+					},
+				
+				}
+				},					
+					
+		}
+		});
 
+	
+	$('#adminForm').bootstrapValidator({
+		message: 'This value is not valid',
+		fields: {
+			
+			userName: {
+				validators: {
+				notEmpty: {
+				message: 'The email address is required and cannot be empty'
+				},
+				emailAddress: {
+				message: 'The input is not a valid email address'
+				}
+				}
+				},
+				
+			password: {
+				validators: {
+				notEmpty: {
+				message: 'The password is required and cannot be empty'
+				},			
+				}
+				},									
+												
+		}
+		});
 
+/*
 function populateAccountTable(){
 	
 	var user=$.cookie("user_info");
@@ -1096,13 +1106,172 @@ function populateAccountTable(){
 		userid:userID
 	  }, function(result) {
 		  
-		
+		alert(JSON.stringify(result));
 		$.each($.parseJSON(JSON.stringify(result)), function(idx, elem){
-			$('table#table-rides TBODY').append('<tr><td>'+ idx +'</td><td>'+elem.rName+'</td><td>'+elem.interval +'</td><td><i class="glyphicon glyphicon-remove"></i></td></tr>');
+			$('table#table-rides TBODY').append('<tr><td>'+ idx +'</td><td>'+elem.rName+'</td><td>'+elem.interval +'</td><td class= ' + 'deleteThisrow'+ ' ><i class="glyphicon glyphicon-remove"></i></td></tr>');
 			});
 	}); 
 	
-}
+};
+*/
+
+//new changes from here
+//$(document).on('click', '.deleteThisrow', function() (in case the i cant delete last row added)
+
+
+
+function operateFormatter(value, row, index) {
+    return [
+        '<a class="like" href="javascript:void(0)" title="Like">',
+            '<i class="glyphicon glyphicon-heart"></i>',
+        '</a>',
+        '<a class="edit" href="javascript:void(0)" title="Edit">',
+            '<i class="glyphicon glyphicon-edit"></i>',
+        '</a>',
+        '<a class="remove" href="javascript:void(0)" title="Remove">',
+            '<i class="glyphicon glyphicon-remove"></i>',
+        '</a>'
+    ].join('');
+};
+
+
+/*
+function refreshTable() {
+	$('#table-rides').bootstrapTable('refresh', {
+        url: '{silent: true}'
+})};
+*/
+
+function deleteRideFromDB (ride_id) {
+
+	var user=$.cookie("user_info");
+	
+	var uName=$.parseJSON(user); 
+	var userID=String(uName.user_id);
+	var data= JSON.stringify({ "userid": userID, "rideId" : 1 })
+
+
+jQuery.ajax(
+
+		{
+
+		url : '${pageContext.request.contextPath}/ride/removeRideByUser',
+
+		type: 'POST',
+
+		dataType : "json",
+
+		data:{ "userid": 1, "rideId" : 1 },
+
+		success:function(data) { alert(data); },
+
+		error: function() {alert(data); }
+
+		}
+
+		);
+};
+
+
+window.operateEvents = {
+        
+        'click .remove': function (e, value, row, index) {
+        	 alert('You click remove icon, row: ' + JSON.stringify(row));
+        	 deleteRideFromDB();
+        	 //refreshTable();
+             
+        
+       }
+    }; 
+   
+
+
+
+
+$('#table-rides').bootstrapTable({
+    method: 'get',
+    url: '${pageContext.request.contextPath}/ride/user/rides/1',
+    cache: false,
+    height: 400,
+    striped: true,
+    pagination: true,
+    pageSize: 50,
+    pageList: [10, 25, 50, 100, 200],
+    search: true,
+    showToggle: true,
+    showColumns: true,
+    showRefresh: true,
+    minimumCountColumns: 2,
+    clickToSelect: true,
+
+    columns: [{
+        field: 'rName',
+        title: 'Ride Name',
+        class: 'deleterow',
+        align: 'right',
+        valign: 'bottom',
+        //sortable: true
+    }, {
+        field: 'interval',
+        title: 'Waiting Time',
+        class: 'deleterow',
+        align: 'center',
+        valign: 'middle'
+        //sortable: true
+        //,formatter: nameFormatter
+    }, {
+        field: 'price',
+        title: 'Item Price',
+        class: 'deleterow'
+        //align: 'left',
+        //valign: 'top',
+        //sortable: true,
+       // ,formatter: priceFormatter,
+        //sorter: priceSorter
+    }, {
+        field: 'remove',
+        title: 'Item Operate',
+        align: 'center',
+        valign: 'middle',
+        class: 'deleterow',
+       clickToSelect: false,
+       formatter: operateFormatter,
+       events: operateEvents
+    }]
+});
+
+
+
+
+/*
+
+$('#logout').on('click', function () {
+	 var user=$.cookie("user_info");
+	 
+	
+	var uName=$.parseJSON(user);
+	var userN= String(uName.user_name);
+	
+	 $.post('${pageContext.request.contextPath}/login/signout', 
+		    {userName:userN}).done(
+			function(response,textStatus,jqXHR) { 
+				alert('You were successfuly logged out');
+		    
+			$('#account').modal('hide'); 
+			    $.removeCookie("user_info");
+			    location.reload();
+			 
+			
+			}).fail(function(jqXHR, textStatus, errorThrown) 
+				    {
+			  alert('unable to logout !!!!');	
+ });  
+	
+	});
+	
+*/
+
+
 
 
 

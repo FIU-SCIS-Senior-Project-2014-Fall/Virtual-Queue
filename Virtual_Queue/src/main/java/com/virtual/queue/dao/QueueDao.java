@@ -9,7 +9,7 @@ import com.virtual.queue.beans.RideInfo;
 import com.virtual.queue.beans.User;
 
 public interface QueueDao {
-	public List<UserQueueInfo> pullInfo(Integer rideId);
+	public List<UserQueueInfo> pullInfo(long rideId);
 
 	public List<UserQueueInfo> pullAllInfo(); 
 
@@ -22,4 +22,9 @@ public interface QueueDao {
 	public boolean removeAllUsersFromQueue(long rideId);
 
 	public LinkedList<RideInfo> getRideListByUser(long userId) throws Exception;
+	
+	public List<Long> getUserToRemoveFromQueue(Long rideId);
+
+	LinkedList<Long> getAllUserQueueForRide(long rideId, int interval);
+	
 }
