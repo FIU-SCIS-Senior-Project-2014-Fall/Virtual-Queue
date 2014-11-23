@@ -16,6 +16,12 @@ LoginDao logindao;
 		
 		return logindao.signIn(userName, password, code);
 	}
+	
+	@Override
+	public User adminSignIn(String userName, String password) {
+		
+		return logindao.adminSignIn(userName, password);
+	}
 
 	@Override
 	public boolean signOut(String userName) {

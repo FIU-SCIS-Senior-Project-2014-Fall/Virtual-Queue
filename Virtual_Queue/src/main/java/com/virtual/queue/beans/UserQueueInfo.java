@@ -7,6 +7,7 @@ public class UserQueueInfo {
 	private String phoneNumber;
 	private String email;
 	private int interval;
+	private String rideName;
 	
 	public String getName() {
 		return name;
@@ -44,6 +45,12 @@ public class UserQueueInfo {
 	}
 	public void setInterval(int interval) {
 		this.interval = interval;
+	}
+	public String getRideName() {
+		return rideName;
+	}
+	public void setRideName(String rideName) {
+		this.rideName = rideName;
 	}
 	
 	

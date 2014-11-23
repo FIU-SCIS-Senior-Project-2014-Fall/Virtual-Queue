@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.virtual.queue.beans.RideInfo;
+import com.virtual.queue.beans.RuleCapacityBean;
 import com.virtual.queue.beans.User;
 import com.virtual.queue.dao.RideDao;
 import com.virtual.queue.dao.RideDaoImp;
@@ -14,7 +15,7 @@ import com.virtual.queue.dao.UserDao;
 import com.virtual.queue.dao.UserDaoImp;
 import com.virtual.queue.exception.NotificationException;
 //@Component
-public class DuplicateUserRule implements Rule {
+public class DuplicateUserRule implements Rule,RuleCmd {
 
 	public static final int MAX_RIDE_PER_USER = 3;
 
@@ -67,6 +68,13 @@ public class DuplicateUserRule implements Rule {
 	public void loadData() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public RuleCapacityBean loadDataRule(long userId, long rideId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

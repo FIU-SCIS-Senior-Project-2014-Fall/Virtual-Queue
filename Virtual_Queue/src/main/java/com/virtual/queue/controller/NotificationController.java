@@ -1,5 +1,6 @@
 package com.virtual.queue.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.virtual.queue.beans.RideInfo;
 import com.virtual.queue.beans.User;
+import com.virtual.queue.exception.NotificationException;
 import com.virtual.queue.listener.QueueContextLoaderListener;
 import com.virtual.queue.scheduler.QueueScheduler;
 import com.virtual.queue.service.RideService;
@@ -27,6 +29,8 @@ import com.virtual.queue.service.RideService;
 public class NotificationController {
 	@Autowired
 	RideService rideService;
+	
+	
 	final static Logger logger = Logger
 			.getLogger(QueueContextLoaderListener.class);
 
@@ -38,7 +42,13 @@ public class NotificationController {
 		System.out.println("Application started.........");
 
 		QueueScheduler qScheduler = new QueueScheduler();
-		List<RideInfo> rides = rideService.pullRideInfo();
+		List<RideInfo> rides = new ArrayList<RideInfo>();
+		try {
+			rides = rideService.pullRideInfo();
+		} catch (NotificationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		return qScheduler.scheduleRideJobs(command, rides);
 
@@ -69,9 +79,16 @@ public class NotificationController {
 
 				logger.info("Starting application...");
 				System.out.println("Application started.........");
-                //need to use injection
-				new QueueScheduler().scheduleRideJobs(command,
-						rideService.pullRideInfo());
+				// need to use injection
+				try {
+					new QueueScheduler().scheduleRideJobs(command,
+							rideService.pullRideInfo());
+				} catch (NotificationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return new ResponseEntity<String>(
+							HttpStatus.INTERNAL_SERVER_ERROR);
+				}
 
 			} else {
 				// TODO:check return status code for find grain values.

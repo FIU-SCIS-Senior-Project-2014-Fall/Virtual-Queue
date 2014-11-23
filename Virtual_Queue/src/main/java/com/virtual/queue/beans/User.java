@@ -6,6 +6,10 @@ public class User extends AbstractUser implements Serializable {
 
 	private static final long serialVersionUID = 7503398206106993501L;
 
+	private Long _userid;
+	private String _firstName;
+	private String _lastName;
+	private String _userName;
 	private String _code;
 	private String _password;
 	private String _email;
@@ -16,16 +20,21 @@ public class User extends AbstractUser implements Serializable {
 	private String _age;
 	private String _height;
 	private String _weight;
-	
+	private String _enabled;
 
 	public User() {
 	}
 
-	public User(String code, String password, String email,
-			String securityAnswer, String securityQuestion, String phoneNumber,
-			Role role, String age, String height, String weight) {
+	public User(Long userId, String firstName, String lastName, String userName, String code,
+			String password, String email, String securityAnswer,
+			String securityQuestion, String phoneNumber, Role role, String age,
+			String height, String weight, String enabled) {
 
+		_userid = userId;
 		_code = code;
+		_firstName = firstName;
+		_lastName = lastName;
+		_userName = userName;
 		_password = password;
 		_email = email;
 		_securityAnswer = securityAnswer;
@@ -34,6 +43,7 @@ public class User extends AbstractUser implements Serializable {
 		_age = age;
 		_height = height;
 		_weight = weight;
+		_enabled = enabled;
 		setUserRole(role);
 
 	}
@@ -56,21 +66,17 @@ public class User extends AbstractUser implements Serializable {
 		this.securityQuestion = securityQuestion;
 	}
 
-	private String userName;
+	
 
 	public String getUserName() {
-		return userName;
+		return _userName;
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this._userName = userName;
 	}
 
-	private Long userid;
-
-	private String firstName;
-
-	private String lastName;
+	
 
 	public String getPassword() {
 		return _password;
@@ -98,7 +104,7 @@ public class User extends AbstractUser implements Serializable {
 
 	public Long getUserid() {
 
-		return userid;
+		return _userid;
 
 	}
 
@@ -114,31 +120,31 @@ public class User extends AbstractUser implements Serializable {
 
 	public void setUserid(Long userid) {
 
-		this.userid = userid;
+		this._userid = userid;
 
 	}
 
 	public String getFirstName() {
 
-		return firstName;
+		return _firstName;
 
 	}
 
 	public void setFirstName(String firstName) {
 
-		this.firstName = firstName;
+		this._firstName = firstName;
 
 	}
 
 	public String getLastName() {
 
-		return lastName;
+		return _lastName;
 
 	}
 
 	public void setLastName(String lastName) {
 
-		this.lastName = lastName;
+		this._lastName = lastName;
 
 	}
 
@@ -157,9 +163,9 @@ public class User extends AbstractUser implements Serializable {
 	@Override
 	public String toString() {
 
-		return "User [firstName=" + firstName
+		return "User [firstName=" + _firstName
 
-		+ ", lastName=" + lastName + ", _email="
+		+ ", lastName=" + _lastName + ", _email="
 
 		+ _email + ", _password=" + _password + ", _securityAnswer="
 				+ _securityAnswer + ", _phoneNumber=" + _phoneNumber
@@ -181,7 +187,6 @@ public class User extends AbstractUser implements Serializable {
 
 	}
 
-	
 	@Override
 	public Boolean isNill() {
 
@@ -203,8 +208,6 @@ public class User extends AbstractUser implements Serializable {
 	public void setUserRole(Role _userRole) {
 		this._userRole = _userRole;
 	}
-
-	 
 
 	public String getAge() {
 		return _age;
@@ -229,5 +232,16 @@ public class User extends AbstractUser implements Serializable {
 	public void setWeight(String _weight) {
 		this._weight = _weight;
 	}
+
+	public String getEnabled() {
+		return _enabled;
+	}
+
+	public void setEnabled(String _enabled) {
+		this._enabled = _enabled;
+	}
+
+
+	
 
 }

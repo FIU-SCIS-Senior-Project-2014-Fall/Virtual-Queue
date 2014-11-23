@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 //import com.virtual.queue.beans.AbstractUser;
 //import com.virtual.queue.beans.NullUser;
 import com.virtual.queue.beans.User;
 import com.virtual.queue.request.UserPasswordResetRequest;
+import com.virtual.queue.request.UserRequest;
 //import com.virtual.queue.response.UserResponse;
 import com.virtual.queue.service.UserService;
 
@@ -75,25 +77,6 @@ public class UserController {
 	@ResponseBody
 	public Boolean resetPassword(
 			UserPasswordResetRequest passwordReset) {
-		/*
-		 * //HttpSession session = request.getSession(); // create null user
-		 * boolean result = false; // create response obj // UserResponse
-		 * response = new UserResponse(user, "Request processed"); // if
-		 * (session != null) {
-		 * 
-		 * try { // reset password service result =
-		 * userService.resetPassword(passwordReset);
-		 * 
-		 * // user.setPassword(user.getPassword()); // set user on session //if
-		 * (session != null) { // session.setAttribute("user", ""); //
-		 * session.invalidate(); //} } catch (Exception e) { // print error //
-		 * TODO:need to add log4j functionality. e.printStackTrace(); //
-		 * response.setMessage("Error processing request");
-		 * 
-		 * return false; }
-		 * 
-		 * // }
-		 */
 	 
 		try {
 			
@@ -111,5 +94,32 @@ public class UserController {
 		return true;
 
 	}
+	
+	@RequestMapping(value = "/editUser", method = RequestMethod.POST)
+	@ResponseBody
+	public Boolean editUser(UserRequest editInfo) {
+	 
+		try {
+						
+		 userService.editUserInfo(editInfo);
+		
+		
+		} catch (Exception e) {
+			 
+			e.printStackTrace();
+		
+			return false;
+		
+		}
+		return true;
+
+	}
+	
+	@RequestMapping(value = "/getUserById/{userId}", method = RequestMethod.GET)
+	public @ResponseBody User getUserById(
+			@PathVariable("userId") Long userId) {
+		return userService.getUserById(userId);
+	}
+
 
 }

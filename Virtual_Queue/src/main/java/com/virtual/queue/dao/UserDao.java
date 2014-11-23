@@ -20,5 +20,11 @@ public interface UserDao {
 	public User authenticateUser(String userName,String securityQuestion,String securityAnwser);
 	public User getUserById(long userId);
 	public boolean removeUserFromQueue(long userId,long rideId);
+	public User getUserToModify(long userId);
+	Boolean editUserById(String newFirstName, String newLastName,
+			String newEmail, String password, String newUserName,
+			String securityAnswer, String securityQuestion, String newCell,
+			String newAge) throws Exception;
+	
 
 }

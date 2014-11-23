@@ -10,6 +10,7 @@ import com.virtual.queue.dao.QueueDao;
 import com.virtual.queue.dao.ResetPasswordDao;
 import com.virtual.queue.dao.UserDao;
 import com.virtual.queue.request.UserPasswordResetRequest;
+import com.virtual.queue.request.UserRequest;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -69,6 +70,11 @@ public class UserServiceImp implements UserService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public User getUserById(Long userId) {
+		
+		return userDao.getUserToModify(userId);
+	}
 
 	@Override
 	public void resetPassword(UserPasswordResetRequest passwordReset)
@@ -80,6 +86,18 @@ public class UserServiceImp implements UserService {
 				passwordReset.getNewPassword());
 
 	}
+	
+	@Override
+	public void editUserInfo(UserRequest editInfo) throws Exception {
+
+		 userDao.editUserById(editInfo.getFirstName(), editInfo.getLastName(), 
+				 editInfo.getEmail(), editInfo.getNewPassword(),
+				 editInfo.getUserName(), editInfo.getSecurityAnswer(), editInfo.getSecurityQuestion(),
+				editInfo.getCell(), editInfo.getAge());
+
+	}
+	
+	
 
 	@Override
 	public String storeToken(long userId) {

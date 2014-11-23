@@ -1,15 +1,13 @@
 package com.virtual.queue.utility;
 
 public class QueueUtil {
-	
+
 	public QueueUtil() {
-	
-	
+
 	};
 
-	 
-
-	@SuppressWarnings("unused")
+	// TODO make all methods static.
+	
 	public double calculateDistance(double lat1, double lon1, double lat2,
 			double lon2) {
 
@@ -53,4 +51,19 @@ public class QueueUtil {
 
 	}
 
+
+	public static int getWaitingTime(int count, int rideCap, int duration,
+			boolean topbot) {
+		int wait = 0;
+		if (rideCap == 0)
+			return -1;
+		if (topbot) {
+			wait = (int) Math.floor((count / rideCap)) * duration;
+		} else {
+			wait = (int) Math.ceil((count / rideCap)) * duration;
+		}
+
+		return wait;
+
+	}
 }

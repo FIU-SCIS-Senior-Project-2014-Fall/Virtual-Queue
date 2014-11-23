@@ -11,6 +11,7 @@ public class RideInfo {
 	private long rideId;
 	private String rName;
 	private Coordinate coordinate;
+	private double waitingTime;
 
 	public String getrName() {
 		return rName;
@@ -74,6 +75,14 @@ public class RideInfo {
 
 	public void setCoordinate(Coordinate coordinate) {
 		this.coordinate = coordinate;
+	}
+
+	public double getWaitingTime() {
+		return waitingTime;
+	}
+
+	public void setWaitingTime(double waitingTime) {
+		this.waitingTime = waitingTime;
 	}
 
 }

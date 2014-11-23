@@ -22,7 +22,7 @@ public class UserDaoImp extends BaseDao implements UserDao {
 
 	
 	private static String ADD_USERS = "INSERT INTO VirtualQueueDB.VenueRegisteredUser (first_name,last_name,email,user_password, "
-			+ "user_name,security_question, security_answer, phone_number, age, height, weight) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+			+ "user_name,security_question, security_answer, phone_number, age) VALUES (?,?,?,?,?,?,?,?,?)";
 	private static String ALL_USERS = "select * from user limit 100";
 
 	private static String GET_USER = "Select u.user_id , u.security_question , u.security_answer , u.user_password from VirtualQueueDB.VenueRegisteredUser u WHERE u.user_name = ? AND u.security_question = ? AND u.security_answer = ? ";
@@ -33,6 +33,8 @@ public class UserDaoImp extends BaseDao implements UserDao {
 	
 	private static final String DELETE_USER_FROM_QUEUE = "DELETE FROM VirtualQueueDB.UserQueue WHERE user_id= ? and queue_id=(Select myqueue_id From Ride where ride_id= ? )";
 	
+	private static String EDIT_USER = "UPDATE VirtualQueueDB.VenueRegisteredUser SET first_name = ?,last_name = ?,email = ?,user_password = ? , "
+			+ " user_name = ?,security_question = ?, security_answer = ?, phone_number = ?, age  = ? WHERE user_name = ? ";
 	
 	@Override
 	public User getUser(String username, String passwd) {
@@ -72,10 +74,9 @@ public class UserDaoImp extends BaseDao implements UserDao {
 				user.setLastName(rs.getString("last_name"));
 				user.setEmail(rs.getString("email"));
 				user.setUserName(rs.getString("user_name"));
-				user.setSecurityQuestion("security_question");
-				user.setAge("age");
-				user.setHeight("height");
-				user.setWeight("weight");
+				user.setSecurityQuestion(rs.getString("security_question"));
+				user.setAge(rs.getString("age"));
+				user.setEnabled("1");
 				users.add(user);
 			}
 		} catch (SQLException e) {
@@ -106,8 +107,6 @@ public class UserDaoImp extends BaseDao implements UserDao {
 			updateemp.setString(7, user.getSecurityAnswer());
 			updateemp.setString(8, user.getPhoneNumber());
 			updateemp.setString(9, user.getAge());
-			updateemp.setString(10, user.getHeight());
-			updateemp.setString(11, user.getWeight());
 			updateemp.executeUpdate();
 
 		} catch (SQLException e) {
@@ -220,6 +219,59 @@ public class UserDaoImp extends BaseDao implements UserDao {
 		return true;
 
 	}
+	
+	@Override
+	public Boolean editUserById(String newFirstName, String newLastName, String newEmail, String password, 
+			String newUserName, String securityAnswer, String securityQuestion, String newCell,
+			String newAge) throws Exception {
+
+		PreparedStatement updateemp = null;
+
+		try {
+
+			getConnection();
+
+			
+
+			updateemp = connection.prepareStatement(EDIT_USER);
+			//ODO this needs to be change to use user_id(PK) to perform updates
+			updateemp.setString(1, newFirstName);
+			updateemp.setString(2, newLastName);			
+			updateemp.setString(3, newEmail);
+			updateemp.setString(4, password);
+			updateemp.setString(5, newEmail);						
+			updateemp.setString(6, securityAnswer);
+			updateemp.setString(7, securityQuestion);
+			updateemp.setString(8, newCell );
+			updateemp.setString(9, newAge );
+			updateemp.setString(10, newEmail);
+			
+			int execute = updateemp.executeUpdate();
+			
+			if(execute >0){
+				return true;
+			}
+			else{
+				return false;
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			// throw new ResetPasswordException(e.getMessage());
+
+		} finally {
+
+			 
+			if (updateemp != null)
+				updateemp.close();
+
+			closeConnection();
+		}
+
+		return true;
+
+	}
 
 	@Override
 	public User authenticateUser(String userName, String securityQuestion,
@@ -263,6 +315,7 @@ public class UserDaoImp extends BaseDao implements UserDao {
 		return user;
 	}
 
+
 	@Override
 	public boolean removeUserFromQueue(long userId,long rideId) {
 		PreparedStatement updateemp = null;
@@ -299,5 +352,51 @@ public class UserDaoImp extends BaseDao implements UserDao {
 		return true;
 
 	}
+
+	@Override
+	public User getUserToModify(long userId) {
+		User user = new User();
+		try {
+			PreparedStatement statement = getConnection().prepareStatement(
+					GET_USER_BY_ID);
+
+			statement.setLong(1, userId);			
+
+			ResultSet result = statement.executeQuery();
+
+			if (result.next()) {
+
+				// TODO:fill out user object
+				user.setFirstName(result.getString("first_name"));
+				user.setLastName(result.getString("last_name"));
+				user.setEmail(result.getString("email"));
+				user.setPassword(result.getString("user_password"));
+				user.setUserName(result.getString("user_name"));
+				user.setSecurityQuestion(result.getString("security_question"));
+				user.setSecurityAnswer(result.getString("security_answer"));
+				user.setPhoneNumber(result.getString("phone_number"));
+				user.setAge(result.getString("age"));
+				
+
+			}
+
+			result.close();
+			statement.close();
+		} catch (SQLException e) {
+			// TODO need to add log4j output
+			e.printStackTrace();
+
+		} catch (Exception ex) {
+
+			// TODO need to add log4j output
+			ex.printStackTrace();
+
+		}
+
+		return user;
+	}
+
+
+	
 
 }

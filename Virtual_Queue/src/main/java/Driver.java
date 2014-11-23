@@ -8,6 +8,7 @@ import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
 
 import com.virtual.queue.beans.RideInfo;
+import com.virtual.queue.exception.NotificationException;
 import com.virtual.queue.scheduler.QueueJob;
 import com.virtual.queue.scheduler.QueueJobFactory;
 import com.virtual.queue.scheduler.QueueTriggerFactory;
@@ -22,13 +23,16 @@ public class Driver {
 
 			// schedule the job
 			//SchedulerFactory schFactory = new StdSchedulerFactory();
-
+			try {
 			Scheduler sch = new StdSchedulerFactory().getScheduler();
 
 			sch.start();
 
 			//RideService service = new RideServiceImp();
-			List<RideInfo> list = new RideServiceImp().pullRideInfo();
+			List<RideInfo> list;
+			
+				list = new RideServiceImp().pullRideInfo();
+			
 
 			 JobDetail job = null;
 			// Trigger trigger = null;
@@ -51,7 +55,10 @@ public class Driver {
 			e.printStackTrace();
 
 		}
-
+		} catch (NotificationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

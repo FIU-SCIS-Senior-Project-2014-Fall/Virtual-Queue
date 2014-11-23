@@ -10,12 +10,15 @@ import org.springframework.stereotype.Component;
 import com.virtual.queue.beans.Coordinate;
 import com.virtual.queue.beans.QueueInfo;
 import com.virtual.queue.beans.RideInfo;
+import com.virtual.queue.beans.RuleCapacityBean;
 import com.virtual.queue.beans.User;
 import com.virtual.queue.dao.QueueDao;
 import com.virtual.queue.dao.QueueDaoImp;
 import com.virtual.queue.dao.RideDao;
 import com.virtual.queue.dao.RideDaoImp;
 import com.virtual.queue.exception.NotificationException;
+import com.virtual.queue.service.RuleService;
+import com.virtual.queue.service.RuleServiceImp;
 import com.virtual.queue.utility.QueueUtil;
 
 //calculate waiting time (when no other ride exists) by taking all
@@ -46,13 +49,6 @@ public class AddUserRule implements Rule {
 	private LinkedList<RideInfo> rideList = null;
 	private List<User> userList = null;
 
-	@Autowired
-	RideDao rideDao;
-
-     @Autowired
-	 QueueDao queueDao;
-
-	@Override
 	public void loadData(long userId, long rideId) throws Exception {
 		// take all rides for that user. using rideDao.
 		// select the last ride registered for that user.
@@ -96,6 +92,14 @@ public class AddUserRule implements Rule {
 		// also, check park is not near closing and user hasn't already queued
 		// for too many rides
 
+	};
+
+	@Override
+	public RuleCapacityBean loadDataRule(long userId, long rideId)
+			throws Exception {
+		// TODO:use injection.
+		RuleService service = new RuleServiceImp();
+		return service.loadDataRule(userId, rideId);
 	}
 
 	@Override
@@ -127,9 +131,8 @@ public class AddUserRule implements Rule {
 				int size = qDao.getAllUserQueueForRide(rinfo.getRideId())
 						.size();
 
-				int wtime = getWaitingTime(size, rinfo.getCapacity(),
+				int wtime = QueueUtil.getWaitingTime(size, rinfo.getCapacity(),
 						rinfo.getInterval(), false);
-
 				totalWtime += wtime;// all all waiting time from each ride
 
 			}
@@ -154,7 +157,8 @@ public class AddUserRule implements Rule {
 
 			int count = userList.size();
 			// get previous ride.
-			waitingTime = getWaitingTime(count, rideCap, duration, true);
+			waitingTime = QueueUtil.getWaitingTime(count, rideCap, duration,
+					true);
 
 			// check waiting time.
 			if (waitingTime < finaltime) {
@@ -175,21 +179,6 @@ public class AddUserRule implements Rule {
 	@Override
 	public void loadData() {
 		// TODO Auto-generated method stub
-
-	}
-
-	private int getWaitingTime(int count, int rideCap, int duration,
-			boolean topbot) {
-		int wait = 0;
-		if (rideCap == 0)
-			return -1;
-		if (topbot) {
-			wait = (int) Math.floor((count / rideCap)) * duration;
-		} else {
-			wait = (int) Math.ceil((count / rideCap)) * duration;
-		}
-
-		return wait;
 
 	}
 

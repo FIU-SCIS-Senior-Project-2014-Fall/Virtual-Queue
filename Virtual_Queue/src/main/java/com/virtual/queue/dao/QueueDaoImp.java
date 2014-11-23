@@ -22,15 +22,15 @@ import com.virtual.queue.exception.NotificationException;
 @Transactional
 public class QueueDaoImp extends BaseDao implements QueueDao {
 
-	private static final String GET_QUEUE_INFO = "SELECT u.user_id,u.user_name, u.first_name, u.last_name, u.phone_number, u.email , r.ride_duraction "
-			+ "FROM VirtualQueueDB.VenueRegisteredUser u, VirtualQueueDB.Ride r,  VirtualQueueDB.UserQueue uq "
-			+ "WHERE r.ride_id = ? AND r.myqueue_id = uq.queue_id AND uq.user_id = u.user_id ";
+	private static final String GET_QUEUE_INFO = "SELECT u.user_id,u.user_name, u.first_name, u.last_name, u.phone_number, u.email , r.ride_duraction, r.ride_name "
+			+ " FROM VirtualQueueDB.VenueRegisteredUser u, VirtualQueueDB.Ride r,  VirtualQueueDB.UserQueue uq "
+			+ " WHERE r.ride_id = ? AND r.myqueue_id = uq.queue_id AND uq.user_id = u.user_id ";
 	private static final String GET_QUEUE_INFO_ALL = "SELECT u.user_name, u.first_name, u.last_name, u.phone_number, u.email "
-			+ "FROM VirtualQueueDB.VenueRegisteredUser u, VirtualQueueDB.Ride r,  VirtualQueueDB.UserQueue uq "
-			+ "WHERE  r.myqueue_id = uq.queue_id AND uq.user_id = u.user_id ";
-	
+			+ " FROM VirtualQueueDB.VenueRegisteredUser u, VirtualQueueDB.Ride r,  VirtualQueueDB.UserQueue uq "
+			+ " WHERE  r.myqueue_id = uq.queue_id AND uq.user_id = u.user_id ";
+
 	// private static final String GET_QUEUE_BY_RIDEID = null;
-	
+
 	private static final String GET_QUEUE = "SELECT q.myqueue_id,q.waiting_time,q.queue_capacity,r.ride_duraction FROM VirtualQueueDB.MyQueue q ,VirtualQueueDB.Ride r where q.myqueue_id= r.myqueue_id   AND  r.ride_id =? ";
 
 	private static final String DELETE_ALL_FROM_QUEUE = "DELETE FROM VirtualQueueDB.UserQueue WHERE queue_id=(Select myqueue_id From Ride where ride_id= ? )";
@@ -73,6 +73,7 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 	}
 
 	@Override
+	// TODO:refector with a better method's name.
 	public List<UserQueueInfo> pullInfo(long rideId) {
 
 		List<UserQueueInfo> infoList = new ArrayList<UserQueueInfo>();
@@ -98,7 +99,8 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 				info.setPhoneNumber(result.getString("phone_number"));
 				info.setEmail(result.getString("email"));
 				info.setInterval(result.getInt("ride_duraction"));
-			  
+				info.setRideName(result.getString("ride_name"));
+
 				infoList.add(info);
 			}
 
@@ -126,11 +128,6 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 		try {
 			PreparedStatement statement = getConnection().prepareStatement(
 					GET_QUEUE_INFO_ALL);
-
-			// TODO:set ride id from job scheduler.
-			// statement.setInt(1, rideId);
-			// statement.setString(2, password);
-			// statement.setString(3, code);
 
 			ResultSet result = statement.executeQuery();
 			UserQueueInfo info = null;
@@ -206,7 +203,7 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 
 		return infoList;
 	}
-	
+
 	@Override
 	public LinkedList<Long> getAllUserQueueForRide(long rideId, int interval) {
 
@@ -214,16 +211,14 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 		try {
 
 			PreparedStatement statement = getConnection().prepareStatement(
-					GET_QUEUE_INFO_INTERVAL+ " limit "+ interval);
- 
+					GET_QUEUE_INFO_INTERVAL + " limit " + interval);
+
 			statement.setLong(1, rideId);
-			 
 
 			ResultSet result = statement.executeQuery();
-			 
 
-			while (result.next()) { 
-				 
+			while (result.next()) {
+
 				infoList.add(result.getLong("user_id"));
 			}
 
@@ -283,7 +278,7 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 
 	@Override
 	public boolean removeUserFromQueue(long rideId, long userId) {
-		
+
 		PreparedStatement updateemp = null;
 
 		try {
@@ -318,8 +313,6 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 
 		return true;
 	}
-		
-		
 
 	@Override
 	public boolean removeAllUsersFromQueue(long rideId) {
@@ -382,7 +375,6 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 			statement.setLong(1, userId);
 
 			ResultSet result = statement.executeQuery();
-			// Coordinate coord = null;
 
 			while (result.next()) {
 

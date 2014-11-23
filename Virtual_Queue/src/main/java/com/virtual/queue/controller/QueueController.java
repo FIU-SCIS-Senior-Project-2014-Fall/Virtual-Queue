@@ -85,7 +85,12 @@ public class QueueController {
 		QueueScheduler qScheduler = new QueueScheduler();
 
 		List<RideInfo> rideList = new ArrayList<RideInfo>();
-		rideList = rideService.getAll();
+		try {
+			rideList = rideService.getAll();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return qScheduler.removeUserFromQueue(rideList, command, 15);
 
 	}

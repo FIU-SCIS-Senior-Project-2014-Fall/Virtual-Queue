@@ -31,8 +31,14 @@ public class RideController {
 	@RequestMapping(value = "/rides", method = RequestMethod.GET)
 	public @ResponseBody List<RideInfo> getAllRides() {
 
-		return rideService.getAll();
-
+		List<RideInfo> list = new ArrayList<RideInfo>();
+		try {
+			list =  rideService.getAll();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 	@RequestMapping(value = "/user/rides", method = RequestMethod.POST)
@@ -47,7 +53,13 @@ public class RideController {
 		} catch (NotificationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		 
 
 		return list;
 
@@ -64,6 +76,10 @@ public class RideController {
 			list = rideService.getRidesByUser(userId);
 
 		} catch (NotificationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -92,7 +108,7 @@ public class RideController {
 	}
 
 	@RequestMapping(value = "/removeRideByUser", method = RequestMethod.POST)
-	@ResponseBody 
+	@ResponseBody
 	public boolean removeRideByUserID(
 			@RequestParam(value = "rideId") Long rideId,
 			@RequestParam(value = "userid") Long userid) {
@@ -100,7 +116,7 @@ public class RideController {
 		try {
 
 			rideService.deleteRideById(rideId, userid);
-	
+
 		} catch (Exception ex) {
 
 			return false;

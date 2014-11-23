@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.virtual.queue.beans.User;
 import com.virtual.queue.request.UserPasswordResetRequest;
+import com.virtual.queue.request.UserRequest;
 
  
 
@@ -20,4 +21,6 @@ public interface UserService {
 		public User getUserByUserName(String userName);
 		public void resetPassword(UserPasswordResetRequest passwordReset) throws Exception;
 		boolean removeUserFromQueue(long rideId, long userId);
+		public User getUserById(Long userId);
+		void editUserInfo(UserRequest editInfo) throws Exception;
 }

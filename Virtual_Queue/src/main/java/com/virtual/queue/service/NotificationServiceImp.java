@@ -48,7 +48,7 @@ public class NotificationServiceImp implements NotificationService {
 				Notinfo.setEmail(info.getEmail());
 				Notinfo.setName(info.getName());
 				timeMin = info.getInterval() / 60.0;
-				Notinfo.setMessage(NOTIFICATION_MSG
+				Notinfo.setMessage("Your " +info.getRideName()+" ride is due in :"
 						+ timeMin
 						+ "minute/s, Please, try to be on time and Enjoy your Ride :) ");
 

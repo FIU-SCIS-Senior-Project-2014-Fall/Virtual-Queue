@@ -17,6 +17,7 @@
 <script type="text/javascript"src="<c:url value="/resources/js/jquery.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/bootstrap-table.js" />"></script>
+<script type="text/javascript"src="<c:url value="/resources/js/bootbox.min.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/bootstrapValidator.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/angular/angular.min.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/jquery.cookie.js" />"></script>
@@ -346,6 +347,135 @@
 		</div>
 </div>
 	</div>
+	
+	
+	<div class="modal fade" id="updateUser" role="dialog" data-backdrop="static" data-keyboard="false">
+
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form class="form-horizontal" id = "UpdateUserForm" >
+					<div class="modal-header">
+						<h4>Edit User Form</h4>
+					</div>
+
+					<div class="modal-body">
+					 
+						<div class="form-group">
+
+							<label for="update-name" class="col-lg-2 control-label">Name:</label>
+							<div class="col-lg-10">
+								<input name= "firstName" type="text" class="form-control" id="update-name"
+									placeholder="">
+							</div>
+
+						</div>
+
+						<div class="form-group">
+
+							<label for="update-lastName" class="col-lg-2 control-label">Last
+								Name:</label>
+							<div class="col-lg-10">
+								<input name= "lastName"type="text" class="form-control" id="update-lastName"
+									placeholder="">
+							</div>
+
+						</div>
+
+
+						<div class="form-group">
+
+							<label for="update-password" class="col-lg-2 control-label">Password:</label>
+							<div class="col-lg-10">
+								<input name= "NewPassword" type="password" class="form-control" id="update-password"
+									placeholder="">
+							</div>
+
+						</div>
+						
+						<div class="form-group">
+
+							<label for="update-email" class="col-lg-2 control-label">Email:</label>
+							<div class="col-lg-10">
+								<input name= "email" type="text" class="form-control" id="update-email"
+									placeholder="user@example.com">
+							</div>
+
+						</div>
+
+						<div class="form-group">
+
+							<label for="update-secQuestion" class="col-lg-2 control-label">Security
+								Question:</label>
+							<div class="col-lg-10">
+								<select name= "securityQuestion" class="form-control" id = "update-secQuestion" placeholder=" ">
+									<option value="one">One</option>
+									<option value="two">Two</option>
+									<option value="three">Three</option>
+									<option value="four">Four</option>
+									<option value="five">Five</option>
+								</select>
+							</div>
+
+						</div>
+
+						<div class="form-group">
+
+							<label for="update-secAnswer" class="col-lg-2 control-label">Security
+								Answer:</label>
+							<div class="col-lg-10">
+								<input name = "securityAnswer" type="text" class="form-control" id="update-secAnswer"
+									placeholder="">
+							</div>
+
+						</div>
+
+						<div class="form-group">
+
+							<label for="update-cell" class="col-lg-2 control-label">Phone
+								Number:</label>
+							<div class="col-lg-10">
+								<input name = "cell" type="text" class="form-control" id="update-cell"
+									placeholder="">
+							</div>
+
+						</div>
+						
+						<div class="form-group">
+
+							<label for="update-age" class="col-lg-2 control-label">Age:</label>
+							<div class="col-lg-10">
+								<input name= "age" type="text" class="form-control" id="update-age"
+									placeholder="">
+							</div>
+
+						</div>
+
+					</div>
+
+							<div class="modal-footer">
+
+								<div class="col-md-2">
+									<button type="submit" value="Send"
+										class="btn btn-info pull-left" id="submit">Submit</button>
+								</div>
+
+
+								<div class="col-md-2">
+									<button type="button" class="btn btn-info pull-left "
+										data-dismiss="modal" id="update_cancel" >Cancel</button>
+								</div>
+<!--  
+
+								<div id="personFormResponse" class="green"></div>
+
+-->
+							</div>
+						
+						</form>
+		
+		</div>
+</div>
+	</div>
 
 	<div class="modal fade" id="reset" role="dialog" data-backdrop="static" data-keyboard="false">
 
@@ -466,7 +596,7 @@
 				<ul class="nav navbar-nav navbar-right">
 
 					<li class="active"><a href="#"> Home </a></li>
-					<li><a href="#rides" data-toggle="modal"> Rides </a></li>					
+					<li><a href="#rides" data-toggle="modal" id = "accountRides"> Rides </a></li>					
 					<li><a href="#logout" data-toggle="modal" id="logout"><span class="glyphicon glyphicon-off"></span> Logout </a></li>
 
 				</ul>
@@ -501,7 +631,7 @@
 						</div>
 						
 						<div class="col-md-2">						
-							<button type="submit" value= "Send" class="btn btn-info pull-left " id = "submit">Change Password</button>
+							<button type="submit" value= "Send" class="btn btn-info pull-left " id = "account-ChangePassword" >Change Password</button>
 						</div>
 
 
@@ -523,37 +653,35 @@
 					</div>
 
 					<div class="modal-body">
-						<div class="form-group">
+					<div class="table-responsive">   
+       				<table data-toggle="table" id="table-RidesToSelect"  >
+         <thead>
+           <tr>
+             
+           </tr>
+         </thead>
+         <tbody id = "tbodyRidesToSelect">
+           
+           
+         </tbody>
+       </table>
+      </div>
 
-							<label for="rides-name" class="col-lg-2 control-label">Rides:</label>
-							<div class="row">
-								<div class="col-md-6">
-									<div class="input-group">
-										<select class="form-control" id = "rides-name"  placeholder =" " name ="ride-list"> </select>
+</div>
 
-										
-										
-										<div class="input-group-btn ">
-											<button type="button" class="btn btn-info pull-left " id="Select-Ride">Select
-												Ride</button>
-										</div>
+						<div class="modal-footer">
 
-										<div class="col-md-2">
-											<button type="button" class="btn btn-info pull-left " data-dismiss = "modal" id = "cancel-addride">Cancel</button>
-										</div>
-
-									</div>
-									<!-- /input-group -->
-								</div>
-								<!-- /.col-lg-6 -->
-							</div>
-							<!-- /div row -->
-
+						<div class="col-md-2">
+							<button type="button" class="btn btn-info pull-left " data-dismiss = "modal" id = "cancel-table-RidesToSelect" >Cancel</button>
 						</div>
+						
+
+
 
 					</div>
+					</form>
 			</div>
-			</form>
+			
 		</div>
 
 	</div>
@@ -605,8 +733,9 @@
 
 
 					</div>
+					</form>
 			</div>
-			</form>
+			
 		</div>
 
 	</div>
@@ -685,7 +814,37 @@
 
 	</div>
 
+<div class="modal fade" id="confirmDelete" role="dialog" data-backdrop="static" data-keyboard="false">
 
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form class="form-horizontal">
+					<div class="modal-header">
+						<h4>Confirm Deletion</h4>
+					</div>
+
+					<div class="modal-body">
+					<h3>Are you sure you want to delete this ride?</h3>
+					</div>
+
+						<div class="modal-footer">
+
+						<div class="col-md-2">
+							<button type="button" class="btn btn-info pull-left " data-dismiss = "modal" id = "delete-confirmDelete" >Delete</button>
+						</div>
+						
+						<div class="col-md-2">
+							<button type="button" class="btn btn-info pull-left " data-dismiss = "modal" id = "cancel-confirmDelete" >Cancel</button>
+						</div>
+
+
+					</div>
+					</form>
+			</div>
+			
+		</div>
+
+	</div>
 
 
 
@@ -696,27 +855,13 @@ javascript section
 
 $(document).ready(function() {
 	
-	$.getJSON('${pageContext.request.contextPath}/ride/rides', function(result) {
-		
-		var optionsValues = '<select class="form-control" id = "rides-name"  placeholder =" " name ="ride-list">';
-	
-		$.each($.parseJSON(JSON.stringify(result)), function(idx, item) {
-	        	optionsValues += '<option value="' + item.rideId + '">' + item.rName + '</option>';
-		});	
-		 
-	    	optionsValues += '</select>';
-	    	var options = $('#rides-name');
-	    	options.replaceWith(optionsValues);
-	    
-	}); 
-	
 	 $('#loginForm').submit(function(e) {
 		// will pass the form date using the jQuery serialize function
 		$.post('${pageContext.request.contextPath}/login/signin', 
 		    $(this).serialize()).done(
 			function(response,textStatus,jqXHR) { 
 		    
-				alert('valid credentials');  
+			alert('valid credentials');  
 				
 		    $('#login').modal('hide');
 		    
@@ -740,6 +885,39 @@ $(document).ready(function() {
   }); 
 		e.preventDefault(); // prevent actual form submit and page reload 
 	}); 
+	
+	
+	$('#adminForm').submit(function(e) {
+		// will pass the form date using the jQuery serialize function
+		$.post('${pageContext.request.contextPath}/admin/signin', 
+		    $(this).serialize()).done(
+			function(response,textStatus,jqXHR) { 
+		    
+			alert('valid credentials');  
+				
+		    $('#admin').modal('hide');
+		    
+		    CleanLoginAdminForm();
+			
+			$('#search').modal('show'); 
+		
+			CleanLoginAdminForm();
+			
+			if(response != 'undefined'){
+				
+			    $.cookie("user_info", response);  
+			
+			} 
+			
+			}).fail(function(jqXHR, textStatus, errorThrown) 
+				    {
+			  alert('Sorry, you need to have Admin credentials');	
+			  $('#admin').modal('show');
+			  CleanLoginAdminForm();	
+  }); 
+		e.preventDefault(); // prevent actual form submit and page reload 
+	});	
+	
 	
 	  /*
 	  reset form ajax post function
@@ -769,6 +947,26 @@ $(document).ready(function() {
 		}); 	
 		e.preventDefault(); // prevent actual form submit and page reload	
 		});
+		
+		 $('#UpdateUserForm').submit(function(e) {
+				// will pass the form date using the jQuery serialize function
+				$.post('${pageContext.request.contextPath}/user/editUser', $(this).serialize(), function(response) {
+					 
+					if(response ==true){
+						 alert('Changes were successfully submitted');
+					
+					$('#updateUser').modal('hide');
+					$('#search').modal('show');
+					}else {
+						
+					  alert('Something went wrong :(. Please, Try Again');	
+					  $('#updateUser').modal('show');
+					 
+										
+					}
+				}); 	
+				e.preventDefault(); // prevent actual form submit and page reload	
+				});
   
 		/*
   register form ajax post function
@@ -801,31 +999,41 @@ $('#forgotPasswordForward').on('click', function () {
 	CleanLoginForm();
 	$('#login').modal('hide'); 
 		});
+
+$('#account-ChangePassword').on('click', function () {
+	$('#account').modal('hide');
+	$('#reset').modal('show'); 
+		});
+
 		
 $('#reset_cancel').on('click', function () {
 	CleanResetPasswordForm();
+	$('#reset').modal('hide');
 		});
 
 $('#register_cancel').on('click', function(){
 	CleanRegisterForm();
 });
 
+
 $('#cancel-Login').on('click', function(){
 	CleanLoginForm();
 });
 
+
 $('#cancel-loginAdmin').on('click', function(){
 	CleanLoginAdminForm();
+});
+
+$('#update_cancel').on('click', function(){
+	$('#search').modal('show');
 });
 
 $('#createAccountForward').on('click', function () {
 	CleanLoginForm();
 	$('#login').modal('hide'); 
 		});
-	
-// $('#login-password').on('click', function () {
-  // $(this).attr('type', 'password'); 
-// });
+
 
 $(document).ready(function(){
   $(":password");
@@ -856,49 +1064,6 @@ $('#logout').on('click', function () {
 	
 	});
 	
-	
-$('#Select-Ride').on('click', function () {
-	var user=$.cookie("user_info");
-	
-	 
-	if(typeof user ==='undefined'){
-		alert("!!!Please, login first.")
-		$('#rides').modal('hide');
-		//CleanRegisterForm();
-		$('#login').modal('show');
-		return;
-	}
-	
-	var uName=$.parseJSON(user); 
-	var userN= String(uName.user_id);
-	//alert(userN);
-	var userId=String(uName.user_id);
-	
-	var rid=$("#rides-name").val(); 
-	 
-	var rideId=$("#rides-name").val();
-	 
-	$.post('${pageContext.request.contextPath}/ride/addUser', 
-			{ "userid": userId, "rideid" : rid }).done(
-			function(response,textStatus,jqXHR) { 
-				if(response == false){
-					
-					alert('Sorry, you are unable to add ride !!!!');	
-					return;
-					
-				}
-				alert('You  successfuly Added this ride'); 
-			
-				$('#rides').modal('hide'); 
-				//populateAccountTable();
-				$('#account').modal('show');  
-			    
-			}).fail(function(jqXHR, textStatus, errorThrown) 
-				    {
-			  alert('unable to add ride !!!!');	
-      });  
-}); 
-	
 
 function CleanLoginForm() {
 $('#login-name').val('') ; 
@@ -906,10 +1071,10 @@ $('#login-password').val('') ;
 $('#login-code').val('') ; 
 };
 
-function CleanLoginAdminForm(){
+function CleanLoginAdminForm() {
 	$('#admin-name').val('') ; 
-	$('#admin-password').val('') ;
-};
+	$('#admin-password').val('') ; 
+	};
 
 function CleanRegisterForm() {
 $('#register-name').val('') ;
@@ -922,8 +1087,7 @@ $('#register-cell').val('') ;
 $('#register-age').val('') ; 
 };
 
-function CleanResetPasswordForm() {
-	
+function CleanResetPasswordForm() {	
 	$('#reset-usernameReset').val('') ; 
 	$('#reset-secQuestionReset').val('') ; 
 	$('#reset-secAnswerReset').val('') ; 
@@ -1084,50 +1248,17 @@ $('#registerForm').bootstrapValidator({
 		}
 		});
 
-/*
-function populateAccountTable(){
+function refreshAcctTable(urlVal){
 	
-	var user=$.cookie("user_info");
-	//alert(user);
-	 
-	if(typeof user ==='undefined'){
-		alert("!!!you need to login first.....")
-		//$('#rides').modal('hide');
-		//CleanRegisterForm();
-		$('#login').modal('show');
-		return;
-	}
-	
-	var uName=$.parseJSON(user); 
-	var userID= String(uName.user_id);
-	//alert(userN);
-	var userId=String(uName.user_id);
-	$.post('${pageContext.request.contextPath}/ride/user/rides', {
-		userid:userID
-	  }, function(result) {
-		  
-		alert(JSON.stringify(result));
-		$.each($.parseJSON(JSON.stringify(result)), function(idx, elem){
-			$('table#table-rides TBODY').append('<tr><td>'+ idx +'</td><td>'+elem.rName+'</td><td>'+elem.interval +'</td><td class= ' + 'deleteThisrow'+ ' ><i class="glyphicon glyphicon-remove"></i></td></tr>');
-			});
-	}); 
-	
-};
-*/
-
-//new changes from here
-//$(document).on('click', '.deleteThisrow', function() (in case the i cant delete last row added)
+	$('#table-rides').bootstrapTable('refresh', {
+        url: urlVal
+    });
+}
 
 
 
-function operateFormatter(value, row, index) {
+function operateRemove(value, row, index) {
     return [
-        '<a class="like" href="javascript:void(0)" title="Like">',
-            '<i class="glyphicon glyphicon-heart"></i>',
-        '</a>',
-        '<a class="edit" href="javascript:void(0)" title="Edit">',
-            '<i class="glyphicon glyphicon-edit"></i>',
-        '</a>',
         '<a class="remove" href="javascript:void(0)" title="Remove">',
             '<i class="glyphicon glyphicon-remove"></i>',
         '</a>'
@@ -1135,25 +1266,52 @@ function operateFormatter(value, row, index) {
 };
 
 
-function deleteRideFromDB (ride_id) {
+function operateAdding(value, row, index) {
+    return [
+        
+        '<a class="add" href="javascript:void(0)" title="Add">',
+            '<i class="glyphicon glyphicon-plus"></i>',
+        '</a>'
+    ].join('');
+};
 
-	var user=$.cookie("user_info");
-	
+function operateAdmin(value, row, index) {
+    return [
+            
+        '<a class="edit" href="javascript:void(0)" title="Edit">',
+            '<i class="glyphicon glyphicon-edit"></i>',
+        '</a>',
+        '<a class="disable" href="javascript:void(0)" title="Disable">',
+        	'<i class="glyphicon glyphicon-ban-circle"></i>',
+    	'</a>',       
+         '<a class="enable" href="javascript:void(0)" title="Enable">',
+            '<i class="glyphicon glyphicon-ok-circle"></i>',
+        '</a>'
+    ].join('');
+};
+
+function deleteRideFromDB (row) {
+
+	//gets user values from cookies
+	var user=$.cookie("user_info");	
 	var uName=$.parseJSON(user); 
 	var userID=String(uName.user_id);
-	var data= JSON.stringify({ "userid": userID, "rideId" : 1 })
+	
+	
+	//gets ride values from table row
+	var deleteR=JSON.stringify(row);         	
+	//alert('First from stringify row to delete' + deleteR);
+	
+	var parsingDelR=$.parseJSON(deleteR); 
+	//alert('second from parsing row to delete:' + parsingDelR);
+	
+	var addingDelR=String(parsingDelR.rideId);
+	//alert('third, getting value from key to delete: ' + addingDelR);
+	
+	
+	
 
-	/* 
-	 $.post('${pageContext.request.contextPath}/ride/removeRideByUser', { "userid": 1, "rideId" : 1 }).done(
-			function(response,textStatus,jqXHR) { 
-				alert('Ride Removed');		
-			 
-			
-			}).fail(function(jqXHR, textStatus, errorThrown) 
-				    {
-			  alert('unable to remove ride !!!!');	
- }); 	
-*/
+
 jQuery.ajax(
 
 		{
@@ -1164,11 +1322,11 @@ jQuery.ajax(
 
 		dataType : "json",
 
-		data:{ "userid": 1, "rideId" : 1 },
+		data: { "userid": userID, "rideId" : addingDelR },
 
-		success:function(data) { alert(data); },
+		success:function(data) { refreshAcctTable('${pageContext.request.contextPath}/ride/user/rides/' + getUserId()); },
 
-		error: function() {alert(data); }
+		error: function() { alert('Sorry, you were unable to delete ride')}
 
 		}
 
@@ -1176,38 +1334,166 @@ jQuery.ajax(
 };
 
 
-window.operateEvents = {
-        'click .like': function (e, value, row, index) {
-            alert('You click like icon, row: ' + JSON.stringify(row));
-            console.log(value, row, index);
-        },
-        'click .edit': function (e, value, row, index) {
-            alert('You click edit icon, row: ' + JSON.stringify(row));
-            console.log(value, row, index);
-        },
+function addRidetoUser (ride_id) {
+
+	var user=$.cookie("user_info");
+	
+	 
+	if(typeof user ==='undefined'){
+		alert("!!!Please, login first.")
+		$('#rides').modal('hide');
+		//CleanRegisterForm();
+		$('#login').modal('show');
+		return;
+	}
+	
+	var uName=$.parseJSON(user); 
+	var userN= String(uName.user_id);
+	//alert(userN);
+	var userId=String(uName.user_id);
+	
+	//var rid=$("#rides-name").val(); 
+	 
+	//var rideId=$("#rides-name").val();
+	 
+	$.post('${pageContext.request.contextPath}/ride/addUser', 
+			{ "userid": userId, "rideid" : ride_id }).done(
+			function(response,textStatus,jqXHR) { 
+				if(response == false){
+					
+					alert('Sorry, you are unable to add ride !!!!');	
+					return;
+					
+				}
+				alert('You  successfuly Added this ride'); 
+			
+				$('#rides').modal('hide'); 
+				//populateAccountTable();
+				refreshAcctTable('${pageContext.request.contextPath}/ride/user/rides/' + getUserId());
+				$('#account').modal('show');  
+			    
+			}).fail(function(jqXHR, textStatus, errorThrown) 
+				    {
+			  alert('unable to add ride !!!!');	
+      });  
+};
+
+
+
+window.operateRemoveEvent = {
+        
         'click .remove': function (e, value, row, index) {
-        	 alert('You click remove icon, row: ' + JSON.stringify(row));
-        	 deleteRideFromDB();
+        	// alert('You click remove icon, row: ' + JSON.stringify(row));
+        	bootbox.confirm("Are you sure you want to delete this ride?", function(result) {
+        		if(result == true){
+        			
+        			deleteRideFromDB(row);
+        		}
+        		       		
+        		})                    
+       }
+    }; 
+  
+window.operateAddingEvent = {
+        
+        	'click .add': function (e, value, row, index) {
+        		
+        		var addR=JSON.stringify(row);         	
+        	//alert('First from stringify row' + addR);
+        	
+        	var parsingR=$.parseJSON(addR); 
+        	//alert('second from parsing row' + parsingR);
+        	
+			var addingR=String(parsingR.rideId);
+			//alert('third, getting value from key' + addingR);
+        	 addRidetoUser(addingR);
+        	
              
         
        }
-    }; 
-   
-/* 
-$(document).on('click', '.deleterow', function(){	
-	var $eraserow = $(this).parent('tr');
-	    $eraserow.addClass("danger");
-		$eraserow.fadeOut(100, function(){
-	    $(this).remove();
-	});});	
-*/
+    };   
+
+window.operateAdminEditEvent = {
+        
+    	'click .edit': function (e, value, row, index) {
+    		
+    	var addR=JSON.stringify(row);         	
+    	//alert('First from stringify row' + addR);
+    	
+    	var parsingR=$.parseJSON(addR); 
+    	//alert('second from parsing row' + parsingR);
+    	
+		var addingR=String(parsingR.userid);
+		//alert('third, getting value from key' + addingR);
+		
+		jQuery.ajax(
+
+		{
+
+		url : '${pageContext.request.contextPath}/user/getUserById/' + addingR,
+
+		type: 'GET',
+
+		dataType : "json",
+
+		success:function(data) {
+		
+			
+			var editU=JSON.stringify(data);         	
+	    	//alert('before converting: ' + editU);
+	    	
+	    	var editU1=$.parseJSON(editU); 
+	    	//alert('second from parsing row' + parsingR);
+			var editU2 = String(editU1.userId);
+			var editU3 = String(editU1.firstName);
+			var editU4 = String(editU1.lastName);
+			var editU5 = String(editU1.password);
+			var editU6 = String(editU1.email);
+			var editU7 = String(editU1.securityQuestion);
+			var editU8 = String(editU1.securityAnswer);
+			var editU9 = String(editU1.age);
+			var editU10 = String(editU1.phoneNumber);
+			
+			$('#update-name').val(editU3) ;
+			$('#update-lastName').val(editU4) ; 
+			$('#update-password').val(editU5) ; 
+			$('#update-email').val(editU6) ; 
+			$('#update-secQuestion').val(editU7) ; 
+			$('#update-secAnswer').val(editU8) ; 
+			$('#update-cell').val(editU10) ; 
+			$('#update-age').val(editU9) ; 		
+		
+		}  ,
+
+		error: function() { alert('Sorry, the data could not be loaded')}
+
+		}
+
+		);
+		
+		 $('#search').modal('hide');
+    	 $('#updateUser').modal('show');
+    	
+         
+    
+   }
+};
+
+
+function getUserId() {
+var user=$.cookie("user_info");
+	
+	var uName=$.parseJSON(user); 
+	var userID=String(uName.user_id);
+	return userID;
+};
 
 
 $('#table-rides').bootstrapTable({
     method: 'get',
-    url: '${pageContext.request.contextPath}/ride/user/rides/1',
+    url: '${pageContext.request.contextPath}/ride/user/rides/' + getUserId(),
     cache: false,
-    height: 400,
+    height: 299,
     striped: true,
     pagination: true,
     pageSize: 50,
@@ -1222,8 +1508,9 @@ $('#table-rides').bootstrapTable({
     columns: [{
         field: 'rName',
         title: 'Ride Name',
+        class: 'deleterow',
         align: 'right',
-        valign: 'bottom',
+        valign: 'bottom'
         //sortable: true
     }, {
         field: 'interval',
@@ -1231,30 +1518,144 @@ $('#table-rides').bootstrapTable({
         class: 'deleterow',
         align: 'center',
         valign: 'middle'
-        //sortable: true
-        //,formatter: nameFormatter
+        
     }, {
         field: 'price',
         title: 'Item Price',
-        class: 'deleterow'
-        //align: 'left',
-        //valign: 'top',
-        //sortable: true,
-       // ,formatter: priceFormatter,
-        //sorter: priceSorter
+        class: 'deleterow',
+        align: 'left',
+        valign: 'top'
+        
     }, {
         field: 'remove',
         title: 'Item Operate',
-        align: 'center',
-        valign: 'middle',
         class: 'deleterow',
-       clickToSelect: false,
-       formatter: operateFormatter,
-       events: operateEvents
+        align: 'center',
+        valign: 'middle', 
+        clickToSelect: false,
+        formatter: operateRemove,
+        events: operateRemoveEvent
     }]
 });
 
 
+$('#table-RidesToSelect').bootstrapTable({
+    method: 'get',
+    url: '${pageContext.request.contextPath}/ride/rides',
+    cache: false,
+    height: 299,
+    striped: true,
+    pagination: true,
+    pageSize: 50,
+    pageList: [10, 25, 50, 100, 200],
+    search: true,
+    showToggle: true,
+    showColumns: true,
+    showRefresh: true,
+    //minimumCountColumns: 2,
+    sortOrder: 'asc',
+    sortName: 'waitingTime',
+    clickToSelect: true,
+
+    columns: [{
+    	field: 'rideId',
+        title: '#',        
+        class: 'addRide',
+        switchable: false,
+        align: 'right',
+        valign: 'bottom'
+        
+        //sortable: true
+    }, {
+        field: 'rName',
+        title: 'Ride Name',
+        class: 'addRide',
+        align: 'center',
+        valign: 'middle'
+        
+    }, {
+        field: 'waitingTime',
+        title: 'Waiting Time',
+        class: 'addRide',
+        align: 'left',
+        valign: 'top',
+        sortable: true
+       
+    }, {
+        field: 'add',
+        title: 'Item Operate',
+        align: 'center',
+        valign: 'middle',
+        class: 'addRide',
+        switchable: false,
+       clickToSelect: false,
+       formatter: operateAdding,
+       events: operateAddingEvent
+    }]
+});
+
+
+$('#table-admin').bootstrapTable({
+    method: 'get',
+    url: '${pageContext.request.contextPath}/admin/allUsers',
+    cache: false,
+    height: 400,
+    striped: true,
+    pagination: true,
+    pageSize: 10,
+    pageList: [10, 25, 50, 100, 200],
+    search: true,
+    showToggle: true,
+    showColumns: true,
+    showRefresh: true,
+    minimumCountColumns: 2,
+    sortOrder: 'asc',
+    //sortName: 'waitingTime',
+    clickToSelect: true,
+
+    columns: [{
+    	field: 'userid',
+        title: 'User-Id',        
+        class: 'admin',
+        switchable: false,
+        align: 'right',
+        valign: 'bottom'
+        
+    }, {
+        field: 'firstName',
+        title: 'First Name',
+        class: 'admin',
+        align: 'center',
+        valign: 'middle'
+        
+    }, {
+        field: 'lastName',
+        title: 'Last Name',
+        class: 'admin',
+        align: 'left',
+        valign: 'top',
+        sortable: true
+       
+    }, {
+    	field: 'userName',
+    	title: 'UserName',
+    	class: 'admin',
+    	align: 'left',
+    	valign: 'top',
+    	sortable: true
+   
+	}, {
+        field: 'add',
+        title: 'Item Operate',
+        align: 'center',
+        valign: 'middle',
+        class: 'admin',
+        switchable: false,
+       clickToSelect: false,
+       formatter: operateAdmin,
+       events: operateAdminEditEvent
+    }]
+});
 
 
 /*
