@@ -148,13 +148,8 @@
 		<div class="container-fluid">
 			<p class=navbar-textpull-left">Virtual Queue | Senior Project</p>
 		</div>
-
 	</div>
-
-
-
 	<div class="modal fade" id="login" role="dialog" data-backdrop="static" data-keyboard="false">
-
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form class="form-horizontal" id = "loginForm">
@@ -165,10 +160,7 @@
 					
 					<div class="error hide" id="idError">Invalid Credentials. Please, Try Again</div>
 					
-
-
 					<div class="modal-body">
-
 						<div class="form-group">
 							<label for="login-username" class="col-lg-2 control-label">Username:</label>
 							<div class="col-lg-10">
@@ -176,7 +168,6 @@
 									placeholder="user@example.com">
 							</div>
 						</div>
-
 						<div class="form-group">
 							<label for="login-password" class="col-lg-2 control-label">Password:</label>
 							<div class="col-lg-10">
@@ -184,7 +175,6 @@
 									placeholder="" >
 							</div>
 						</div>
-
 						<div class="form-group">
 							<label for="login-code" class="col-lg-2 control-label">Code:</label>
 							<div class="col-lg-10">
@@ -192,91 +182,66 @@
 									placeholder="ABC123456">
 							</div>
 						</div>
-
 					</div>
-
 					<div class="modal-footer">
-
 						<div class="col-md-2">						
 							<button type="submit" value= "Send" class="btn btn-info pull-left " id = "submit">Login</button>
 						</div>
-
 						<div class="col-md-2">
 							<button type="button" class="btn btn-info pull-left " data-dismiss = "modal" id = "cancel-Login" >Cancel</button>
 						</div>
-
 						<div class="col-md-4">
 							<li><a href="#reset" data-toggle="modal" id = "forgotPasswordForward" >Forgot Password</a></li>
 						</div>
-
 						<div class="col-md-4">
 							<li><a href="#register" data-toggle="modal" id = "createAccountForward" >Create Account</a></li>
 						</div>
-
-
 					</div>
 			</div>
 			</form>
 		</div>
-
 	</div> 
 	
-
 	<div class="modal fade" id="register" role="dialog" data-backdrop="static" data-keyboard="false">
-
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form class="form-horizontal" id = "registerForm" >
 					<div class="modal-header">
 						<h4>Theme Park Register Form</h4>
 					</div>
-
 					<div class="modal-body">
 					 
 						<div class="form-group">
-
 							<label for="register-name" class="col-lg-2 control-label">Name:</label>
 							<div class="col-lg-10">
 								<input name= "firstName" type="text" class="form-control" id="register-name"
 									placeholder="">
 							</div>
-
 						</div>
-
 						<div class="form-group">
-
 							<label for="register-lastName" class="col-lg-2 control-label">Last
 								Name:</label>
 							<div class="col-lg-10">
 								<input name= "lastName"type="text" class="form-control" id="register-lastName"
 									placeholder="">
 							</div>
-
 						</div>
-
-
 						<div class="form-group">
-
 							<label for="register-password" class="col-lg-2 control-label">Password:</label>
 							<div class="col-lg-10">
 								<input name= "password" type="password" class="form-control" id="register-password"
 									placeholder="">
 							</div>
-
 						</div>
 						
 						<div class="form-group">
-
 							<label for="register-email" class="col-lg-2 control-label">Email:</label>
 							<div class="col-lg-10">
 								<input name= "email" type="text" class="form-control" id="register-email"
 									placeholder="user@example.com">
 							</div>
-
 						</div>
-
 						<div class="form-group">
-
 							<label for="register-secQuestion" class="col-lg-2 control-label">Security
 								Question:</label>
 							<div class="col-lg-10">
@@ -319,6 +284,16 @@
 							<div class="col-lg-10">
 								<input name= "age" type="text" class="form-control" id="register-age"
 									placeholder="">
+							</div>
+
+						</div>
+						
+						<div class="form-group">
+
+							<label for="register-code" class="col-lg-2 control-label">Enter Code:</label>
+							<div class="col-lg-10">
+								<input name= "code" type="text" class="form-control" id="register-code"
+									placeholder="Enter any code">
 							</div>
 
 						</div>
@@ -465,9 +440,7 @@
 										data-dismiss="modal" id="update_cancel" >Cancel</button>
 								</div>
 <!--  
-
 								<div id="personFormResponse" class="green"></div>
-
 -->
 							</div>
 						
@@ -852,7 +825,6 @@
 javascript section
 -->
 <script type="text/javascript">
-
 $(document).ready(function() {
 	
 	 $('#loginForm').submit(function(e) {
@@ -861,7 +833,7 @@ $(document).ready(function() {
 		    $(this).serialize()).done(
 			function(response,textStatus,jqXHR) { 
 		    
-			alert('valid credentials');  
+			//alert('valid credentials');  
 				
 		    $('#login').modal('hide');
 		    
@@ -878,8 +850,8 @@ $(document).ready(function() {
 			} 
 			
 			}).fail(function(jqXHR, textStatus, errorThrown) 
-				    {
-			  alert('invalid credentials');	
+				    {
+			  alert('invalid credentials');	
 			  $('#login').modal('show');
 			  CleanLoginForm();	
   }); 
@@ -893,7 +865,7 @@ $(document).ready(function() {
 		    $(this).serialize()).done(
 			function(response,textStatus,jqXHR) { 
 		    
-			alert('valid credentials');  
+			//alert('valid credentials');  
 				
 		    $('#admin').modal('hide');
 		    
@@ -910,8 +882,8 @@ $(document).ready(function() {
 			} 
 			
 			}).fail(function(jqXHR, textStatus, errorThrown) 
-				    {
-			  alert('Sorry, you need to have Admin credentials');	
+				    {
+			  alert('Sorry, you need to have Admin credentials');	
 			  $('#admin').modal('show');
 			  CleanLoginAdminForm();	
   }); 
@@ -993,53 +965,41 @@ $(document).ready(function() {
 		}); 
 		e.preventDefault(); // prevent actual form submit and page reload
 		}); 
-	});  
-
+	}); 
+		
+		//=========DocumentReady ends=============
 $('#forgotPasswordForward').on('click', function () {
 	CleanLoginForm();
 	$('#login').modal('hide'); 
 		});
-
 $('#account-ChangePassword').on('click', function () {
 	$('#account').modal('hide');
 	$('#reset').modal('show'); 
 		});
-
 		
 $('#reset_cancel').on('click', function () {
 	CleanResetPasswordForm();
 	$('#reset').modal('hide');
 		});
-
 $('#register_cancel').on('click', function(){
 	CleanRegisterForm();
 });
-
-
 $('#cancel-Login').on('click', function(){
 	CleanLoginForm();
 });
-
-
 $('#cancel-loginAdmin').on('click', function(){
 	CleanLoginAdminForm();
 });
-
 $('#update_cancel').on('click', function(){
 	$('#search').modal('show');
 });
-
 $('#createAccountForward').on('click', function () {
 	CleanLoginForm();
 	$('#login').modal('hide'); 
 		});
-
-
 $(document).ready(function(){
   $(":password");
 });
-
-
 $('#logout').on('click', function () {
 	 var user=$.cookie("user_info");
 	 
@@ -1058,24 +1018,21 @@ $('#logout').on('click', function () {
 			 
 			
 			}).fail(function(jqXHR, textStatus, errorThrown) 
-				    {
-			  alert('unable to logout !!!!');	
+				    {
+			  alert('unable to logout !!!!');	
   });  
 	
 	});
 	
-
 function CleanLoginForm() {
 $('#login-name').val('') ; 
 $('#login-password').val('') ; 
 $('#login-code').val('') ; 
 };
-
 function CleanLoginAdminForm() {
 	$('#admin-name').val('') ; 
 	$('#admin-password').val('') ; 
 	};
-
 function CleanRegisterForm() {
 $('#register-name').val('') ;
 $('#register-lastName').val('') ; 
@@ -1084,9 +1041,10 @@ $('#register-email').val('') ;
 $('#register-secQuestion').val('') ; 
 $('#register-secAnswer').val('') ; 
 $('#register-cell').val('') ; 
-$('#register-age').val('') ; 
-};
+$('#register-age').val('') ;
+$('#register-code').val('') ;
 
+};
 function CleanResetPasswordForm() {	
 	$('#reset-usernameReset').val('') ; 
 	$('#reset-secQuestionReset').val('') ; 
@@ -1094,7 +1052,6 @@ function CleanResetPasswordForm() {
 	$('#reset-newPasswordReset').val('') ; 
 	$('#reset-confirmNewPassword').val('') ;
 	};
-
 	
 $('#registerForm').bootstrapValidator({
 	message: 'This value is not valid',
@@ -1142,7 +1099,6 @@ $('#registerForm').bootstrapValidator({
 			}
 			}
 			},			
-
 		securityAnswer: {
 			validators: {
 			notEmpty: {
@@ -1181,7 +1137,6 @@ $('#registerForm').bootstrapValidator({
 				
 	}
 	});
-
 	
 	$('#loginForm').bootstrapValidator({
 		message: 'This value is not valid',
@@ -1220,7 +1175,6 @@ $('#registerForm').bootstrapValidator({
 					
 		}
 		});
-
 	
 	$('#adminForm').bootstrapValidator({
 		message: 'This value is not valid',
@@ -1247,16 +1201,12 @@ $('#registerForm').bootstrapValidator({
 												
 		}
 		});
-
 function refreshAcctTable(urlVal){
 	
 	$('#table-rides').bootstrapTable('refresh', {
         url: urlVal
     });
 }
-
-
-
 function operateRemove(value, row, index) {
     return [
         '<a class="remove" href="javascript:void(0)" title="Remove">',
@@ -1264,8 +1214,6 @@ function operateRemove(value, row, index) {
         '</a>'
     ].join('');
 };
-
-
 function operateAdding(value, row, index) {
     return [
         
@@ -1274,7 +1222,6 @@ function operateAdding(value, row, index) {
         '</a>'
     ].join('');
 };
-
 function operateAdmin(value, row, index) {
     return [
             
@@ -1289,9 +1236,7 @@ function operateAdmin(value, row, index) {
         '</a>'
     ].join('');
 };
-
 function deleteRideFromDB (row) {
-
 	//gets user values from cookies
 	var user=$.cookie("user_info");	
 	var uName=$.parseJSON(user); 
@@ -1310,32 +1255,18 @@ function deleteRideFromDB (row) {
 	
 	
 	
-
-
 jQuery.ajax(
-
 		{
-
 		url : '${pageContext.request.contextPath}/ride/removeRideByUser',
-
 		type: 'POST',
-
 		dataType : "json",
-
 		data: { "userid": userID, "rideId" : addingDelR },
-
 		success:function(data) { refreshAcctTable('${pageContext.request.contextPath}/ride/user/rides/' + getUserId()); },
-
 		error: function() { alert('Sorry, you were unable to delete ride')}
-
 		}
-
 		);
 };
-
-
 function addRidetoUser (ride_id) {
-
 	var user=$.cookie("user_info");
 	
 	 
@@ -1373,13 +1304,10 @@ function addRidetoUser (ride_id) {
 				$('#account').modal('show');  
 			    
 			}).fail(function(jqXHR, textStatus, errorThrown) 
-				    {
-			  alert('unable to add ride !!!!');	
+				    {
+			  alert('unable to add ride !!!!');	
       });  
 };
-
-
-
 window.operateRemoveEvent = {
         
         'click .remove': function (e, value, row, index) {
@@ -1412,7 +1340,6 @@ window.operateAddingEvent = {
         
        }
     };   
-
 window.operateAdminEditEvent = {
         
     	'click .edit': function (e, value, row, index) {
@@ -1427,15 +1354,10 @@ window.operateAdminEditEvent = {
 		//alert('third, getting value from key' + addingR);
 		
 		jQuery.ajax(
-
 		{
-
 		url : '${pageContext.request.contextPath}/user/getUserById/' + addingR,
-
 		type: 'GET',
-
 		dataType : "json",
-
 		success:function(data) {
 		
 			
@@ -1464,11 +1386,8 @@ window.operateAdminEditEvent = {
 			$('#update-age').val(editU9) ; 		
 		
 		}  ,
-
 		error: function() { alert('Sorry, the data could not be loaded')}
-
 		}
-
 		);
 		
 		 $('#search').modal('hide');
@@ -1478,17 +1397,19 @@ window.operateAdminEditEvent = {
     
    }
 };
-
-
-function getUserId() {
-var user=$.cookie("user_info");
+ function getUserId() {
+ var user=$.cookie("user_info");
+ 
+ if(typeof user ==='undefined'){
+		
+		return 0;
+	}
 	
 	var uName=$.parseJSON(user); 
+	//alert('just testing' + uName);
 	var userID=String(uName.user_id);
 	return userID;
 };
-
-
 $('#table-rides').bootstrapTable({
     method: 'get',
     url: '${pageContext.request.contextPath}/ride/user/rides/' + getUserId(),
@@ -1504,7 +1425,6 @@ $('#table-rides').bootstrapTable({
     showRefresh: true,
     minimumCountColumns: 2,
     clickToSelect: true,
-
     columns: [{
         field: 'rName',
         title: 'Ride Name',
@@ -1520,13 +1440,6 @@ $('#table-rides').bootstrapTable({
         valign: 'middle'
         
     }, {
-        field: 'price',
-        title: 'Item Price',
-        class: 'deleterow',
-        align: 'left',
-        valign: 'top'
-        
-    }, {
         field: 'remove',
         title: 'Item Operate',
         class: 'deleterow',
@@ -1537,8 +1450,6 @@ $('#table-rides').bootstrapTable({
         events: operateRemoveEvent
     }]
 });
-
-
 $('#table-RidesToSelect').bootstrapTable({
     method: 'get',
     url: '${pageContext.request.contextPath}/ride/rides',
@@ -1556,12 +1467,11 @@ $('#table-RidesToSelect').bootstrapTable({
     sortOrder: 'asc',
     sortName: 'waitingTime',
     clickToSelect: true,
-
     columns: [{
     	field: 'rideId',
         title: '#',        
         class: 'addRide',
-        switchable: false,
+        visible: false,
         align: 'right',
         valign: 'bottom'
         
@@ -1593,8 +1503,6 @@ $('#table-RidesToSelect').bootstrapTable({
        events: operateAddingEvent
     }]
 });
-
-
 $('#table-admin').bootstrapTable({
     method: 'get',
     url: '${pageContext.request.contextPath}/admin/allUsers',
@@ -1612,7 +1520,6 @@ $('#table-admin').bootstrapTable({
     sortOrder: 'asc',
     //sortName: 'waitingTime',
     clickToSelect: true,
-
     columns: [{
     	field: 'userid',
         title: 'User-Id',        
@@ -1656,10 +1563,7 @@ $('#table-admin').bootstrapTable({
        events: operateAdminEditEvent
     }]
 });
-
-
 /*
-
 $('#logout').on('click', function () {
 	 var user=$.cookie("user_info");
 	 
@@ -1678,21 +1582,17 @@ $('#logout').on('click', function () {
 			 
 			
 			}).fail(function(jqXHR, textStatus, errorThrown) 
-				    {
-			  alert('unable to logout !!!!');	
+				    {
+			  alert('unable to logout !!!!');	
  });  
 	
 	});
 	
 */
-
-
-
-
-
 </script>
 
 
 
 </body>
 </html>
+ 

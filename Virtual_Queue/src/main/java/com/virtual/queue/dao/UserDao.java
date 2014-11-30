@@ -1,5 +1,6 @@
 package com.virtual.queue.dao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.virtual.queue.beans.User;
@@ -11,7 +12,7 @@ public interface UserDao {
 	public User getUserByToken(String token);
 	public String storeToken(Long userId);
     public List<User> getAll(); 
-    public void addUser(User user);
+    public void addUser(User user) throws SQLException;
 	public void updateUser(User user);
 	public void deleteUserById(Long id);
 	public User getUserByUserName(String userName);
@@ -21,10 +22,12 @@ public interface UserDao {
 	public User getUserById(long userId);
 	public boolean removeUserFromQueue(long userId,long rideId);
 	public User getUserToModify(long userId);
-	Boolean editUserById(String newFirstName, String newLastName,
+	public Boolean editUserById(String newFirstName, String newLastName,
 			String newEmail, String password, String newUserName,
 			String securityAnswer, String securityQuestion, String newCell,
 			String newAge) throws Exception;
+	
+	public boolean AddRole(long userId,String roleType) throws SQLException;
 	
 
 }

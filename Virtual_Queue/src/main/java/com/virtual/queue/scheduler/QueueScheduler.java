@@ -66,12 +66,12 @@ public class QueueScheduler {
 
 		try {
 			Scheduler sch = new StdSchedulerFactory().getScheduler();
-
+/*
 			if ("start".equalsIgnoreCase(command) && !sch.isStarted()) {
 
 				sch.start();
 
-			} else {
+			} else if("stop".equalsIgnoreCase(command)) {
 
 				if (sch.isStarted()) {
 					// wait until all jobs ended before shutting down
@@ -80,7 +80,7 @@ public class QueueScheduler {
 				}
 
 			}
-
+*/
 			JobDetail job = null;
 			Trigger trigger = null;
 			int interval = 0;
@@ -89,10 +89,10 @@ public class QueueScheduler {
 				interval = info.getInterval() + delay;
 
 				job = QueueJobFactory.getJob(RemoveRideJob.class,
-						info.getrName());
+						info.getrName()+"_DELETE");
 
 				trigger = QueueTriggerFactory.getTrigger(interval,
-						info.getrName());
+						info.getrName()+"_DELETE");
 				job.getJobDataMap().put(RemoveRideJob.RIDE_ID, info.getRideId());
 				job.getJobDataMap().put(RemoveRideJob.RIDE_INTERVAL, info.getInterval());
 				sch.scheduleJob(job, trigger);

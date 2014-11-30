@@ -50,8 +50,9 @@ public class NotificationController {
 			e.printStackTrace();
 		}
 
-		return qScheduler.scheduleRideJobs(command, rides);
-
+		 qScheduler.scheduleRideJobs(command, rides);
+		 qScheduler.removeUserFromQueue(rides, command, 15);
+		 return true;
 	}
 
 	@RequestMapping(value = "/notify", method = RequestMethod.POST)

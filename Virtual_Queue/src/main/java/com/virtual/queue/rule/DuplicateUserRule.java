@@ -45,6 +45,7 @@ public class DuplicateUserRule implements Rule,RuleCmd {
 
 	@Override
 	public void loadData(long userId, long rideId) {
+		//TODO:try to use injection instead.
 		UserDao userDao=new UserDaoImp();
 		RideDao rideDao=new RideDaoImp();
 		

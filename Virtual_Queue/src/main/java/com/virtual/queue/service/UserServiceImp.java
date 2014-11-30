@@ -1,5 +1,6 @@
 package com.virtual.queue.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,12 @@ public class UserServiceImp implements UserService {
 
 	@Override
 	public void addUser(User user) {
-		userDao.addUser(user);
+		try {
+			userDao.addUser(user);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 

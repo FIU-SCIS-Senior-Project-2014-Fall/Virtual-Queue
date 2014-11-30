@@ -2,13 +2,18 @@ package com.virtual.queue.service;
 
 import java.util.List;
 
+import com.virtual.queue.beans.NotificationInfo;
 import com.virtual.queue.beans.Ride;
 import com.virtual.queue.beans.RideInfo;
 import com.virtual.queue.beans.RuleCapacityBean;
+import com.virtual.queue.beans.User;
 import com.virtual.queue.builder.RuleBuilderImp;
 import com.virtual.queue.dao.QueueDao;
 import com.virtual.queue.dao.RideDao;
+import com.virtual.queue.dao.UserDao;
 import com.virtual.queue.exception.NotificationException;
+import com.virtual.queue.handler.EmailNotificationHandlerImp;
+import com.virtual.queue.handler.NotificationHandler;
 import com.virtual.queue.rule.Rule;
 import com.virtual.queue.utility.QueueUtil;
 import com.virtual.queue.validator.Validator;
@@ -28,17 +33,19 @@ public class RideServiceImp implements RideService {
 	@Autowired
 	RuleService ruleService;
 
+	@Autowired
+	UserDao userDao;
+
 	@Override
 	public List<RideInfo> getAll() throws Exception {
-		
-		
+
 		List<RideInfo> list = rideDao.getAll();
-		
 
 		for (RideInfo info : list) {
 			// get all data to calculate waiting time.
 
-			int count = queueDao.getAllUserQueueForRide(info.getRideId()).size();
+			int count = queueDao.getAllUserQueueForRide(info.getRideId())
+					.size();
 			int capacity = info.getCapacity();
 			int interval = info.getInterval();
 
@@ -51,9 +58,6 @@ public class RideServiceImp implements RideService {
 
 		return list;
 	}
-	
-
-	
 
 	@Override
 	public void addRide(Ride ride) {
@@ -78,17 +82,58 @@ public class RideServiceImp implements RideService {
 	public boolean addUserRideById(Long rideId, Long userid) throws Exception {
 
 		Validator validator = new ValidatorFactory().getRideValidator();
+		boolean result = false;
 
 		// RuleBuilder builder = new RuleBuilderImp();
 		List<Rule> rules = new RuleBuilderImp().buildRules();
 
 		validator.setRules(rules);
+
 		if (validator.validate(userid, rideId)) {
 
-			return rideDao.addUserRideById(rideId, userid);
+			// add user to ride/queue
+			result = rideDao.addUserRideById(rideId, userid);
+
+			/*
+			 * check queue size and ride capacity. if there is no user on the
+			 * queue yet, or the amount of users is less than the ride
+			 * capacity,then notify this user just after add him/her to this
+			 * queue.
+			 */
+
+			List<User> users = queueDao.getAllUserQueueForRide(rideId);
+			
+			User user = userDao.getUserById(userid);
+			
+			RideInfo info = rideDao.getRideById(rideId);
+
+			if (users != null && info != null && user!=null) {
+				// Check for biz rules
+				if (users.size() <= info.getCapacity()) {
+
+					NotificationHandler handler = new EmailNotificationHandlerImp();
+					NotificationInfo notInfo = new NotificationInfo();
+					// set data
+					notInfo.setEmail(user.getEmail());
+					notInfo.setName(user.getFirstName() + " , "
+							+ user.getLastName());
+					notInfo.setEmail(user.getEmail());
+
+					double timeMin = info.getInterval() / 60.0;
+					notInfo.setMessage("Your "
+							+ info.getrName()
+							+ " ride is due in :"
+							+ timeMin
+							+ "minute/s, Please, try to be on time and Enjoy your Ride :) ");
+					// notify user
+					handler.notifiyUser(notInfo);
+
+				}
+
+			}
 
 		}
-		return false;
+		return result;
 
 	}
 

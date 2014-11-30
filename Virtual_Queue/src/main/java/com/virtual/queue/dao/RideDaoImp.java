@@ -178,6 +178,7 @@ public class RideDaoImp extends BaseDao implements RideDao {
 				info2.setEndTime(endTime);
 				info2.setCapacity(result.getInt("ride_capacity"));
 				info2.setRideId(result.getLong("ride_id"));
+				
 
 				info2.setCoordinate(new Coordinate(result
 						.getBigDecimal("latitude"), result
