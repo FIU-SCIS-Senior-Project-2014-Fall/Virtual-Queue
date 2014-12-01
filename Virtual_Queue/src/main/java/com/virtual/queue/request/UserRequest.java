@@ -18,6 +18,7 @@ public class UserRequest implements Serializable {
 	private String password;
 	private String age;
 	private String phoneNumber;
+	private String code;
 	
 
 	public String getSecurityQuestion() {
@@ -90,6 +91,14 @@ public class UserRequest implements Serializable {
 
 	public void setCell(String cell) {
 		this.phoneNumber = cell;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 }

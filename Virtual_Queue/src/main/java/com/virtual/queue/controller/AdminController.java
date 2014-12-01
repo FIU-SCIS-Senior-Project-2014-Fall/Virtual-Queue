@@ -49,7 +49,7 @@ public class AdminController {
 		User user = loginService.adminSignIn(userName, password);
 		
 
-		if (user.isNill())
+		if (user== null || user.isNill())
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 
 		if (!user.getUserRole().getRoleType().equals("ADMIN")) {
@@ -75,6 +75,7 @@ public class AdminController {
 		obj.append("user_name", user.getUserName());
 		obj.append("user_id", user.getUserid().toString());
 		obj.append("user_email", user.getEmail());
+		obj.append("role", user.getUserRole().getRoleType());
 		// finish adding all roles returned from GET-USER SELECT
 		return new ResponseEntity<String>(obj.toString(), HttpStatus.OK);
 
@@ -98,7 +99,7 @@ public class AdminController {
 						HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 
-			User newUser = (User) session.getAttribute("user");
+			User newUser = (User) session.getAttribute("Admin");
 
 			if (newUser != null && newUser.getUserName().equals(userName)) {
 

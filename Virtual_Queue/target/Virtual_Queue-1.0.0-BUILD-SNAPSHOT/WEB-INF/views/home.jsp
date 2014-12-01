@@ -11,6 +11,7 @@
 <link href="<c:url value="/resources/css/bootstrap.min.css" /> "rel="stylesheet" type="text/css" />
 <link href="<c:url value="/resources/css/bootstrap-theme.min.css" /> "rel="stylesheet" type="text/css" />
 <link href="<c:url value="/resources/css/bootstrap-table.css" /> "rel="stylesheet" type="text/css" />
+<link href="<c:url value="/resources/css/bootstrap-switch.css" /> "rel="stylesheet" type="text/css" />
 <link href="<c:url value="/resources/css/styles.css" />"rel="stylesheet" type="text/css" />
 
 
@@ -19,6 +20,7 @@
 <script type="text/javascript"src="<c:url value="/resources/js/bootstrap-table.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/bootbox.min.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/bootstrapValidator.js" />"></script>
+<script type="text/javascript"src="<c:url value="/resources/js/bootstrap-switch.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/angular/angular.min.js" />"></script>
 <script type="text/javascript"src="<c:url value="/resources/js/jquery.cookie.js" />"></script>
 
@@ -738,7 +740,7 @@
 				<ul class="nav navbar-nav navbar-right">
 
 					<li class="active"><a href="#"> Home </a></li>					
-					<li><a href="#logout" data-toggle="modal" id="logout"><span class="glyphicon glyphicon-off"></span> Logout </a></li>
+					<li><a href="#logout-admin" data-toggle="modal" id="logout-admin"><span class="glyphicon glyphicon-off"></span> Logout </a></li>
 
 				</ul>
 
@@ -808,6 +810,38 @@
 						
 						<div class="col-md-2">
 							<button type="button" class="btn btn-info pull-left " data-dismiss = "modal" id = "cancel-confirmDelete" >Cancel</button>
+						</div>
+
+
+					</div>
+					</form>
+			</div>
+			
+		</div>
+
+	</div>
+	
+<div class="modal fade" id="confirmLogout" role="dialog" data-backdrop="static" data-keyboard="false">
+
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form class="form-horizontal">
+					<div class="modal-header">
+						<h4>Confirm Logout</h4>
+					</div>
+
+					<div class="modal-body">
+					<h3>Are you sure you want to logout?</h3>
+					</div>
+
+						<div class="modal-footer">
+
+						<div class="col-md-2">
+							<button type="button" class="btn btn-info pull-left " data-dismiss = "modal" id = "delete-confirmLogout" >Delete</button>
+						</div>
+						
+						<div class="col-md-2">
+							<button type="button" class="btn btn-info pull-left " data-dismiss = "modal" id = "cancel-cconfirmLogout" >Cancel</button>
 						</div>
 
 
@@ -1000,6 +1034,7 @@ $('#createAccountForward').on('click', function () {
 $(document).ready(function(){
   $(":password");
 });
+
 $('#logout').on('click', function () {
 	 var user=$.cookie("user_info");
 	 
@@ -1007,20 +1042,29 @@ $('#logout').on('click', function () {
 	var uName=$.parseJSON(user);
 	var userN= String(uName.user_name);
 	
-	 $.post('${pageContext.request.contextPath}/login/signout', 
-		    {userName:userN}).done(
-			function(response,textStatus,jqXHR) { 
-				alert('You were successfuly logged out');
-		    
-			$('#account').modal('hide'); 
-			    $.removeCookie("user_info");
-			    location.reload();
-			 
+	
+	bootbox.confirm("Are you sure you want to logout?", function(result) {
+		if(result == true){
 			
-			}).fail(function(jqXHR, textStatus, errorThrown) 
-				    {
-			  alert('unable to logout !!!!');	
-  });  
+			 $.post('${pageContext.request.contextPath}/login/signout', 
+					    {userName:userN}).done(
+						function(response,textStatus,jqXHR) { 
+							alert('You were successfuly logged out');
+					    
+						$('#account').modal('hide'); 
+						    $.removeCookie("user_info");
+						    location.reload();
+						 
+						
+						}).fail(function(jqXHR, textStatus, errorThrown) 
+							    {
+						  alert('unable to logout !!!!');	
+			  });
+		}
+		       		
+		}) 
+	
+	  
 	
 	});
 	
@@ -1228,6 +1272,7 @@ function operateAdmin(value, row, index) {
         '<a class="edit" href="javascript:void(0)" title="Edit">',
             '<i class="glyphicon glyphicon-edit"></i>',
         '</a>',
+        
         '<a class="disable" href="javascript:void(0)" title="Disable">',
         	'<i class="glyphicon glyphicon-ban-circle"></i>',
     	'</a>',       
@@ -1235,7 +1280,42 @@ function operateAdmin(value, row, index) {
             '<i class="glyphicon glyphicon-ok-circle"></i>',
         '</a>'
     ].join('');
-};
+        
+}; 
+
+/*
+function operateAdminDisEn(value, row, index) {	
+	var rowA=JSON.stringify(row);         	
+	//alert('First from stringify row' + addR);
+	
+	var parsingA=$.parseJSON(rowA); 
+	//alert('second from parsing row' + rowA);
+	
+	var addingA=String(parsingA.enabled);
+	//alert('third, getting value from key' + parsingA);
+	if(addingA == "1"){
+		return [
+		         
+				'<div class="btn-group btn-toggle" name="myOnOff">',
+				'<button class="btn btn-xs btn-primary active " name = "on">ON</button>',
+				'<button class="btn btn-xs btn-default" name="off">OFF</button>',
+				'</div>'
+		        
+		    ].join('');
+		
+	}
+	else{
+	return [
+         
+		'<div class="btn-group btn-toggle" name="myOnOff">',
+		'<button class="btn btn-xs  btn-default" name="on">ON</button>',
+		'<button class="btn btn-xs btn-primary active " name="off">OFF</button>',
+		'</div>'
+            
+    ].join('');
+	}};  	
+*/
+
 function deleteRideFromDB (row) {
 	//gets user values from cookies
 	var user=$.cookie("user_info");	
@@ -1320,6 +1400,7 @@ window.operateRemoveEvent = {
         		       		
         		})                    
        }
+ 
     }; 
   
 window.operateAddingEvent = {
@@ -1395,8 +1476,170 @@ window.operateAdminEditEvent = {
     	
          
     
-   }
+   },
+   
+   'click .disable': function (e, value, row, index) {
+		
+		// alert('You click remove icon, row: ' + JSON.stringify(row));
+		bootbox.confirm("Are you sure you want to disable this account?", function(result) {
+			if(result == true){
+				
+				var disU=JSON.stringify(row);         	
+				//alert('First from stringify row' + disU);
+				
+				var parsingU=$.parseJSON(disU); 
+				//alert('second from parsing row' + parsingU);
+				
+				var disEnU=String(parsingU.userid);
+				//alert('third, getting value from key' + disEnU);
+				
+				jQuery.ajax(
+				{
+				url : '${pageContext.request.contextPath}/user/enable/' + disEnU+ "/false" ,
+				type: 'GET',
+				success:function(data) {
+				if(data == true) {
+					alert('The account was succesfully disabled');
+					
+				}
+				else{
+					alert ('The account could not be disabled');
+				}
+				
+				}  ,
+				error: function() { alert('Sorry, the account could not be disabled')}
+				}
+				);
+			}
+		       		
+				})                    
+		},
+		'click .enable': function (e, value, row, index) {
+			
+			// alert('You click remove icon, row: ' + JSON.stringify(row));
+			bootbox.confirm("Are you sure you want to enable this account?", function(result) {
+				if(result == true){
+					
+					var disU=JSON.stringify(row);         	
+					//alert('First from stringify row' + disU);
+					
+					var parsingU=$.parseJSON(disU); 
+					//alert('second from parsing row' + parsingU);
+					
+					var disEnU=String(parsingU.userid);
+					//alert('third, getting value from key' + disEnU);
+					
+					jQuery.ajax(
+					{
+					url : '${pageContext.request.contextPath}/user/enable/' + disEnU+ "/true" ,
+					type: 'GET',
+					success:function(data) {
+					if(data == true) {
+						alert('The account was succesfully enabled');
+						
+					}
+					else{
+						alert ('The account could not be enabled');
+					}
+					
+					}  ,
+					error: function() { alert('Sorry, the account could not be enabled')}
+					}
+					);
+				}
+			       		
+					})                    
+			}
+  
 };
+
+/*
+$('input[name="myOnOff"]').on('switchChange.bootstrapSwitch', function(event, state) {
+	  console.log(this); // DOM element
+	  console.log(event); // jQuery event
+	  console.log(state); // true | false
+	});
+	*/
+/*   
+window.operateAdminEnabDisEvent = {
+		   'click .disable': function (e, value, row, index) {
+				
+				// alert('You click remove icon, row: ' + JSON.stringify(row));
+				bootbox.confirm("Are you sure you want to disable this account?", function(result) {
+					if(result == true){
+						
+						var disU=JSON.stringify(row);         	
+						//alert('First from stringify row' + disU);
+						
+						var parsingU=$.parseJSON(disU); 
+						//alert('second from parsing row' + parsingU);
+						
+						var disEnU=String(parsingU.userid);
+						//alert('third, getting value from key' + disEnU);
+						
+						jQuery.ajax(
+						{
+						url : '${pageContext.request.contextPath}/user/enable/' + disEnU+ "/false" ,
+						type: 'GET',
+						success:function(data) {
+						if(data == true) {
+							alert('The account was succesfully disabled');
+							
+						}
+						else{
+							alert ('The account could not be disabled');
+						}
+						
+						}  ,
+						error: function() { alert('Sorry, the account could not be disabled')}
+						}
+						);
+					}
+				       		
+						})                    
+				},
+				'click .enable': function (e, value, row, index) {
+					
+					// alert('You click remove icon, row: ' + JSON.stringify(row));
+					bootbox.confirm("Are you sure you want to enable this account?", function(result) {
+						if(result == true){
+							
+							var disU=JSON.stringify(row);         	
+							//alert('First from stringify row' + disU);
+							
+							var parsingU=$.parseJSON(disU); 
+							//alert('second from parsing row' + parsingU);
+							
+							var disEnU=String(parsingU.userid);
+							//alert('third, getting value from key' + disEnU);
+							
+							jQuery.ajax(
+							{
+							url : '${pageContext.request.contextPath}/user/enable/' + disEnU+ "/true" ,
+							type: 'GET',
+							success:function(data) {
+							if(data == true) {
+								alert('The account was succesfully enabled');
+								
+							}
+							else{
+								alert ('The account could not be enabled');
+							}
+							
+							}  ,
+							error: function() { alert('Sorry, the account could not be enabled')}
+							}
+							);
+						}
+					       		
+							})                    
+					}
+		   	 
+   
+		};
+
+*/
+
  function getUserId() {
  var user=$.cookie("user_info");
  
@@ -1524,6 +1767,7 @@ $('#table-admin').bootstrapTable({
     	field: 'userid',
         title: 'User-Id',        
         class: 'admin',
+        visible: false,
         switchable: false,
         align: 'right',
         valign: 'bottom'
@@ -1553,7 +1797,7 @@ $('#table-admin').bootstrapTable({
    
 	}, {
         field: 'add',
-        title: 'Item Operate',
+        title: 'Operate',
         align: 'center',
         valign: 'middle',
         class: 'admin',
@@ -1561,34 +1805,55 @@ $('#table-admin').bootstrapTable({
        clickToSelect: false,
        formatter: operateAdmin,
        events: operateAdminEditEvent
-    }]
+    
+	},  /* {
+        field: 'enaDis',
+        title: 'Enab/Dis',
+        align: 'center',
+        valign: 'middle',
+        class: 'admin',
+        switchable: false,
+       clickToSelect: false,
+       formatter: operateAdminDisEn,
+       events: operateAdminEnabDisEvent
+    }*/ ]
 });
-/*
-$('#logout').on('click', function () {
+
+
+
+
+
+$('#logout-admin').on('click', function () {
 	 var user=$.cookie("user_info");
-	 
-	
+	 	
 	var uName=$.parseJSON(user);
 	var userN= String(uName.user_name);
 	
-	 $.post('${pageContext.request.contextPath}/login/signout', 
-		    {userName:userN}).done(
-			function(response,textStatus,jqXHR) { 
-				alert('You were successfuly logged out');
-		    
-			$('#account').modal('hide'); 
-			    $.removeCookie("user_info");
-			    location.reload();
-			 
+	bootbox.confirm("Are you sure you want to logout?", function(result) {
+		if(result == true){
 			
-			}).fail(function(jqXHR, textStatus, errorThrown) 
-				    {
-			  alert('unable to logout !!!!');	
- });  
+			 $.post('${pageContext.request.contextPath}/admin/signout', 
+					    {userName:userN}).done(
+						function(response,textStatus,jqXHR) { 
+							alert('You were successfuly logged out');
+					    
+						$('#search').modal('hide'); 
+						    $.removeCookie("user_info");
+						    location.reload();
+						 
+						
+						}).fail(function(jqXHR, textStatus, errorThrown) 
+							    {
+						  alert('unable to logout !!!!');	
+			 });
+		}
+		       		
+		}) 
+  
 	
 	});
 	
-*/
+
 </script>
 
 

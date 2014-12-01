@@ -36,7 +36,7 @@ public class LoginController {
 		User user = loginService.signIn(login.getUserName(),
 				login.getPassword(), login.getCode());
 
-		if (user.isNill())
+		if (user == null || user.isNill())
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 
 		if (request != null) {
@@ -56,6 +56,7 @@ public class LoginController {
 		obj.append("user_name", user.getUserName());
 		obj.append("user_id", user.getUserid().toString());
 		obj.append("user_email", user.getEmail());
+		obj.append("role", user.getUserRole().getRoleType());
 		// finish adding all roles returned from GET-USER SELECT
 		return new ResponseEntity<String>(obj.toString(), HttpStatus.OK);
 

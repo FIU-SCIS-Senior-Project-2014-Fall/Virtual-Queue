@@ -99,7 +99,7 @@ public class UserServiceImp implements UserService {
 		 userDao.editUserById(editInfo.getFirstName(), editInfo.getLastName(), 
 				 editInfo.getEmail(), editInfo.getNewPassword(),
 				 editInfo.getUserName(), editInfo.getSecurityAnswer(), editInfo.getSecurityQuestion(),
-				editInfo.getCell(), editInfo.getAge());
+				editInfo.getCell(), editInfo.getAge(), editInfo.getCode());
 
 	}
 	
@@ -116,5 +116,12 @@ public class UserServiceImp implements UserService {
 
 		return queueDao.removeUserFromQueue(rideId, userId);
 	}
+
+	@Override
+	public boolean enabledDisabledUser(long userId, String flag ) {
+
+		return userDao.enabledDisabledUser(userId, flag);
+	}
+	
 
 }

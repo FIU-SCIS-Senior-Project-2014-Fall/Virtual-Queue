@@ -43,7 +43,8 @@ public class UserDaoImp extends BaseDao implements UserDao {
 	private static final String GET_ROLE_BY_USERID = " Select * from VirtualQueueDB.Role where role_id=(Select user_id from VirtualQueueDB.UserRole where user_id = ? )";
 
 	private static String EDIT_USER = "UPDATE VirtualQueueDB.VenueRegisteredUser SET first_name = ?,last_name = ?,email = ?,user_password = ? , "
-			+ " user_name = ?,security_question = ?, security_answer = ?, phone_number = ?, age  = ? WHERE user_name = ? ";
+			+ " user_name = ?,security_question = ?, security_answer = ?, phone_number = ?, age  = ?, code = ? WHERE user_name = ? ";
+	private static String ENABLED_DISABLED_USER = "UPDATE VirtualQueueDB.VenueRegisteredUser SET enabled = ? WHERE user_id = ?";
 
 	@Override
 	public User getUser(String username, String passwd) {
@@ -131,23 +132,31 @@ public class UserDaoImp extends BaseDao implements UserDao {
 
 	}
 
-	private void insertCode(String code) {
+	private void insertCode(String code) throws SQLException {
 
 		PreparedStatement updateemp = null;
 
-		getConnection();
+		Connection conn = getConnection();
+
 		try {
-
-			updateemp = connection.prepareStatement(ADD_CODE);
-
+			conn.setAutoCommit(false);
+			updateemp = conn.prepareStatement(ADD_CODE);
 			updateemp.setString(1, code);
 			updateemp.setDate(2, new java.sql.Date(new Date().getTime()));
 			updateemp.executeUpdate();
-
+			conn.commit();
 		} catch (SQLException e) {
 
 			e.printStackTrace();
+			;
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 
+			throw e;
 		} finally {
 
 			if (updateemp != null) {
@@ -159,6 +168,13 @@ public class UserDaoImp extends BaseDao implements UserDao {
 				}
 			}
 
+			try {
+				if (conn != null && !conn.isClosed())
+					conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}
@@ -166,16 +182,26 @@ public class UserDaoImp extends BaseDao implements UserDao {
 	@Override
 	public void addUser(User user) throws SQLException {
 
+		// first transaction insert code on code table.
+		// this method will open and close a connection with jdbc
+		// transaction
 		insertCode(user.getCode()); // insert code on code table
 		long codeId = getCodeIdByCode(user.getCode());
+		// Abort operation with not code found.
+		if (codeId == 0)
+			throw new SQLException("code id not inserted properly");
 
+		// starts add user operations.
 		PreparedStatement updateemp = null;
+		PreparedStatement addRole = null;
 
-		getConnection();
+		Connection myConn = getConnection();
+
 		try {
+			myConn.setAutoCommit(false);
 
+			// second transaction add user to user table.
 			updateemp = connection.prepareStatement(ADD_USERS);
-
 			updateemp.setString(1, user.getFirstName());
 			updateemp.setString(2, user.getLastName());
 			updateemp.setString(3, user.getEmail());
@@ -189,18 +215,25 @@ public class UserDaoImp extends BaseDao implements UserDao {
 			updateemp.setLong(10, codeId);
 			updateemp.setString(11, "1");
 			updateemp.setInt(12, 1);
-
 			updateemp.executeUpdate();
 
 			long userId = getUserByUserName(user.getEmail()).getUserid();
-			AddRole(userId, "USER");
+
+			// third transaction add role for this user to user role table.
+			addRole = myConn.prepareStatement(ADD_ROLE);
+			addRole.setLong(1, userId);
+			addRole.setLong(2, getRoleIdByType("USER"));
+			addRole.executeUpdate();
+
+			// commit transaction
+			myConn.commit();
 
 		} catch (SQLException e) {
 
 			e.printStackTrace();
-
+			myConn.rollback();
 		} finally {
-
+			// close prepared statements.
 			if (updateemp != null) {
 				try {
 					updateemp.close();
@@ -209,8 +242,22 @@ public class UserDaoImp extends BaseDao implements UserDao {
 					e.printStackTrace();
 				}
 			}
-			closeConnection();
 
+			// close prepared statements.
+			if (addRole != null) {
+				try {
+					addRole.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			// close my connection
+			if (myConn != null && !myConn.isClosed()) {
+
+				myConn.close();
+			}
 		}
 
 	}
@@ -361,7 +408,7 @@ public class UserDaoImp extends BaseDao implements UserDao {
 	public Boolean editUserById(String newFirstName, String newLastName,
 			String newEmail, String password, String newUserName,
 			String securityAnswer, String securityQuestion, String newCell,
-			String newAge) throws Exception {
+			String newAge, String newCode) throws Exception {
 
 		PreparedStatement updateemp = null;
 
@@ -380,7 +427,8 @@ public class UserDaoImp extends BaseDao implements UserDao {
 			updateemp.setString(7, securityQuestion);
 			updateemp.setString(8, newCell);
 			updateemp.setString(9, newAge);
-			updateemp.setString(10, newEmail);
+			updateemp.setString(10, newCode);
+			updateemp.setString(11, newEmail);
 
 			int execute = updateemp.executeUpdate();
 
@@ -684,5 +732,62 @@ public class UserDaoImp extends BaseDao implements UserDao {
 
 		return role;
 
+	}
+
+	@Override
+	public boolean enabledDisabledUser(long userId, String flag) {
+
+		String myFlag = "0";
+		PreparedStatement updateemp = null;
+		Connection conn = null;
+		try {
+
+			conn = getConnection();
+			conn.setAutoCommit(false);
+			if ("true".equalsIgnoreCase(flag))
+				myFlag = "1";
+
+			updateemp = conn.prepareStatement(ENABLED_DISABLED_USER);
+			// ODO this needs to be change to use user_id(PK) to perform updates
+			 updateemp.setLong(2, userId);
+			 updateemp.setString(1, myFlag);
+
+			int execute = updateemp.executeUpdate();
+			conn.commit();
+
+			if (execute > 0) {
+				return true;
+			}
+
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+			// throw new ResetPasswordException(e.getMessage());
+
+		} finally {
+
+			if (updateemp != null)
+				try {
+					updateemp.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			try {
+				if (conn != null && !conn.isClosed())
+					conn.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return false;
 	}
 }

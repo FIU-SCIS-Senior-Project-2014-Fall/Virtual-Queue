@@ -120,6 +120,12 @@ public class UserController {
 			@PathVariable("userId") Long userId) {
 		return userService.getUserById(userId);
 	}
+	
+	@RequestMapping(value = "/enable/{userId}/{flag}", method = RequestMethod.GET)
+	public @ResponseBody boolean enabledDisabledUser(
+			@PathVariable("flag") String flag, @PathVariable("userId") long userId) {
+		return userService.enabledDisabledUser(userId, flag);
+	}
 
 
 }

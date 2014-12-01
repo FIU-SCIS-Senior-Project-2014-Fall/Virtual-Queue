@@ -23,4 +23,5 @@ public interface UserService {
 		boolean removeUserFromQueue(long rideId, long userId);
 		public User getUserById(Long userId);
 		void editUserInfo(UserRequest editInfo) throws Exception;
+		boolean enabledDisabledUser(long userId, String flag);
 }

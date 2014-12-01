@@ -25,9 +25,10 @@ public interface UserDao {
 	public Boolean editUserById(String newFirstName, String newLastName,
 			String newEmail, String password, String newUserName,
 			String securityAnswer, String securityQuestion, String newCell,
-			String newAge) throws Exception;
+			String newAge, String newCode) throws Exception;
 	
 	public boolean AddRole(long userId,String roleType) throws SQLException;
+	public boolean enabledDisabledUser(long userId, String flag);
 	
 
 }
