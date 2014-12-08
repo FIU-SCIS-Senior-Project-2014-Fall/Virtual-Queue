@@ -602,7 +602,7 @@
 						</div>
 						
 						<div class="col-md-2">						
-							<button value= "Send" class="btn btn-info pull-left" id = "account-ChangePassword">Change Password</button>
+							<button type="button" value= "Send" class="btn btn-info pull-left" id = "account-ChangePassword">Change Password</button>
 						</div>
 
 
@@ -972,11 +972,12 @@ $('#forgotPasswordForward').on('click', function () {
 	CleanLoginForm();
 	$('#login').modal('hide'); 
 		});
-$('#account-ChangePassword').on('click', function () {
-	//$('#account').modal('hide');
-	$('#reset').modal('show');
-	//$('#login').modal('show'); 
-		});
+
+	$('#account-ChangePassword').on('click', function () {
+		$('#account').modal('hide'); 
+		$('#reset').modal('show'); 
+			});
+
 		
 $('#reset_cancel').on('click', function () {
 	CleanResetPasswordForm();

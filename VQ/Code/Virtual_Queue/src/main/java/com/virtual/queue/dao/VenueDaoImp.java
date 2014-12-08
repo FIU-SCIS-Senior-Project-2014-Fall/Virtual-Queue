@@ -1,4 +1,5 @@
 package com.virtual.queue.dao;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
- 
+
 import com.virtual.queue.beans.VenueInfo;
 import com.virtual.queue.dao.VenueDao;
 
@@ -21,9 +22,11 @@ public class VenueDaoImp extends BaseDao implements VenueDao {
 	public List<VenueInfo> getVenueInfo(long venueId) {
 		 
 		List<VenueInfo> list= new ArrayList<VenueInfo>();
-			try {
+			Connection con=getConnection();
+		
+		try {
 
-				PreparedStatement statement = getConnection().prepareStatement(
+				PreparedStatement statement = con.prepareStatement(
 						GET_VENUE_INFO);
 				statement.setLong(1, venueId); 
 				
@@ -50,6 +53,18 @@ public class VenueDaoImp extends BaseDao implements VenueDao {
 				// TODO need to add log4j output
 				ex.printStackTrace();
 
+			}finally{
+				try {
+					if(con!=null && !con.isClosed()){
+						con.close();
+						
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
 			}
 			VenueInfo vInfo= new VenueInfo();
 			vInfo.setStartTime(8);

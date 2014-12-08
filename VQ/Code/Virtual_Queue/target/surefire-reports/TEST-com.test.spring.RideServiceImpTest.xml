@@ -27,7 +27,7 @@
 "/>
     <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="os.name" value="Mac OS X"/>
-    <property name="classworlds.conf" value="/Users/kelycid/Documents/workspace/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf2117935410354161071.tmp"/>
+    <property name="classworlds.conf" value="/Users/kelycid/Documents/workspace/.metadata/.plugins/org.eclipse.m2e.launching/launches/m2conf8084963594097951981.tmp"/>
     <property name="sun.jnu.encoding" value="MacRoman"/>
     <property name="java.library.path" value=".:/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -66,10 +66,10 @@
     <property name="sun.cpu.isalist" value=""/>
   </properties>
   <testcase time="0.005" classname="com.test.spring.RideServiceImpTest" name="testAddRide"/>
-  <testcase time="0" classname="com.test.spring.RideServiceImpTest" name="testUpdateRide"/>
+  <testcase time="0.001" classname="com.test.spring.RideServiceImpTest" name="testUpdateRide"/>
   <testcase time="0" classname="com.test.spring.RideServiceImpTest" name="testPullRideInfo"/>
   <testcase time="0.001" classname="com.test.spring.RideServiceImpTest" name="testGetAll"/>
   <testcase time="0" classname="com.test.spring.RideServiceImpTest" name="testDeleteRideById"/>
-  <testcase time="0.001" classname="com.test.spring.RideServiceImpTest" name="testAddRideById"/>
+  <testcase time="0" classname="com.test.spring.RideServiceImpTest" name="testAddRideById"/>
   <testcase time="0" classname="com.test.spring.RideServiceImpTest" name="testRemoveRidebyId"/>
 </testsuite>

@@ -91,7 +91,7 @@ public class ResetPasswordDaoImp extends BaseDao implements ResetPasswordDao {
 				updateemp.close();
 			connection.setAutoCommit(true);
 
-			if (connection != null && connection.isClosed())
+			if (connection != null && !connection.isClosed())
 				connection.close();
 
 		}

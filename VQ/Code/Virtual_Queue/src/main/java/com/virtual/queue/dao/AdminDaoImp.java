@@ -1,9 +1,11 @@
 package com.virtual.queue.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +25,11 @@ public class AdminDaoImp extends BaseDao implements AdminDao {
 		
 		LinkedList<User> infoList = new LinkedList<User>();
 		User user = null;
+		
+		Connection con=getConnection();
 		try {
-
-			PreparedStatement statement = getConnection().prepareStatement(
+			 
+			PreparedStatement statement = con.prepareStatement(
 					GET_ALL_USERS);
 
 			
@@ -54,6 +58,18 @@ public class AdminDaoImp extends BaseDao implements AdminDao {
 			// TODO need to add log4j output
 			ex.printStackTrace();
 
+		}finally{
+			try {
+				if(con!=null && !con.isClosed()){
+					con.close();
+					
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 		}
 
 		return infoList;

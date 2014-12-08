@@ -573,9 +573,7 @@ public class UserDaoImp extends BaseDao implements UserDao {
 		PreparedStatement updateemp = null;
 		Connection con = getConnection();
 
-		try {
-
-			getConnection();
+		try { 
 
 			updateemp = con.prepareStatement(DELETE_USER_FROM_QUEUE);
 			updateemp.setLong(1, userId);

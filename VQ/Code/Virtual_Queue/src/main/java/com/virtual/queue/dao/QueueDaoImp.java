@@ -78,9 +78,11 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 	public List<UserQueueInfo> pullInfo(long rideId) {
 
 		List<UserQueueInfo> infoList = new ArrayList<UserQueueInfo>();
+		
+		Connection con=getConnection();
 		try {
 
-			PreparedStatement statement = getConnection().prepareStatement(
+			PreparedStatement statement = con.prepareStatement(
 					GET_QUEUE_INFO);
 
 			// TODO:set ride id from job scheduler.
@@ -117,6 +119,18 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 			// TODO need to add log4j output
 			ex.printStackTrace();
 
+		}finally{
+			try {
+				if(con!=null && !con.isClosed()){
+					con.close();
+					
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 		}
 
 		return infoList;
@@ -126,8 +140,10 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 	@Override
 	public List<UserQueueInfo> pullAllInfo() {
 		List<UserQueueInfo> infoList = new ArrayList<UserQueueInfo>();
+		
+		Connection con=getConnection();
 		try {
-			PreparedStatement statement = getConnection().prepareStatement(
+			PreparedStatement statement = con.prepareStatement(
 					GET_QUEUE_INFO_ALL);
 
 			ResultSet result = statement.executeQuery();
@@ -155,6 +171,18 @@ public class QueueDaoImp extends BaseDao implements QueueDao {
 			// TODO need to add log4j output
 			ex.printStackTrace();
 
+		}finally{
+			try {
+				if(con!=null && !con.isClosed()){
+					con.close();
+					
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 		}
 
 		return infoList;

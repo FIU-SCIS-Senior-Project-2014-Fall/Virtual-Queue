@@ -1,5 +1,6 @@
 package com.virtual.queue.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,11 +42,11 @@ public class LoginDaoImp extends BaseDao implements LoginDao {
 
 	@Override
 	public User signIn(String userName, String password, String code) {
-
+       Connection con=getConnection();
 		User user = new User();
 		try {
 
-			PreparedStatement statement = getConnection().prepareStatement(
+			PreparedStatement statement = con.prepareStatement(
 					GET_USER_SESSION);
 			statement.setString(1, userName);
 			statement.setString(2, password);
@@ -75,6 +76,19 @@ public class LoginDaoImp extends BaseDao implements LoginDao {
 			// TODO need to add log4j output
 			ex.printStackTrace();
 
+		}finally{
+			
+			try {
+				if(con!=null && !con.isClosed()){
+					con.close(); 
+					
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 		}
 		 
 
@@ -85,9 +99,11 @@ public class LoginDaoImp extends BaseDao implements LoginDao {
 	@Override
 	public User adminSignIn(String userName, String password) {
 		User user = new User();
+		
+		Connection con=getConnection();
 		try {
 
-			PreparedStatement statement = getConnection().prepareStatement(
+			PreparedStatement statement = con.prepareStatement(
 					GET_ADMIN_SESSION);
 			statement.setString(1, userName);
 			statement.setString(2, password);
@@ -105,8 +121,7 @@ public class LoginDaoImp extends BaseDao implements LoginDao {
 			
 			}
 			
-			result.close();
-			
+			result.close(); 
 			statement.close();
 		} catch (SQLException e) {
 			// TODO need to add log4j output
@@ -117,6 +132,18 @@ public class LoginDaoImp extends BaseDao implements LoginDao {
 			// TODO need to add log4j output
 			ex.printStackTrace();
 
+		}finally{
+			try {
+				if(con!=null && !con.isClosed()){
+					con.close();
+					
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 		}
 		 
 

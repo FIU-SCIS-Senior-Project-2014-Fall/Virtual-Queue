@@ -84,19 +84,18 @@ public class RideDaoImp extends BaseDao implements RideDao {
 			// TODO need to add log4j output
 			ex.printStackTrace();
 
-		} finally {
-
-			if (con != null) {
-
-				try {
+		} finally{
+			try {
+				if(con!=null && !con.isClosed()){
 					con.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					
 				}
-
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
+			
+			
 		}
 
 		return info;
@@ -159,19 +158,18 @@ public class RideDaoImp extends BaseDao implements RideDao {
 			// TODO need to add log4j output
 			ex.printStackTrace();
 
-		} finally {
-
-			if (con != null) {
-
-				try {
+		} finally{
+			try {
+				if(con!=null && !con.isClosed()){
 					con.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					
 				}
-
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
+			
+			
 		}
 
 		return infoLst;
