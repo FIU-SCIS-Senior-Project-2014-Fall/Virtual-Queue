@@ -3,6 +3,7 @@ package com.virtual.queue.rule;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -126,11 +127,13 @@ public class AddUserRule implements Rule {
 		// user already has been registered for other rides.
 		if (rideList != null && !rideList.isEmpty()) {
 
-			for (RideInfo rinfo : rideList) {
+			ListIterator<RideInfo> listIterator = rideList.listIterator();
+			RideInfo rinfo = null;
+			while (listIterator.hasNext()) {
 
+				rinfo = listIterator.next();
 				int size = qDao.getAllUserQueueForRide(rinfo.getRideId())
 						.size();
-
 				int wtime = QueueUtil.getWaitingTime(size, rinfo.getCapacity(),
 						rinfo.getInterval(), false);
 				totalWtime += wtime;// all all waiting time from each ride
