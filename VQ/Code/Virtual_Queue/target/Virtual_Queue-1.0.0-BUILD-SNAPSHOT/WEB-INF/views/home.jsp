@@ -915,11 +915,7 @@ $(document).ready(function() {
 		/*
   register form ajax post function
   validations and page forwarding.
-  */	
-	
-  
-  
-  
+  */	 
   
   $('#register-button').click(function(e) {
   
@@ -942,31 +938,7 @@ $(document).ready(function() {
 			});  
 			}); 
 }); 
- /*
-  $('#registerForm').submit(function(e) {
-		e.preventDefault();
-		// will pass the form date using the jQuery serialize function
-		$.post('${pageContext.request.contextPath}/user/add', $(this).serialize(), function(response) { 
-			
-			if(response ==true){
-				 alert('You have been successfully register');
-			
-			$('#register').modal('hide');
-			CleanRegisterForm();
-			$('#login').modal('show');
-			e.preventDefault();
-			}else {
-				
-			  alert('You were not registered :(. Please, Try Again');	
-			  $('#registerForm').modal('show');
-			  CleanRegisterForm();
-			}
-			CleanRegisterForm();
-		}); 
-		e.preventDefault(); // prevent actual form submit and page reload
-		}); 
-	}); 
-	*/	
+ 	
 		//=========DocumentReady ends=============
 $('#forgotPasswordForward').on('click', function () {
 	CleanLoginForm();
@@ -1146,6 +1118,18 @@ $('#registerForm').bootstrapValidator({
 			},
 			}
 			},
+			
+		code: {
+				
+				message: 'The code is not valid',
+				validators: {
+				regexp: {
+				regexp:  /^[0-9]$/,
+				message: 'The code consists of numbers only'
+					},
+				
+				}
+				},
 				
 	}
 	});
@@ -1178,8 +1162,8 @@ $('#registerForm').bootstrapValidator({
 				message: 'The code is not valid',
 				validators: {
 				regexp: {
-				regexp:  /^[a-zA-Z0-9]+$/,
-				message: 'The code consists of numbers and/or letters only: Ex:1AB2'
+				regexp:  /^[0-9]$/,
+				message: 'The code consists of numbers only'
 					},
 				
 				}
@@ -1251,7 +1235,7 @@ function operateAdmin(value, row, index) {
         
 }; 
 
-/*
+
 function operateAdminDisEn(value, row, index) {	
 	var rowA=JSON.stringify(row);         	
 	//alert('First from stringify row' + addR);
@@ -1264,7 +1248,7 @@ function operateAdminDisEn(value, row, index) {
 	if(addingA == "1"){
 		return [
 		         
-				'<div class="btn-group btn-toggle" name="myOnOff">',
+				'<div class="btn-group " name="myOnOff">',
 				'<button class="btn btn-xs btn-primary active " name = "on">ON</button>',
 				'<button class="btn btn-xs btn-default" name="off">OFF</button>',
 				'</div>'
@@ -1275,14 +1259,14 @@ function operateAdminDisEn(value, row, index) {
 	else{
 	return [
          
-		'<div class="btn-group btn-toggle" name="myOnOff">',
+		'<div class="btn-group " name="myOnOff">',
 		'<button class="btn btn-xs  btn-default" name="on">ON</button>',
-		'<button class="btn btn-xs btn-primary active " name="off">OFF</button>',
+		'<button class="btn btn-xs btn-warning active " name="off">OFF</button>',
 		'</div>'
             
     ].join('');
 	}};  	
-*/
+
 
 function deleteRideFromDB (row) {
 	//gets user values from cookies
@@ -1530,7 +1514,7 @@ $('input[name="myOnOff"]').on('switchChange.bootstrapSwitch', function(event, st
 	
 	
 	*/
-/*   
+/*  
 window.operateAdminEnabDisEvent = {
 			
 			
@@ -1780,17 +1764,17 @@ $('#table-admin').bootstrapTable({
        formatter: operateAdmin,
        events: operateAdminEditEvent
     
-	},  /* {
+	},   {
         field: 'enaDis',
-        title: 'Enab/Dis',
+        title: 'State',
         align: 'center',
         valign: 'middle',
         class: 'admin',
         switchable: false,
-       clickToSelect: false,
-       formatter: operateAdminDisEn,
-       events: operateAdminEnabDisEvent
-    }*/ ]
+        clickToSelect: false,
+       formatter: operateAdminDisEn
+      // events: operateAdminEnabDisEvent
+    } ]
 });
 
 
